@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+:root {
+  --font-family: 'Inter', sans-serif;
+
+  --gradient-background: radial-gradient(circle, rgba(185,206,236,1) 0%, rgba(201,214,236,1) 30%, rgba(229,233,240,1) 86%, rgba(234,234,235,1) 100%);
+  
+  --color-blue: #418EFF;
+  --color-darker-blue: #3071D1;
+  --color-grey : #535353;
+  --color-white: #FFFFFF;
+
+}
