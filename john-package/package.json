@@ -1,0 +1,17 @@
+{
+  "name": "john-package",
+  "version": "1.0.0",
+  "description": "Perform OCR using textract and extract form data and tables",
+  "main": "index.js",
+  "scripts": {
+    "test": "console.log('hi');"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.370.0",
+    "@aws-sdk/client-textract": "^3.370.0",
+    "fuzzysort": "^2.0.4",
+    "lodash": "^4.17.21"
+  }
+}
