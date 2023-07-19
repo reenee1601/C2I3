@@ -1,10 +1,11 @@
-let = mongoose = require('mongoose');
+const mongoose = require('mongoose');
 //encrypting password
 let bcrypt = require('bcrypt');
 
 let Schema = mongoose.Schema;
 
 let userSchema = new Schema({
+     userId: {type: String},
      name: {type: String, require: true},
      company: {type: String, require: true},
      email: {type: String, require: true, unique: true},
