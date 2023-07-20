@@ -100,7 +100,7 @@ const HomePage = () => {
           modules={[Scrollbar]}
           spaceBetween={50}
           slidesPerView={3}
-          scrollbar={{ draggable: true }}
+          scrollbar={{draggable: true }}
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
           >
