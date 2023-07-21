@@ -2,6 +2,10 @@
 ## To use this you'll need to put the john-package in your node modules folder and run `npm i` to get the dependancies
 ## Also you need to have valid aws credentials in your aws credentials directory
 
+# Installation
+Download the package somewhere, then in your project folder, run: \
+`npm i 'path/to/john-package'`
+
 # Usage
 The main point of this package is to go from an image to a standardised object. So you'll get an object with the names you want, containing (probably) the fields that you want. It uses the `fuzzysort` package to do autocorrect on field names, which may or may not catch everything
 

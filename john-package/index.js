@@ -3,7 +3,7 @@ const {TextractClient, AnalyzeDocumentCommand,
 const { PutObjectCommand, DeleteObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const _ = require("lodash");
 const fuzzysort = require('fuzzysort');
-// const { readFileSync, writeFileSync } = require ("fs");
+const { readFileSync, writeFileSync } = require ("fs");
 
 // START of Internal Functions
 
@@ -323,7 +323,7 @@ const getRowsColumnsMap = (table_result, blocks_map) => {
                     text = getText(cell, blocks_map);
                     //rows[col_index][row_index] = text;
                     if (row_index === 0) {
-                        headers[col_index] = text.toLowerCase().replace(/\W*$/, ""); 
+                        headers[col_index] = text.toLowerCase().replace(/(?:[^\p{L}\s]\s+(?=\s|$))+/gu, ''); 
                         // if row index is 0, it is a header so store it for processing later
                     } else {
 
@@ -366,6 +366,7 @@ const fixTableHeaders = (obj, dict) => {
                    // in the object, so we can fill up space later 
 
     for (const header of currentHeaders) {
+        // **** To be replaced if i find a better autocorrect/fuzzy matching package
         // do an autocorrect; get the 'nearest' correct header
         searchRes = fuzzysort.go(header, correctHeaders)
 
@@ -492,3 +493,11 @@ const extractTables = (data, dict) => { // #### EXPORT this function
 }
 
 module.exports = { getTextractAnalysis,  extractForms, extractTables  }
+
+if (process.env['NODE_DEV'] == 'TEST') { // expose functions for testing
+    module.exports.getTextractAnalysis = getTextractAnalysis;
+    module.exports.extractForms = extractForms;
+    module.exports.extractTables = extractTables;
+    module.exports.fixTableHeaders = fixTableHeaders;
+    module.exports.fixFormHeaders = fixFormHeaders;
+}
