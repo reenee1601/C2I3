@@ -93,7 +93,9 @@ const DetailedSoaPage = () => {
           <p className="total-amount">Total Amount: $4000.50</p>
           {/* if clicked go to compare doc page */}
           <button className="payment-button">
-            <img src = {require("../../asserts/PaymentButton.png")} alt = "PaymentButton"/>
+            <Link to="/comparedocumentpage">
+              <img src = {require("../../asserts/PaymentButton.png")} alt = "PaymentButton"/>
+            </Link>
           </button>
         </div>
       </div>
