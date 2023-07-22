@@ -108,7 +108,7 @@ const HomePage = () => {
           {slideInfo.map(renderSlide)}
 
           </Swiper>
-          </div>
+        </div>
 
     </div>
     
