@@ -1,0 +1,17 @@
+.document {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.document h1 {
+    color: #313638;
+    text-align: center;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    padding-top: 1%;
+}

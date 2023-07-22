@@ -1,12 +1,65 @@
 import React from 'react';
-// import React, { useState } from 'react';
 import './registerPage.css';
 import { FirstNavBar } from '../../components/firstNavBar/FirstNavBar';
+
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
+
 
 const RegisterPage = () => {
   // function getData(val) {
   //   console.warn(val.target.value)
   // }
+  //const [email, setEmail] = useState("");
+  //const [company, setCompany] = useState("");
+  //const [password, setPassword] = useState("");
+  //const [register, setRegister] = useState(false);
+
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    company: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // You can implement your database registration logic here,
+    // where you send the formData to the backend or a database.
+    // For demonstration purposes, we'll simulate a successful registration and navigate to the homepage.
+    // Replace this with your actual database registration logic.
+    setTimeout(() => {
+      console.log('User registered:', formData);
+      navigate('/homepage');
+    }, 1500);
+  };
+
+  useEffect(() => {
+    // This useEffect will be triggered when formData is updated
+    // Check if the form data is ready to be submitted (e.g., when the user clicks the "Create Account" button)
+    if (formData.fullName && formData.company && formData.email && formData.password && formData.confirmPassword) {
+      // Implement your database registration logic here,
+      // where you send the formData to the backend or a database.
+      // For demonstration purposes, we'll simulate a successful registration and navigate to the homepage.
+      // Replace this with your actual database registration logic.
+      setTimeout(() => {
+        console.log('User registered:', formData);
+        navigate('/homepage');
+      }, 1500);
+    }
+  }, [formData, navigate]);
+
+
   const header = {
     color: '#418EFF',
     fontSize: '60px',
@@ -77,12 +130,56 @@ const RegisterPage = () => {
           <FirstNavBar />
 
           <div style = {inputdiv}>
-            <input style= {input} type = "text" placeholder = "Enter Your Full Name"></input>
+          <form onSubmit={handleSubmit}>
+              <input
+                style={input}
+                type="text"
+                name="fullName"
+                placeholder="Enter Your Full Name"
+                value={formData.fullName}
+                onChange={handleChange}
+              />
+              <input
+                style={input}
+                type="text"
+                name="company"
+                placeholder="Enter Your Company"
+                value={formData.company}
+                onChange={handleChange}
+              />
+              <input
+                style={input}
+                type="email"
+                name="email"
+                placeholder="Enter Your Email Address"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <input
+                style={input}
+                type="password"
+                name="password"
+                placeholder="Enter Your Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <input
+                style={input}
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Your Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+            {/*<input style= {input} type = "text" placeholder = "Enter Your Full Name"></input>
             <input style= {input} type = "text" placeholder = "Enter Your Company"></input>
             <input style= {input} type = "email" placeholder = "Enter Your Email Address"></input>
             <input style= {input} type = "password" placeholder = "Enter Your Password"></input>
-            <input style= {input} type = "password" placeholder = "Confirm Your Password"></input>
+  <input style= {input} type = "password" placeholder = "Confirm Your Password"></input>*/}
+            </form>
+            <Link to="/homepage">
             <button style = {button} type = "button">Create Account</button>
+            </Link>
           </div>
             {/* <div className='input'>
               <input type = "text" placeholder = "Enter Your Full Name"></input>

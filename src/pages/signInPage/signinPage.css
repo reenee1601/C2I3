@@ -133,7 +133,7 @@ input:hover {
     color: var(--color-blue);
 }
 
-button{
+/* button{
     width: 370px;
     height: 60px;
     flex-shrink: 0;  
@@ -154,7 +154,7 @@ button{
     cursor: pointer;
 
     transition-duration: 0.4s;
-}
+} */
 
 button:hover {
     background-color: var(--color-darker-blue);
