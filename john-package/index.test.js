@@ -3,6 +3,8 @@ process.env['NODE_DEV'] = 'TEST';
 const { 
     getTextractAnalysis, extractForms, extractTables, fixTableHeaders, fixFormHeaders 
 } = require('./index.js');
+const { readFileSync, writeFileSync } = require ("fs");
+
 // const a = require('./index.js')
 
 var inp; var out; // variables where we will store the intended input and output
@@ -52,6 +54,14 @@ test("Sanity check", () => {
 /// Test the textract function - make sure it works
 test ('make sure the textract function works', async () => {
     res = await getTextractAnalysis('./censored.jpg');
+    expect(Boolean(res && res.Blocks)).toBe(true);
+}, 
+15000 // add timeout of 15s
+);
+/// Test the textract function Again - make sure it works with raw bytes
+test ('make sure the textract function works', async () => {
+    fileContent = readFileSync('./censored.jpg');
+    res = await getTextractAnalysis([fileContent, './censored.jpg']);
     expect(Boolean(res && res.Blocks)).toBe(true);
 }, 
 15000 // add timeout of 15s

@@ -11,13 +11,18 @@ const uploadFile = async (filePath, s3Client) => {
     // function to upload a file specified in the filepath to 
     // the ocr-scanning-invoices bucket
     // Returns the file name of the file uploaded onto the s3 bucket
-    
-    const fileContent = readFileSync(filePath);
-    // extract filename from the filepath to upload onto the bucket
-    // add the current datetime so that uploaded files will be unique,
-    // even if the filename is the same
-    const key = new Date().getTime() + '_' + filePath.match(/[^\\/]+$/)[0];
-    
+    let fileContent; let key
+    if (typeof filePath === 'string') {
+        fileContent = readFileSync(filePath);
+        // extract filename from the filepath to upload onto the bucket
+        // add the current datetime so that uploaded files will be unique,
+        // even if the filename is the same
+        key = new Date().getTime() + '_' + filePath.match(/[^\\/]+$/)[0];
+    } else {
+        fileContent = filePath[0];
+        key = new Date().getTime() + '_' + filePath[1];
+    }
+
     const bucketParams = { Bucket: "ocr-scanning-storage", Key: key
                             , Body:fileContent};
     
