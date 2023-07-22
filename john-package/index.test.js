@@ -50,7 +50,12 @@ test("Sanity check", () => {
     expect(true).toBe(true);
 });
 /// Test the textract function - make sure it works
-
+test ('make sure the textract function works', async () => {
+    res = await getTextractAnalysis('./censored.jpg');
+    expect(Boolean(res && res.Blocks)).toBe(true);
+}, 
+15000 // add timeout of 15s
+);
 /// Test the Form getting functions
 console.log('TEST FORM FIXHEADERS')
 // contains all of the headers
