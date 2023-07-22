@@ -10,8 +10,6 @@ const mongoose = require("mongoose");
 const dbConfig = require("./config/db.config");
 const jwt = require("jsonwebtoken");
 
-<<<<<<< HEAD
-=======
 async function dbConnect() {
   mongoose.connect(dbConfig.URL,{
       useNewUrlParser: true,
@@ -62,11 +60,8 @@ async function initial() {
   }
 }
 
-module.exports = dbConnect;
+//module.exports = dbConnect;
 
-// execute database connection 
-dbConnect();
->>>>>>> 706ab6d9a504686b99dd2a5453cd3c7bd09e319a
 
 
 var corsOptions = {
@@ -188,52 +183,24 @@ app.use('/users', userRoutes); // Mount the user routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 
-<<<<<<< HEAD
-async function startServer() {
-    //connection to mongoDB database
-    const db = require("./models");
 
-    await db.mongoose
-      .connect(dbConfig.URL,{
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .then(() => {
-        console.log("Successfully connect to MongoDB.");
-      })
-      .catch(err => {
-        console.error("Connection error", err);
-        process.exit();
-      });
+// setup based on if testing or not
+if (process.env['NODE_DEV'] == 'TEST') {
 
+    app.post('/close-mongoose-connection', (req, res) => {
+        mongoose.connection.close(() => {
+        res.send('mongoose connection closed');
+        });
+    });
+    module.exports = app;
+} else {
+    // execute database connection 
+    dbConnect();
     // set port, listen for requests
     const PORT = process.env.PORT || 8080;
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}.`);
     });
-}
 
-// setup for testing
-// if it is in a test environment, the `app` object will be exported
-// and mongoose connection wont be made
-// and it wont listen to the port
-if (process.env['NODE_DEV'] == 'TEST') {
-    app.post('/close-mongoose-connection', (req, res) => {
-        mongoose.connection.close(() => {
-            res.send('mongoose connection closed');
-        });
-        
-    });
-    module.exports = app;
-} else {
-    startServer();
+    module.exports = { app, dbConnect };
 }
-=======
-// set port, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-});
-
-module.exports = app;
->>>>>>> 706ab6d9a504686b99dd2a5453cd3c7bd09e319a

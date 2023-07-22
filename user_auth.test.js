@@ -4,10 +4,10 @@ const app = require("./server.js"); // Link to your server file
 const supertest = require("supertest");
 const request = supertest(app);
 const dbConfig = require("./config/db.config");
+const db = require("./models");
 
 beforeAll(async () => {
     //connection to mongoDB database
-    const db = require("./models");
 
     await db.mongoose
       .connect(dbConfig.URL,{
@@ -35,6 +35,7 @@ test("Gets the root endpoint", async () => {
 
 // close the mongoose connection
 afterAll(async () => {
-    await request.post('/close-mongoose-connection');
+    await db.mongoose.connection.close();
+    //await request.post('/close-mongoose-connection');
     console.log('connection closed');
 });
