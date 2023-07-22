@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { RegisterPage, Signin, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDOcumentPage, 
+import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDocumentPage, 
           InvoicePage, SoaPage, UploadPage, CompareDocumentPage } from './pages';
 
 import './App.css';
@@ -17,11 +17,11 @@ const App = () => {
         <Routes>
           <Route index element = {<RegisterPage />} />
           <Route path = '/registerpage' element = {<RegisterPage />} />
-          <Route path = '/signin' element = {<Signin />} />
+          <Route path = '/signinpage' element = {<Signinpage />} />
           <Route path = '/homepage' element = {<HomePage />} />
           <Route path = '/detailedinvoicepage' element = {<DetailedInvoicePage />} />
           <Route path = '/detailedsoapage' element = {<DetailedSoaPage />} />
-          <Route path = '/editdocumentpage' element = {<EditDOcumentPage />} />
+          <Route path = '/editdocumentpage' element = {<EditDocumentPage />} />
           <Route path = '/invoicepage' element = {<InvoicePage />} />
           <Route path = '/soapage' element = {<SoaPage 
             selected_amount={selected_amount} setSelected_amount={setSelected_amount}
