@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { RegisterPage, signInPage, HomePage } from './pages';
+import { RegisterPage, Signin, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDOcumentPage, 
+          InvoicePage, RegisterPage, SoaPage, UploadPage } from './pages';
+
 import './App.css';
 
 const App = () => {
@@ -10,8 +12,15 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route index element = {<RegisterPage />} />
-          <Route path = '/signin' element = {<signInPage />} />
+          <Route path = '/signin' element = {<Signin />} />
           <Route path = '/homepage' element = {<HomePage />} />
+          <Route path = '/detailedinvoicepage' element = {<DetailedInvoicePage />} />
+          <Route path = '/detailedsoapage' element = {<DetailedSoaPage />} />
+          <Route path = '/editdocumentpage' element = {<EditDOcumentPage />} />
+          <Route path = '/invoicepage' element = {<InvoicePage />} />
+          <Route path = '/registerpage' element = {<RegisterPage />} />
+          <Route path = '/soapage' element = {<SoaPage />} />
+          <Route path = '/uploadpage' element = {<UploadPage />} />
         </Routes>
       </BrowserRouter>
     </div>

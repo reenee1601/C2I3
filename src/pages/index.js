@@ -1,4 +1,9 @@
 export { default as RegisterPage } from './registerPage/RegisterPage';
 export { default as HomePage } from './homePage/HomePage';
-//export { default as SoaPage } from './soaPage/SoaPage';
-
+export { default as InvoicePage } from './invoicePage/InvoicePage';
+export { default as DetailedInvoicePage } from './detailedInvoicePage/DetailedInvoicePage';
+export { default as DetailedSoaPage } from './detailedSoaPage/DetailedSoaPage';
+export { default as SoaPage } from './soaPage/SoaPage';
+export { default as DetailedSoaPage } from './detailedSoaPage/DetailedSoaPage';
+export { default as UploadPage } from './uploadPage/UploadPage';
+export { default as EditDOcumentPage } from './editDocumentPage/EditDocumentPage';
