@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import './secondNavBar.css';
 import { IoLogOutOutline } from "react-icons/io5";
 
+import { Link } from 'react-router-dom';
+
 export const SecondNavBar = () => {
   const [linkState, setLinkState] = useState([
-    { label: 'Home', active: false, hovered: false },
-    { label: 'Upload', active: false, hovered: false },
-    { label: 'Invoice', active: false, hovered: false },
-    { label: 'Statement Of Account', active: false, hovered: false },
-    { label: 'Product', active: false, hovered: false },
+    { label: 'Home', active: false, hovered: false, route: "homepage"},
+    { label: 'Upload', active: false, hovered: false, route: "uploadpage" },
+    { label: 'Invoice', active: false, hovered: false, route: "invoicepage"},
+    { label: 'Statement Of Account', active: false, hovered: false, route: "soapage" },
+    { label: 'Product', active: false, hovered: false, route:"productpage" },
   ]);
 
   // Function to handle onMouseOver
@@ -61,13 +63,11 @@ export const SecondNavBar = () => {
   }
 
   const logout = {
-    display: "inline-flex",
-    flexDirection: "row",
     display: "flex",
+    flexDirection: "row",
 
     alignItems: "center",
     justifyContent: "center",
-    textAlign: "center",
     paddingRight: "9%",
     }
 
@@ -84,7 +84,7 @@ export const SecondNavBar = () => {
       <div style={navbar}>
         {linkState.map((link, index) => (
           <p key={index}>
-            <a
+            <Link to={`/${link.route.toLowerCase()}`}
               onClick={() => handleLinkClick(index)}
               onMouseOver={() => handleMouseOver(index)}
               onMouseLeave={() => handleMouseLeave(index)}
@@ -97,9 +97,9 @@ export const SecondNavBar = () => {
                   : '#535353', // Default background color
 
                   // link.active not working.
-                borderBottom: link.active 
-                  ? "2px solid #418EFF" 
-                  : "2px solid transparent",
+                // borderBottom: link.active 
+                //   ? "2px solid #418EFF" 
+                //   : "2px solid transparent",
 
                 borderBottom: link.hovered 
                 ? "2px solid #418EFF" 
@@ -107,16 +107,16 @@ export const SecondNavBar = () => {
               }}
             >
               {link.label}
-            </a>
+            </Link>
           </p>
         ))}
 
         <div style = {logout}>
-          <a href="#signin">
+          <a href="/signinpage">
           <IoLogOutOutline style = {logouticon}/>
           </a>
           <p>
-            <a style = {linkstyles} href = "#signin">
+            <a style = {linkstyles} href="/signinpage">
               Log Out
             </a>
           </p>
