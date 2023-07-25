@@ -212,7 +212,11 @@ const getKeyValueMap = blocks => {
   return { keyMap, valueMap, blockMap };
 };
 
-
+const getFormResults = (blocks) => {
+    const {keyMap, valueMap, blockMap} = getKeyValueMap(blocks);
+    const keyValues = getKeyValueRelationship(keyMap, valueMap, blockMap);
+    return keyValues;
+}
 
 const fixFormHeaders = (obj, dict) => {
     // autocorrect and match the keys in obj to the values of dict
@@ -266,6 +270,8 @@ const fixFormHeaders = (obj, dict) => {
     
     return outobj;
 }
+
+
 
 // END of Form Parser
 //
@@ -461,8 +467,9 @@ const getTextractAnalysis = async (filepath) => { // #### EXPORT this function
 const extractForms = (data, dict) => { // #### EXPORT this function
     // takes in raw textract response, and dictionary mapping for required fields
     if (data && data.Blocks) {
-        const {keyMap, valueMap, blockMap} = getKeyValueMap(data.Blocks);
-        const keyValues = getKeyValueRelationship(keyMap, valueMap, blockMap);
+        //const {keyMap, valueMap, blockMap} = getKeyValueMap(data.Blocks);
+        //const keyValues = getKeyValueRelationship(keyMap, valueMap, blockMap);
+        const keyValues = getFormResults(data.Blocks);
         const fixedKeyValues = fixFormHeaders(keyValues, dict);
         return fixedKeyValues;
     };
@@ -497,12 +504,18 @@ const extractTables = (data, dict) => { // #### EXPORT this function
     return outputTable;
 }
 
-module.exports = { getTextractAnalysis,  extractForms, extractTables  }
+//module.exports = { getTextractAnalysis,  extractForms, extractTables  }
 
-if (process.env['NODE_DEV'] == 'TEST') { // expose functions for testing
+/*if (process.env['NODE_DEV'] == 'TEST') { // expose functions for testing
     module.exports.getTextractAnalysis = getTextractAnalysis;
     module.exports.extractForms = extractForms;
     module.exports.extractTables = extractTables;
     module.exports.fixTableHeaders = fixTableHeaders;
     module.exports.fixFormHeaders = fixFormHeaders;
-}
+    module.exports.getTableResults = getTableResults;
+    module.exports.getKeyValueMap =  getKeyValueMap;
+    module.exports.getKeyValueRelationship = getKeyValueRelationship;
+*/
+module.exports = {  getTextractAnalysis,  extractForms,   extractTables,  
+    getTableResults, getFormResults,
+    fixTableHeaders,  fixFormHeaders, getKeyValueMap,  getKeyValueRelationship, }

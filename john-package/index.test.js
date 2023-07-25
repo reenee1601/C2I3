@@ -1,8 +1,10 @@
 process.env['NODE_DEV'] = 'TEST';
 
-const { 
-    getTextractAnalysis, extractForms, extractTables, fixTableHeaders, fixFormHeaders 
+const {  getTextractAnalysis,  extractForms,   extractTables,  
+    getTableResults, getFormResults,
+    fixTableHeaders,  fixFormHeaders, getKeyValueMap,  getKeyValueRelationship 
 } = require('./index.js');
+
 const { readFileSync, writeFileSync } = require ("fs");
 
 // const a = require('./index.js')

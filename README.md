@@ -20,6 +20,10 @@ returns an object (which is the raw textract results)
 
 extra info: what this function does is read the file, upload it onto an s3 bucket, run analysis, then delete from s3 bucket
 
+## Getting raw Textract output from a series of bytes
+The use case of this is when you are running this from the backend server, so you wont have direct access to the file pointed to in `filePath`. So what you do instead is put both the raw bytes data and the file path into an array, then pass it to the function:\
+`async function getTextractAnalysis([RAW BYTES, FILEPATH])`
+
 ## Getting form data ie. key-value pairs
 `extractForms(data, dict)`\
 `data` is the raw Textract data from the textract analysis (that you got from the previous function)\
