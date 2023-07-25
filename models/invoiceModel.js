@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 
 // Define the schema
 const invoiceSchema = new mongoose.Schema({
-  invoiceID: { type: Array},
-  issuedDate: { type: Array},
-  dueDate: { type: Array },
-  supplierID: { type: Array },
-  totalBeforeGST: { type: Array },
-  totalAfterGST: { type: Array },
-  GST: { type: Array },
-  productCode: { type: Array },
-  quantity: { type: Array },
-  amount: { type: Array },
-  productName: { type: Array},
+  invoiceID: { type: String},
+  issuedDate: { type: String},
+  dueDate: { type: String },
+  supplierID: { type: String },
+  totalBeforeGST: { type: String },
+  totalAfterGST: { type: String },
+  GST: {type: String },
+  productCode: {type: Array },
+  quantity: {type: Array },
+  amount: {type: Array },
+  productName: {type: Array},
 });
 
 // Create the Invoice model using the schema
