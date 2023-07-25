@@ -212,8 +212,8 @@ const getKeyValueMap = blocks => {
   return { keyMap, valueMap, blockMap };
 };
 
-const getFormResults = (blocks) => {
-    const {keyMap, valueMap, blockMap} = getKeyValueMap(blocks);
+const getFormResults = (data) => {
+    const {keyMap, valueMap, blockMap} = getKeyValueMap(data.Blocks);
     const keyValues = getKeyValueRelationship(keyMap, valueMap, blockMap);
     return keyValues;
 }
@@ -469,7 +469,7 @@ const extractForms = (data, dict) => { // #### EXPORT this function
     if (data && data.Blocks) {
         //const {keyMap, valueMap, blockMap} = getKeyValueMap(data.Blocks);
         //const keyValues = getKeyValueRelationship(keyMap, valueMap, blockMap);
-        const keyValues = getFormResults(data.Blocks);
+        const keyValues = getFormResults(data);
         const fixedKeyValues = fixFormHeaders(keyValues, dict);
         return fixedKeyValues;
     };
@@ -518,4 +518,6 @@ const extractTables = (data, dict) => { // #### EXPORT this function
 */
 module.exports = {  getTextractAnalysis,  extractForms,   extractTables,  
     getTableResults, getFormResults,
-    fixTableHeaders,  fixFormHeaders, getKeyValueMap,  getKeyValueRelationship, }
+    fixTableHeaders,  fixFormHeaders, getKeyValueMap,  getKeyValueRelationship 
+}
+
