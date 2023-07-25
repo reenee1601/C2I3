@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "aws": "^0.0.3-2",
+    "john-package": "file:../OCR/C2I3-ocr/john-package"
+  }
+}
