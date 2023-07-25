@@ -20,7 +20,6 @@ async function performOCRAndExtractData(filepath, dict1, dict2) {
     const mappedData = {
       invoiceID: formsData['Invoice ID'] || '',
       issuedDate: formsData['Issued Date'] || '',
-      dueDate: formsData['Due Date'] || '',
       supplierID: formsData['Supplier ID'] || '',
       totalBeforeGST: formsData['Total Before GST'] || '',
       totalAfterGST: formsData['Total After GST'] || '',
@@ -28,7 +27,7 @@ async function performOCRAndExtractData(filepath, dict1, dict2) {
       productCode: tablesData['Product Code'] || '',
       quantity: tablesData['Quantity'] || '',
       amount: tablesData['Amount'] || '',
-      productName: tablesData['Product Name'] || '',
+      productName: tablesData['Product Name'] || ''
     };
 
     return mappedData;
@@ -79,20 +78,25 @@ async function processOCRAndUploadToMongoDB(filepath, dict1, dict2) {
 
 
 // Call the controller function with the file path and dictionary as needed
-const filepath = 'C:/Users/Admin/Documents/Invoice(7).pdf';
+const filepath = 'C:/Users/Admin/Documents/Invoices/Invoice(3).pdf';
 const dict1 = {
-  headers: ['Invoice ID', 'Issued Date', 'Due Date','Supplier ID','GST','Total Before GST','Total After GST', 'GST' ],
-  mapping: {'INVOICE NO.': 'Invoice ID', 'DATE': 'Issued Date', 'GST 7%' : 'GST', 'SUB TOTAL': 'Total Before GST', 'TOTAL':'Total After GST'
-  
-
-}
+  headers: ['Invoice ID', 'Issued Date', 'Supplier ID','GST','Total Before GST','Total After GST', 'GST' ],
+  mapping: {'INVOICE NO.': 'Invoice ID','Tax Invoice':'Invoice ID',
+  'Invoice Date': 'Issued Date' , 'DATE': 'Issued Date', 
+  'GST 7%' : 'GST',  'Add 7% GST': 'GST', 
+  'TOTAL':'Total After GST', 'GRAND TOTAL': 'Total After GST', 'Grand Total': 'Total After GST', 
+  'Sub Total': 'Total Before GST', 'SUB TOTAL': 'Total Before GST', 
+  'SUBTOTAL SGD': 'Total Before GST', 'TOTAL': 'Total Before GST'
+,'Salesman Code': 'Supplier ID'}
 };
-
 const dict2 = {
 headers: ['Product Code', 'Quantity', 'Amount', 'Product Name' ],
 mapping: {
- 'ITEM ID' : 'Product Code', 'QTY': 'Quantity', 'DESCRIPTION OF GOODS': 'Product Name', 'AMOUNT': 'Amount'
-}
+'ITEM ID' : 'Product Code','ode': 'Product Code','Product Code': 'Product Code'
+ ,'QTY': 'Quantity', 'Qty' : 'Quantity', 'QUANTITY': 'Quantity', 
+ 'AMOUNT': 'Amount',  'Amount': 'Amount', 
+'Description': 'Product Name','Description': 'Product Name','DESCRIPTION OF GOODS': 'Product Name',
+'DESCRIPTION': 'Product Name' }
 };
 
 // Replace with any required dictionary or options for "john-package"
