@@ -3,8 +3,15 @@ const johnPackage = require('john-package');
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const Invoice = require('../models/invoiceModel.js');
-
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const axios = require('axios')
+const app = express();
+const port = 3000; // Replace with your desired port number
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+// Middleware to parse JSON data
+app.use(bodyParser.json());
 
 // Function to perform OCR and extract data
 async function performOCRAndExtractData(filepath, dict1, dict2) {
@@ -36,8 +43,6 @@ async function performOCRAndExtractData(filepath, dict1, dict2) {
     throw error;
   }
 }
-
-// Function to upload data to MongoDB
 async function uploadDataToMongoDB(data) {
   const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
   const dbName = 'project_data'; // Replace with your desired database name
@@ -59,9 +64,6 @@ async function uploadDataToMongoDB(data) {
     mongoose.disconnect();
   }
 }
-
-
-
 async function processOCRAndUploadToMongoDB(filepath, dict1, dict2) {
   try {
     // Perform OCR and extract data
@@ -78,7 +80,7 @@ async function processOCRAndUploadToMongoDB(filepath, dict1, dict2) {
 
 
 // Call the controller function with the file path and dictionary as needed
-const filepath = 'C:/Users/Admin/Documents/Invoices/Invoice(3).pdf';
+
 const dict1 = {
   headers: ['Invoice ID', 'Issued Date', 'Supplier ID','GST','Total Before GST','Total After GST', 'GST' ],
   mapping: {'INVOICE NO.': 'Invoice ID','Tax Invoice':'Invoice ID',
@@ -100,4 +102,24 @@ mapping: {
 };
 
 // Replace with any required dictionary or options for "john-package"
-processOCRAndUploadToMongoDB(filepath, dict1, dict2);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
+
+// Create a route to handle the data upload
+app.post('/uploadData', upload.single('pdfFile'), async (req, res) => {
+  try {
+    // Get the uploaded file path from the request object
+    const filepath = req.file.path;
+
+    // Perform OCR and upload data to MongoDB
+    await processOCRAndUploadToMongoDB(filepath, dict1, dict2);
+
+    console.log('File uploaded and data extracted successfully!');
+    res.status(200).json({ message: 'File uploaded and data extracted successfully!' });
+  } catch (error) {
+    console.error('Error uploading file and extracting data:', error);
+    res.status(500).json({ error: 'Error uploading file and extracting data.' });
+  }
+});

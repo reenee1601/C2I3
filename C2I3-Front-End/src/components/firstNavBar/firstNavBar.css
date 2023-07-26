@@ -1,0 +1,36 @@
+.signin_register_navbar {
+    display:inline-flex;
+    flex-direction: row;
+
+}
+
+.signin_register_navbar p {
+    color: #535353;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+
+    margin: 0 40px;
+    padding-bottom: 15%;
+}
+
+.signin_register_navbar p a {
+  text-decoration: none;
+}
+
+.signin_register_navbar p a.active {
+  color: var(--color-blue);
+  border-bottom: 3px var(--color-blue);
+
+}
+
+.signin_register_navbar p a:hover:not(.active){
+  color: var(--color-blue);
+
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--color-blue);
+}
+
+.signin_register_navbar p a:visited{
+  color: var(--color-grey);
+}
