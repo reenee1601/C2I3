@@ -1,3 +1,5 @@
 john-package/node_modules
 ./*.ipynb
 test
+*.jpg
+*.pdf
