@@ -4,13 +4,15 @@ const mongoose = require('mongoose');
 const soa = require('../models/soaModel');
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios')
+const axios = require('axios');
+const cors = require('cors');
 const app = express();
 const port = 3000; // Replace with your desired port number
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 // Middleware to parse JSON data
 app.use(bodyParser.json());
+app.use(cors());
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const ExcelJS = require('exceljs');
 const fs = require('fs');
@@ -69,7 +71,7 @@ async function uploadDataToMongoDB(data) {
     await soa.create(data);
 
     console.log('Data uploaded to MongoDB successfully!');
-    console.log(data);
+    // console.log(data);
   } catch (error) {
     console.error('Error uploading data to MongoDB:', error);
   } finally {
@@ -138,7 +140,7 @@ async function exportDataToExcel() {
     // Save the workbook to an Excel file
     const filePath = 'data.xlsx';
     await workbook.xlsx.writeFile(filePath);
-
+    console.log(data);
     return filePath;
 
 
@@ -178,12 +180,31 @@ async function exportDataToCSV() {
 
     // Write the data to the CSV file
     await csvWriter.writeRecords(csvData);
-
+    console.log(csvData);
     return filePath;
 
     console.log('Data exported to CSV successfully!');
   } catch (error) {
     console.error('Error exporting data to CSV:', error);
+  }
+}
+
+async function getSOADataById(id) {
+  try {
+    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    const specificSoaData = await soa.findById(id); // Fetch data from the 'soa' collection based on the _id
+
+    mongoose.disconnect();
+
+    return specificSoaData;
+  } catch (error) {
+    console.error('Error fetching specific SOA data from MongoDB:', error);
+    throw error;
   }
 }
 
@@ -245,7 +266,7 @@ app.post('/uploadPage', upload.single('pdfFile'), async (req, res) => {
 app.get('/getSOAData', async (req, res) => {
   try {
     const soaData = await getSOADataFromMongoDB();
-    res.json(soaData);
+    res.send(soaData);
   } catch (error) {
     console.error('Error fetching SOA data:', error);
     res.status(500).json({ error: 'Error fetching SOA data.' });
@@ -263,6 +284,7 @@ app.get('/exportToCSV', async (req, res) => {
     // Create a read stream from the saved file and pipe it to the response
     const fileStream = fs.createReadStream(filePath);
     fileStream.pipe(res);
+    console.log("CSV exported");
   } catch (error) {
     console.error('Error exporting data to CSV:', error);
     res.status(500).json({ error: 'Error exporting data to CSV.' });
@@ -280,8 +302,22 @@ app.get('/exportToExcel', async (req, res) => {
     // Create a read stream from the saved file and pipe it to the response
     const fileStream = fs.createReadStream(filePath);
     fileStream.pipe(res);
+    console.log("Excel exported");
   } catch (error) {
     console.error('Error exporting data to Excel:', error);
     res.status(500).json({ error: 'Error exporting data to Excel.' });
+  }
+});
+
+// Create a route to handle fetching specific data based on _id
+app.get('/getSOAData/:id', async (req, res) => {
+  try {
+    const { id } = req.params; // Extract the _id from the URL parameter
+
+    const specificSoaData = await getSOADataById(id);
+    res.send(specificSoaData);
+  } catch (error) {
+    console.error('Error fetching specific SOA data:', error);
+    res.status(500).json({ error: 'Error fetching specific SOA data.' });
   }
 });
