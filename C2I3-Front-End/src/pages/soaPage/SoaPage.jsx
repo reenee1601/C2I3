@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Swiper from 'react-id-swiper';
 import "../../../node_modules/swiper/swiper-bundle.css";
 import "./soaPage.css";
@@ -6,8 +6,31 @@ import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import DropDownMenu from "../../components/dropDownMenu/DropDownMenu";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 const SoaPage = () => {
+  
+
+  useEffect(() => {
+    // Fetch SOA data from the backend when the component mounts
+    fetchSOAData();
+  }, []);
+
+  const fetchSOAData = async () => {
+    try {
+      // Make an API call to your backend to fetch SOA data
+      const response = await axios.get("http://localhost:3000/getSOAData"); // Replace with your backend API endpoint
+
+      // Update the state with the fetched data
+      setSoaData(response.data);
+
+      console.log("SOA data fetched successfully!");
+    } catch (error) {
+      console.error("Error fetching SOA data:", error);
+    }
+  };
+  const [soaData, setSoaData] = useState([]);
+
   const [selected_amount, setSelected_amount] = useState("");
   const [selected_date, setSelected_date] = useState("");
   const [selected_soanum, setSelected_soanum] = useState("");
@@ -35,51 +58,7 @@ const SoaPage = () => {
     }));
   };
 
-  // table
-  const details = [
-    {
-      soaID: "#3379",
-      supplier: "Bakers Room",
-      issuedDate: "13/06/2023",
-      dueDate: "13/07/2023",
-      amount: "$4000.50",
-    },
-    {
-      soaID: "#3028",
-      supplier: "Amy's Market",
-      issuedDate: "08/06/2023",
-      dueDate: "08/07/2023",
-      amount: "$4370.00",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-  ];
+  console.log(soaData);
 
   return (
     <div>
@@ -146,7 +125,6 @@ const SoaPage = () => {
               )}
             </div>
           </div>
-
           <div className="suppliername-dropdown">
             <div
               className="suppliername-btn"
@@ -183,42 +161,31 @@ const SoaPage = () => {
               <tr>
                 <th>SOA ID</th>
                 <th>Supplier</th>
-                <th>Issued Date</th>
-                <th>Due Date</th>
                 <th>Amount</th>
               </tr>
             </thead>
             <tbody>
-              {details.map((item, id) => (
-                <tr key={id}>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="soaID-link">
-                      {item.soaID}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="supplier-link">
-                      {item.supplier}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="issuedDate-link">
-                      {item.issuedDate}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="dueDate-link">
-                      {item.dueDate}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="amount-link">
-                      {item.amount}
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+  {soaData.map((item) => (
+    <tr key={item._id}>
+      <td>
+        <a href={`/detailedsoapage/${item._id}`} className="soaID-link">
+          {item._id}
+        </a>
+      </td>
+      <td>
+        <a href={`/detailedsoapage/${item._id}`} className="supplier-link">
+          {item.supplierID}
+        </a>
+      </td>
+      <td>
+        <a href={`/detailedsoapage/${item._id}`} className="amount-link">
+          {item.totalAmount}
+        </a>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
           </Table>
         </div>
       </div>
