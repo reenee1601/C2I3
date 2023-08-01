@@ -1,12 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-//const invoiceRouter = require('./routes/invoice');
+const invoiceRouter = require('./routes/invoiceRoutes');
+const soaRouter = require('./routes/soaRoutes');
 
 const app = express();
 
 // Set up MongoDB connection
-const MONGODB_URI = "mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/?retryWrites=true&w=majority"
+// const MONGODB_URI = "mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/?retryWrites=true&w=majority"
+const MONGODB_URI = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -23,7 +25,8 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up routes
-//app.use('/invoice', invoiceRouter);
+app.use('/invoice', invoiceRouter);
+app.use('/soa', soaRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {

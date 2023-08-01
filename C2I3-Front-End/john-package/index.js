@@ -1,5 +1,7 @@
 const {TextractClient, AnalyzeDocumentCommand, 
-       StartDocumentAnalysisCommand, GetDocumentAnalysisCommand} = require("@aws-sdk/client-textract");
+       StartDocumentAnalysisCommand, GetDocumentAnalysisCommand,
+StartDocumentTextDetectionCommand, GetDocumentTextDetectionCommand
+}= require("@aws-sdk/client-textract");
 const { PutObjectCommand, DeleteObjectCommand, S3Client } = require("@aws-sdk/client-s3");
 const _ = require("lodash");
 const fuzzysort = require('fuzzysort');
@@ -32,7 +34,7 @@ const uploadFile = async (filePath, s3Client) => {
     console.log('uploading ' + key);
     const response = await s3Client.send(command);
     //console.log(response);
-    console.log('uploaded ' + key);
+    //console.log('uploaded ' + key);
   } catch (err) {
     console.log('error');
     console.error(err);
@@ -67,6 +69,86 @@ const wait = (msec) => new Promise((resolve, _) => {
     // use this function to wait for the try loop
   setTimeout(resolve, msec);
 });
+
+// Functions to extract text (company name)
+const getBlockSize = (block) => {return block.Geometry.BoundingBox.Width * block.Geometry.BoundingBox.Height} // quick function to get size of line block
+
+const extractTitle = (data) => {
+    // function to extract the 'title' of a document given the text analysis
+    // idk how to best go about doing this but I'll take the simplest path and 
+    // just take the biggest line ie. biggest (size on page) bunch of words
+    maxBlock = null
+    maxSize = 0
+    for (block of data.Blocks){ // get the biggest sized block
+        if (block.BlockType === 'LINE'){
+            size = getBlockSize(block)
+            if (size > maxSize) {maxBlock = block; maxSize = size}
+        }
+    }
+    // link up the children in the block to form the whole line
+    children = maxBlock.Relationships[0].Ids.map((childId) => { // for each child...
+        childBlock = data.Blocks.find(x => x.Id === childId);
+        childWord = childBlock.Text
+         return childWord
+    });
+    return children.join(' ')
+}
+
+async function getAsyncText(key, textractClient) {   
+    // Initialise params, create command object
+    const params = {
+    DocumentLocation: {
+      "S3Object":{
+            "Bucket":"ocr-scanning-storage",
+            "Name":key
+      } 
+    },
+  };
+    
+    const startCommand = new StartDocumentTextDetectionCommand(params);
+    
+
+    // run StartDocumentAnalysis
+    const startCommandResult = await textractClient.send(startCommand);
+    const jobid = startCommandResult.JobId; // read the jobid so we can read the results later
+    // console.log(startCommandResult)
+    
+    // initialise params and command for GetDocumentAnalysis
+    const getCommand = new GetDocumentTextDetectionCommand( { "JobId": jobid} );
+    
+    // run loop to check for GetDocumentAnalysis
+    var finished = false;
+    var data;
+    
+    while (!finished) {
+        // set timer for the while loop
+        await wait(1500);
+        
+        // keep checking if the job has completed
+//         console.log('checking if the job is finished...')
+        data =  await textractClient.send(getCommand);
+        if (data.JobStatus !== "IN_PROGRESS") {
+            // when the analysis is done, break out of the loop'
+            finished = true;
+        }
+    }
+    
+    
+    // check if the analysis failed:
+    if (data.JobStatus === "FAILED") {
+        console.log("WTFFFFFF BROOOO THE ANALYSIS FAILED");
+        return (null);
+    }
+
+    title = extractTitle(data)
+    
+    return title;
+
+}
+
+// END of Text Extraction Functions
+//
+// START of Document Analysis Functions
 
 async function getAsyncAnalysis(key, textractClient) {   
 
@@ -451,16 +533,20 @@ const getTextractAnalysis = async (filepath) => { // #### EXPORT this function
     console.log('uploaded ' + key);
     
     // textract analysis
-    const data = await getAsyncAnalysis(key, textractClient)
-    console.log('analysis done')
+    dataPromise = getAsyncAnalysis(key, textractClient)
+    textPromise = getAsyncText(key, textractClient) // i think running 2 commands simultaneously using the same client object should work
+    const data = await dataPromise
+    const text = await textPromise
+    console.log('analysis done on ' + key)
+
     
     // delete the file
     await deleteFile(key, s3Client);
-    console.log('deleted the file');
-    
+    console.log('deleted the file ' + key);
+
+    data['Company Name'] = text; // insert what is possibly the company name into the data dictionary
+
     return data;
-    
-    
 }
 
 
