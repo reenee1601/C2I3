@@ -16,6 +16,9 @@ app.use(cors());
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const ExcelJS = require('exceljs');
 const fs = require('fs');
+var path = require('path');
+
+
 
 // Function to perform OCR and extract data
 async function performOCRAndExtractData(filepath, dict1, dict2) {
@@ -138,9 +141,9 @@ async function exportDataToExcel() {
     });
 
     // Save the workbook to an Excel file
-    const filePath = 'data.xlsx';
+    const filePath = './data.xlsx';
     await workbook.xlsx.writeFile(filePath);
-    console.log(data);
+    //console.log(data);
     return filePath;
 
 
@@ -163,8 +166,8 @@ async function exportDataToCSV() {
       supplierID: item.supplierID,
       totalAmount: item.totalAmount,
     }));
-
-    const filePath = 'data.csv';
+    const filePath = path.resolve(__dirname, 'data.csv');
+    // const filePath = 'data.csv';
     const csvWriter = createCsvWriter({
       path: filePath,
       header: [
@@ -180,7 +183,7 @@ async function exportDataToCSV() {
 
     // Write the data to the CSV file
     await csvWriter.writeRecords(csvData);
-    console.log(csvData);
+    //console.log(csvData);
     return filePath;
 
     console.log('Data exported to CSV successfully!');
@@ -239,6 +242,8 @@ const dict1 = {
 
 }
 }; 
+
+
 
 //processOCRAndUploadToMongoDB(filepath, dict2);
 
@@ -313,8 +318,11 @@ app.get('/exportToExcel', async (req, res) => {
 app.get('/getSOAData/:id', async (req, res) => {
   try {
     const { id } = req.params; // Extract the _id from the URL parameter
-
+    //const stringid = id;
+    // const cleanid = id.replace(/'/g, '')
+    // const objectId = mongoose.Types.ObjectId(cleanid);
     const specificSoaData = await getSOADataById(id);
+
     res.send(specificSoaData);
   } catch (error) {
     console.error('Error fetching specific SOA data:', error);
