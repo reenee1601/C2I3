@@ -1,84 +1,337 @@
 import React from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-
-import DocumentType from '../../components/documentType/DocumentType';
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
-import { Navigation } from 'swiper/modules';
+import EditPopUp from '../../components/editPopUp/EditPopUp';
+
+import { useState, useEffect } from 'react'
+import { useTable } from 'react-table'
+import { Link } from 'react-router-dom'
+
+import { IoChevronBack } from 'react-icons/io5'
+import { LuEdit3 } from 'react-icons/lu'
+import { MdDelete } from 'react-icons/md'
+import { VscDiffAdded } from "react-icons/vsc"
+
+import {
+  goBackStyle,
+  goBackButtonStyle,
+  imageStyle,
+  editDocumentContainer,
+  topScanStyle,
+  scanContentStyle,
+  allEditDocumentContentStyle,
+  tableStyle,
+  tableHeadStyle,
+  tableRowStyle,
+  tableContainerStyle,
+  submitStyle,
+  cancelStyle,
+  editDocumentButtonStyle,
+  editActionColumnButtonStyle,
+  deleteActionColumnButtonStyle,
+  actionHeaderStyle,
+  plusButtonHeaderStyle,
+  indiInputStyle,
+  editDocumentIndiPStyle,
+  editDocumentInvoiceInputStyle,
+  editDocumentSuppInputStyle,
+  editDocumentAmtInputStyle,
+  editDocumentDueInputStyle,
+  goBackLinkStyle,
+
+} from './EditDocumentPageStyle';
 
 const EditDocumentPage = () => {
 
-    let allInfo = [
-        {image: require("../../asserts/ProfilePicture.png" ),
-        scanned: "Profile Picture"},
+  const [invoiceId, setInvoiceId] = useState(""); // State for invoice ID
+  const [supplier, setSupplier] = useState(""); // State for supplier
+  const [totalAmount, setTotalAmount] = useState(""); 
+  const [dueDate, setDueDate] = useState(""); 
 
-        {image: require("../../asserts/LogOut.png" ),
-        scanned: "Log Out"},
+  let [uploadcontent, setUploadContent] = useState([
 
-        {image: require("../../asserts/superhero.png" ),
-        scanned: "SuperHero"},
-    ]
+    { 
+      "Product": "Product0",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product1",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product2",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product3",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product4",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product5",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product6",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product7",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product8",
+      "Quantity": "1",
+      "Amount": "$1",
+    },
+    { 
+      "Product": "Product9",
+      "Quantity": "1",
+      "Amount": "$1",
+    }
+  ])
+  
 
-    const renderSlidePair = (slidePair, index) => {
-        return (
-          <SwiperSlide key={`slide_pair_${index}`} style={slidePairContainerStyle}>
-            <div style={imageContainerStyle}>
-              <img src={slidePair.image} alt={`Image ${index}`} />
-            </div>
-            <div className="slidecontent" style={textContainerStyle}>
-              <h4>{slidePair.scanned}</h4>
-            </div>
-          </SwiperSlide>
-        );
+  // DATA is uploadcontent. Memory update only when uploadcontent changes.
+  const data = React.useMemo(() => uploadcontent, [uploadcontent]);
+
+  // COLUMNS is every column in uploadcontent.
+  const columns = React.useMemo(() => [
+    {
+      Header: "PRODUCT",
+      accessor: "Product"
+    },
+    {
+      Header: "QTY",
+      accessor: "Quantity"
+    },
+    {
+      Header: "$$",
+      accessor: "Amount"
+    }
+  ], []
+  )
+
+  const [editPopUpOpen, setEditPopUpOpen] = useState(false);
+
+  const handleDeleteRow = (targetIndex) => {
+    setUploadContent((rows) => rows.filter((_, idx) => idx !== targetIndex));
+  };
+
+  const handleAddRow = (newRowData) => {
+    if (editRow === null) {
+      // Add mode: Add a new row
+      const newRow = {
+        Product: newRowData.product,
+        Quantity: newRowData.quantity,
+        Amount: newRowData.amount,
       };
-    
-      const slidePairContainerStyle = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%",
+      setUploadContent((prevContent) => [...prevContent, newRow]);
+    } else {
+      // Edit mode: Update the existing row
+      const updatedRow = {
+        Product: newRowData.product,
+        Quantity: newRowData.quantity,
+        Amount: newRowData.amount,
       };
-    
-      const imageContainerStyle = {
-        flex: 1,
-        display: "flex",
-        justifyContent: "center",
-    
-        background: "#F3F3F3"
-      };
-    
-      const textContainerStyle = {
-        flex: 1,
-        display: "flex",
-        justifyContent: "center",
-      };
-      
+      const updatedContent = [...uploadcontent];
+      updatedContent[editRow] = updatedRow;
+      setUploadContent(updatedContent);
+      setEditRow(null); // Reset editRow after updating the row
+    }
+    setEditPopUpOpen(false); // Close the popup after submitting
+  };
+
+  const [editRow, setEditRow] = useState(null)
+
+  const handleEditRow = (idx) => {
+    setEditRow(idx);
+    setEditPopUpOpen(true);
+  }
+
+  useEffect(() => {
+    console.log("editPopUpOpen updated:", editPopUpOpen);
+  }, [editPopUpOpen]);
+
+  const actionsColumn = {
+    Header: () => (
+      <div style={actionHeaderStyle}>
+        <span>ACTIONS</span>
+
+      </div>
+    ),
+    accessor: "actions",  // This can be any unique key not present in your data
+    Cell: ({ row }) => (
+      <div>
+        <button style={editActionColumnButtonStyle} onClick = {() => handleEditRow(row.index)}> 
+          <LuEdit3 size={20}/>
+        </button>
+        <button style={deleteActionColumnButtonStyle} onClick = {() => handleDeleteRow(row.index)}>
+          <MdDelete size={20}/>
+        </button>
+      </div>
+    ),
+  };
+
+  const updatedColumns = React.useMemo(() => [...columns, actionsColumn], [
+    columns,
+  ]);
+
+  // headerGroups: consist of all headers (Uploaded)
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({ columns: updatedColumns, data });
 
   return (
     <div>
+        <SecondNavBar />
+        
+        <div style={allEditDocumentContentStyle}>
 
-        <div>
-            <SecondNavBar />
-            <DocumentType />
-        </div> 
+          <Link style={goBackLinkStyle} to="/uploadpage">
+            <div style={goBackStyle}>
+              <IoChevronBack size={50} color={"#3A3A3A"}/>
+              <button style={goBackButtonStyle}>GO BACK</button>
+            </div>
+          </Link>
 
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={50}
-          slidesPerView={1}
-          navigation={true}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-        >
-          {allInfo.map((slidePair, index) => renderSlidePair(slidePair, index))}
-        </Swiper>
+          <div style={editDocumentContainer}>
+
+            <div style={imageStyle}>
+              <img src="not-found.png" />
+            </div>
+
+            <div style={scanContentStyle}>
+
+            <div style={topScanStyle}>
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>INVOICE ID:</p>
+                <input
+                  type="text"
+                  value={invoiceId}
+                  onChange={(e) => setInvoiceId(e.target.value)}
+                  style ={editDocumentInvoiceInputStyle}
+                />
+              </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>SUPPLIER:</p>
+                <input
+                  type="text"
+                  value={supplier}
+                  onChange={(e) => setSupplier(e.target.value)}
+                  style ={editDocumentSuppInputStyle}
+                />
+              </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>AMOUNT:</p>
+                <input
+                  type="text"
+                  value={totalAmount}
+                  onChange={(e) => setTotalAmount(e.target.value)}
+                  style ={editDocumentAmtInputStyle}
+                />
+              </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>DUE DATE:</p>
+                <input
+                  type="text"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  style ={editDocumentDueInputStyle}
+                />
+              </div>
+
+            </div>
+
+              <div style={tableContainerStyle}>
+                <table style={tableStyle} {...getTableProps()}>
+
+                  <thead style = {tableHeadStyle}>
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column) => (
+                          <th {...column.getHeaderProps()}>
+                            {column.render("Header")}
+                          </th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+
+                  {/*The mapping is iterating through rows and preparing every row*/}
+                  <tbody {...getTableBodyProps()}> 
+                    {rows.map((row) => {
+                      prepareRow(row)
+                      return(
+                        <tr style = {tableRowStyle} {...row.getRowProps()}>
+
+
+                          {row.cells.map((cell) => (
+                            <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                          ))}
+                          
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+
+                  </table>
+              </div>
+
+              <div style={editDocumentButtonStyle}>
+                <button style ={cancelStyle}>Cancel</button>
+                <button style={submitStyle}>Submit</button>
+
+                <button
+                  onClick={() => {
+                    setEditRow(null); // Make sure to reset editRow when adding a new row
+                    setEditPopUpOpen(true);
+                  }}
+                  style={plusButtonHeaderStyle}
+                >
+                  <VscDiffAdded size={30} />
+                </button>
+                {editPopUpOpen && (
+                  <EditPopUp
+                    closeEditPopUp={() => {
+                      setEditRow(null); // Reset editRow when the popup is closed
+                      setEditPopUpOpen(false);
+                    }}
+                    onSubmit={handleAddRow}
+                    defaultProduct={
+                      editRow !== null ? uploadcontent[editRow].Product : ''
+                    }
+                    defaultQuantity={
+                      editRow !== null ? uploadcontent[editRow].Quantity : ''
+                    }
+                    defaultAmount={
+                      editRow !== null ? uploadcontent[editRow].Amount : ''
+                    }
+                    isAddMode={editRow === null}
+                  />
+                )}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
 
     </div>
-  );
-};
+    
+  )
+}
 
-export default EditDocumentPage;
+export default EditDocumentPage
