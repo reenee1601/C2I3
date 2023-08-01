@@ -1,199 +1,163 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './registerPage.css';
 import { FirstNavBar } from '../../components/firstNavBar/FirstNavBar';
 
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-
+import {
+  header,
+  suredes,
+  input,
+  inputdiv,
+  button,
+  descriptionStyle,
+  inputValidationContainer,
+  labelStyle,
+} from './RegisterPageStyle';
 
 const RegisterPage = () => {
-  // function getData(val) {
-  //   console.warn(val.target.value)
-  // }
-  //const [email, setEmail] = useState("");
-  //const [company, setCompany] = useState("");
-  //const [password, setPassword] = useState("");
-  //const [register, setRegister] = useState(false);
+  // HOVER BUTTON FUNCTIONALITY
 
+  const [buttonHover, setButtonHover] = useState(false);
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    company: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleMouseEnter = () => {
+    setButtonHover(true);
   };
+
+  const handleMouseLeave = () => {
+    setButtonHover(false);
+  };
+
+  // INPUT VALIDATION
+  const [fullName, setFullName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [error, setError] = useState({
+    fullName: false,
+    companyName: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can implement your database registration logic here,
-    // where you send the formData to the backend or a database.
-    // For demonstration purposes, we'll simulate a successful registration and navigate to the homepage.
-    // Replace this with your actual database registration logic.
-    setTimeout(() => {
-      console.log('User registered:', formData);
-      navigate('/homepage');
-    }, 1500);
+
+    const newErrors = {
+      fullName: fullName.trim() === '',
+      companyName: companyName.trim() === '',
+      email: email.trim() === '',
+      password: password.trim() === '',
+      confirmPassword: confirmPassword.trim() === '',
   };
 
-  useEffect(() => {
-    // This useEffect will be triggered when formData is updated
-    // Check if the form data is ready to be submitted (e.g., when the user clicks the "Create Account" button)
-    if (formData.fullName && formData.company && formData.email && formData.password && formData.confirmPassword) {
-      // Implement your database registration logic here,
-      // where you send the formData to the backend or a database.
-      // For demonstration purposes, we'll simulate a successful registration and navigate to the homepage.
-      // Replace this with your actual database registration logic.
-      setTimeout(() => {
-        console.log('User registered:', formData);
-        navigate('/homepage');
-      }, 1500);
+    if (confirmPassword.trim() !== '' && confirmPassword !== password) {
+      newErrors.confirmPassword = true;
     }
-  }, [formData, navigate]);
 
+    setError(newErrors);
 
-  const header = {
-    color: '#418EFF',
-    fontSize: '60px',
-    fontStyle: 'italic',
-    fontWeight: 700,
-    lineHeight: 'normal',
-    margin: '0 0 20px',
-  };
+    if (Object.values(newErrors).some((error) => error)) {
+      return;
+    }
 
-  const suredes = {
-    color: "var(--color-grey)",
-    fontSize: "18px",
-    fontStyle: "normal",
-    fontWeight: "400",
-    lineHeight: "normal",
-  };
-
-  const input = {
-    backgroundColor: 'rgba(65, 142, 255, 0.1)',
-    fontSize: '13px',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: 'normal',
-    width: '370px',
-    height: '60px',
-    flexShrink: 0,
-    borderRadius: '12px',
-    border: 'none',
-    marginTop: '10px',
-    marginBottom: '10px',
-    paddingLeft: '34px',
-  };
-
-  const inputdiv = {
-    display: "flex",
-    flexDirection: "column"
-  }
-
-  const button = {
-    width: '370px',
-    height: '60px',
-    flexShrink: 0,
-    borderRadius: '12px',
-    border: 'none',
-    background: 'var(--color-blue)',
-    boxShadow: '-2px 4px 30px 0px rgba(0, 0, 0, 0.25)',
-    marginTop: '18px',
-    color: 'white',
-    fontSize: '14px',
-    fontStyle: 'normal',
-    fontWeight: 700,
-    lineHeight: 'normal',
   };
 
   return (
-    
     <div>
-      <div className = "split left">
-        <div className = "centered">
-          <h1 style={header}>Welcome to -SuRe!</h1>
-          <p style={suredes}>-SuRe is a platform for Retailers to manage its invoices and SOA.</p>
+      <div className="split left">
+        <div className="centered">
+          <div style={descriptionStyle}>
+            <h1 style={header}>WELCOME TO SuRe !</h1>
+            <p style={suredes}>SuRe is a platform for Retailers to manage its invoices and SOA.</p>
+          </div>
         </div>
       </div>
-    
-      <div className = "split right">
-        <div className = "centered">
 
+      <div className="split right">
+        <div className="centered">
           <FirstNavBar />
 
-          <div style = {inputdiv}>
-          <form onSubmit={handleSubmit}>
-              <input
-                style={input}
-                type="text"
-                name="fullName"
-                placeholder="Enter Your Full Name"
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-              <input
-                style={input}
-                type="text"
-                name="company"
-                placeholder="Enter Your Company"
-                value={formData.company}
-                onChange={handleChange}
-              />
-              <input
-                style={input}
-                type="email"
-                name="email"
-                placeholder="Enter Your Email Address"
-                value={formData.email}
-                onChange={handleChange}
-              />
-              <input
-                style={input}
-                type="password"
-                name="password"
-                placeholder="Enter Your Password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <input
-                style={input}
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Your Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
-            {/*<input style= {input} type = "text" placeholder = "Enter Your Full Name"></input>
-            <input style= {input} type = "text" placeholder = "Enter Your Company"></input>
-            <input style= {input} type = "email" placeholder = "Enter Your Email Address"></input>
-            <input style= {input} type = "password" placeholder = "Enter Your Password"></input>
-  <input style= {input} type = "password" placeholder = "Confirm Your Password"></input>*/}
-            </form>
-            <Link to="/homepage">
-            <button style = {button} type = "button">Create Account</button>
-            </Link>
-          </div>
-            {/* <div className='input'>
-              <input type = "text" placeholder = "Enter Your Full Name"></input>
-              <input type = "text" placeholder = "Enter Your Company"></input>
-              <input type = "email" placeholder = "Enter Your Email Address"></input>
-              <input type = "password" placeholder = "Enter Your Password"></input>
-              <input type = "password" placeholder = "Confirm Your Password"></input>
-              <button type = "button">Create Account</button>
-          </div> */}
+          <div style={inputdiv}>
+            <form onSubmit={handleSubmit}>
+              <div style={inputValidationContainer}>
+                <input
+                  style={input}
+                  type="text"
+                  name="fullName"
+                  placeholder="Enter Your Full Name"
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+                {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null}
+              </div>
 
+              <div style={inputValidationContainer}>
+                <input
+                  style={input}
+                  type="text"
+                  name="company"
+                  placeholder="Enter Your Company"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+                {error.companyName ? <label style={labelStyle}>This is a required field.</label> : null}
+              </div>
+
+              <div style={inputValidationContainer}>
+                <input
+                  style={input}
+                  type="email"
+                  name="email"
+                  placeholder="Enter Your Email Address"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
+              </div>
+
+              <div style={inputValidationContainer}>
+                <input
+                  style={input}
+                  type="password"
+                  name="password"
+                  placeholder="Enter Your Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
+              </div>
+
+              <div style={inputValidationContainer}>
+                <input
+                  style={input}
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Your Password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                 {error.confirmPassword
+                  ? confirmPassword.trim() !== ''
+                    ? <label style={labelStyle}>Passwords mismatch.</label>
+                    : <label style={labelStyle}>This is a required field.</label>
+                  : null}
+              </div>
+
+              <button
+                style={{
+                  ...button,
+                  backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
+                  color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
+                }}
+                type="submit"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                Create Account
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default RegisterPage
+export default RegisterPage;
