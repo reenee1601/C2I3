@@ -15,6 +15,7 @@ import {
   left,
   right,
   centered,
+  
 } from './RegisterPageStyle';
 
 const RegisterPage = () => {

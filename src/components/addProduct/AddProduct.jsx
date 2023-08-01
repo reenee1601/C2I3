@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { TbPhoto, TbFileBarcode} from "react-icons/tb";
+import { RxCross2 } from "react-icons/rx";
 
 import "./addProduct.css"
 
@@ -51,7 +52,7 @@ const productinputs = {
     }
 
     const productsubmit = {
-        color: "#F2F4F8",
+        color: "#3A3A3A",
         textAlign: "center",
         fontFamily: "Inter",
         fontSize: "15px",
@@ -61,18 +62,34 @@ const productinputs = {
 
         border: "none",
         borderRadius: "12px",
-        background: "rgba(65, 142, 255, 0.80)",
+        background: "#F2E8FF",
 
         width: "15%",
         height: "7%",
 
         marginTop: "10px",
-        marginBottom: "10px",
+        marginBottom: "20px",
     }
+
+    const crossIconStyle = {
+        border: "none",
+        background: "transparent",
+        float: "right",
+        marginRight: "5px",
+        marginBottom: "5px",
+      }
+    
+    const handleCloseClick = () => {
+    props.setTrigger(false); // Close the popup by setting the trigger prop to false
+    };
 
   return (props.trigger) ? (
     <div className = "popup2">
         <div className="popup2-inner">
+
+            <button style={crossIconStyle} onClick={handleCloseClick}>
+                <RxCross2 />
+            </button>
 
             <form className = "productimage"
             onClick={() => document.querySelector(".product-image").click()}>
@@ -90,11 +107,11 @@ const productinputs = {
                 }
             </form>
 
-            <input style={productinputs} type="text" placeholder="Add Product Name"></input>
-            <textArea className= "productTextArea" style={producttextarea} type="text" placeholder="Add Product Description"></textArea>
-            <input style={productinputs} type="text" placeholder="Add Units of Measurements"></input>
-            <input style={productinputs} type="text" placeholder="Add Product Cost"></input>
-            <input style={productinputs} type="text" placeholder="Add Minimum Quantity"></input>
+            <input style={productinputs} type="text" placeholder="PRODUCT NAME"></input>
+            <textArea className= "productTextArea" style={producttextarea} type="text" placeholder="PRODUCT DESCRIPTION"></textArea>
+            <input style={productinputs} type="text" placeholder="MEASUREMENT UNITS"></input>
+            <input style={productinputs} type="text" placeholder="PRODUCT COST"></input>
+            <input style={productinputs} type="text" placeholder="MINIMUM QUANTITY"></input>
 
             <form className = "barcodeimage"
             onClick={() => document.querySelector(".barcode-image").click()}>
@@ -112,7 +129,7 @@ const productinputs = {
                 }
             </form>
 
-            <input style={productinputs} type="text" placeholder="Add SKU Number"></input>
+            <input style={productinputs} type="text" placeholder="SKU NUMBER"></input>
 
             { props.children }
 

@@ -18,7 +18,8 @@ import {
   documentTypeSOATextStyle,
   uploadsubmitbutton,
   uploadcancelbutton,
-  documentTypeH1TextStyle
+  documentTypeH1TextStyle,
+  labelStyle,
 } from "./UploadPageStyle"
 
 const UploadPage = () => {
@@ -32,6 +33,14 @@ const UploadPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!fileName || fileName === "No File Selected") {
+      setError({ upload: true });
+    } else {
+      setError({ upload: false });
+      if (image) {
+        window.location.href = "/editdocumentpage";
+      }
+    }
   };
 
   // END OF VALIDATION
@@ -105,20 +114,31 @@ const UploadPage = () => {
 
         <div style={uploading}>
 
-          <form style = {fileupload} 
+          <form onSubmit={handleSubmit} style = {fileupload} 
           onClick={() => document.querySelector(".input-field").click()}>
-            <input type="file" accept="png/*" className ="input-field" hidden
-            onChange={({ target: {files}}) => {
-            files[0] && setFileName(files[0].name)
-            if (files) {
-              setImage(URL.createObjectURL(files[0]))
-            }}}></input>
+            <input
+              type="file"
+              accept="pdf/*"
+              className="input-field"
+              hidden
+              onChange={(e) => {
+                setUpload(e.target.value);
+                const files = e.target.files;
+                if (files[0]) {
+                  setFileName(files[0].name);
+                  setImage(URL.createObjectURL(files[0]));
+                }
+              }}
+            />
 
-            {image ?
-            <img src={image} alt={"Error"} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}/>
-            :
-            <MdUploadFile color="#535353" size={130}/>
-            }
+          {image ? (
+                <img src={image} alt={"Error"} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <MdUploadFile color="#535353" size={130} />
+                  {error.upload && !image && <label style={labelStyle}>No image uploaded</label>}
+                </div>
+              )}
           </form>
 
           <section style={fileinfo}>
@@ -137,8 +157,8 @@ const UploadPage = () => {
       </div>
 
       <div style={uploadconfirm}>
-        <Link to="/editdocumentpage">
-          <button style={uploadsubmitbutton} >Submit</button>
+        <Link to={image ? "/editdocumentpage" : "#"}>
+          <button style={uploadsubmitbutton} onClick={handleSubmit}>Submit</button>
         </Link>
           <button style={uploadcancelbutton} 
                 onClick = {() => {

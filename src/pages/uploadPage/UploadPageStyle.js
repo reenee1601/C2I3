@@ -146,3 +146,8 @@ export const documentTypeH1TextStyle = {
 
     padding: "10px 0px 10px",
 }
+
+export const labelStyle = {
+  fontSize: '15px',
+  color: 'red', // Change the color to your desired label color
+};

@@ -23,17 +23,19 @@ const ProductPage = () => {
         alignItems: 'center',
         justifyContent: "space-between",
 
+        marginTop: "10px",
         marginLeft: "40%", //not a permeanant solution. texts of different sizes may enter.
         marginRight: "15%",
     }
 
     const productcompany = {
-        color: "#418EFF",
+        color: "#6D479E",
         fontFamily: "Inter",
         fontSize: "25px",
         fontStyle: "normal",
-        fontWeight: "700",
+        fontWeight: "800",
         lineHeight: "normal",
+        whiteSpace: "nowrap"
     }
 
     let productInfo = [
@@ -112,12 +114,11 @@ const ProductPage = () => {
           border: "none",
           scrollSnapAlign: "start",
           transition: "all 0.2s",
-          boxShadow: "-2px 4px 30px 0px rgba(0, 0, 0, 0.25)",
+          boxShadow: "0 5px 5px rgba(0, 0, 0, 0.4)",
           
 
           borderRadius: "12px",
-          background: "linear-gradient(180deg, rgba(243, 243, 243, 0.70) 0%, rgba(218, 213, 219, 0.00) 100%)",
-          shadow: ""
+          background: "linear-gradient(180deg, rgba(243, 243, 243, 0.70) 0%, rgba(242, 232, 255, 0.00) 100%)",
          };
 
          const h1product = {
@@ -178,10 +179,10 @@ const ProductPage = () => {
         <SecondNavBar />
 
         <div style = {productheader}>
-            <h1 style={productcompany}>Textile Centre Fabric</h1>
+            <h1 style={productcompany}>TEXTILE FABRIC CENTER</h1>
 
             <button style={pluscirclestyle} onClick={ () => setAddPopUp(true)}>
-            < AiFillPlusCircle color="#418EFF" size="50px"/>
+            < AiFillPlusCircle color="#6D479E" size="50px"/>
             </button>
 
             <div style={productpopupstyle}>
