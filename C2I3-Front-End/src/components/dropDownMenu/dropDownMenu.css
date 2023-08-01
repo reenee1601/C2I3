@@ -1,0 +1,22 @@
+.dropdown-content {
+  width: 155px;
+  background-color: var(--color-white2);
+  border-radius: 12px;
+}
+
+.dropdown-content .dropdown-item {
+  margin-top: 2.5%;
+  padding-top: 1%;
+  color: var(--color-grey);
+  height: 30px;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 30px;
+  text-align: center;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(65, 142, 255, 0.5);
+  border-radius: 6px;
+}

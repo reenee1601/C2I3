@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+  }
+
+.second-navbar {
+    width: 100%;
+}
+
+.split-container {
+    /* flex: 1; 
+    display: flex; */
+    height: calc(100%-144px);
+  }
+
+/* Split the screen in half */
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    top: 0;
+    overflow-x: hidden;
+    margin-top: 1%;
+    height: calc(100%-144px);
+    }
+
+/* Control the left side */
+.left {
+    left: 0;
+}
+
+/* Control the right side */
+.right {
+    right: 0;  
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    }
