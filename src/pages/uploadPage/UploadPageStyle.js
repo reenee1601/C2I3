@@ -130,3 +130,19 @@ export const documentTypeSOATextStyle = {
 
     padding: "10px 0px 10px",
 }
+
+export const documentTypeH1TextStyle = {
+  color: "#3A3A3A",
+    fontFamily: "Inter",
+    fontSize: "24px",
+    fontStyle: "normal",
+    fontWeight: "700",
+    lineHeight: "normal",
+    whiteSpace: "pre-line",
+    textAlign: "left",
+
+    borderBottom: "4px solid #3A3A3A",
+    background: "transparent",
+
+    padding: "10px 0px 10px",
+}

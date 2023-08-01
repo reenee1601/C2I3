@@ -18,11 +18,12 @@ import {
   documentTypeSOATextStyle,
   uploadsubmitbutton,
   uploadcancelbutton,
+  documentTypeH1TextStyle
 } from "./UploadPageStyle"
 
 const UploadPage = () => {
 
-  //VALIDATION
+  //START VALIDATION
   const [upload, setUpload] = useState('');
 
   const [error, setError] = useState({
@@ -75,7 +76,7 @@ const UploadPage = () => {
       <div className="alluploads" style = {alluploads}>
 
         <div style={documentTypeStyle}>
-          <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
+          <h1 style={documentTypeH1TextStyle}>DOCUMENT TYPE:</h1>
           <button
             style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("INVOICE")}
@@ -93,6 +94,12 @@ const UploadPage = () => {
             onClick={() => handleDocumentTypeClick("PAYMENT")}
           >
             PAYMENT
+          </button>
+          <button
+            style={selectedType === "CREDIT NOTE" ? selectedButtonStyle : unselectedButtonStyle}
+            onClick={() => handleDocumentTypeClick("CREDIT NOTE")}
+          >
+            CREDIT NOTE
           </button>
         </div>
 
