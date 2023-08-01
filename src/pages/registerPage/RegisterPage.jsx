@@ -11,6 +11,10 @@ import {
   descriptionStyle,
   inputValidationContainer,
   labelStyle,
+  split,
+  left,
+  right,
+  centered,
 } from './RegisterPageStyle';
 
 const RegisterPage = () => {
@@ -66,8 +70,8 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <div className="split left">
-        <div className="centered">
+      <div style={{...split, ...left}}>
+        <div style={centered}>
           <div style={descriptionStyle}>
             <h1 style={header}>WELCOME TO SuRe !</h1>
             <p style={suredes}>SuRe is a platform for Retailers to manage its invoices and SOA.</p>
@@ -75,8 +79,8 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      <div className="split right">
-        <div className="centered">
+      <div style={{...split, ...right}}>
+        <div style={centered}>
           <FirstNavBar />
 
           <div style={inputdiv}>

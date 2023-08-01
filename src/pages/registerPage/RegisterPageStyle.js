@@ -71,3 +71,29 @@ export const labelStyle = {
   fontSize: '12px',
   color: 'red', // Change the color to your desired label color
 };
+
+export const split = {
+  height: "100%",
+  width: "50%",
+  position: "fixed",
+  zIndex: 1,
+  top: 0,
+  overflowX: "hidden",
+  paddingTop: "20px",
+};
+
+export const centered = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  textAlign: "center",
+};
+
+export const left = {
+  left: 0,
+};
+
+export const right = {
+  right: 0,
+};
