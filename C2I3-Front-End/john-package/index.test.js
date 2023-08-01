@@ -1,3 +1,4 @@
+process.env.AWS_REGION = 'ap-southeast-1';
 process.env['NODE_DEV'] = 'TEST';
 
 const {  getTextractAnalysis,  extractForms,   extractTables,  

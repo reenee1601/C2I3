@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const invoiceRouter = require('./routes/invoice');
+//const invoiceRouter = require('./routes/invoice');
 
 const app = express();
 
@@ -23,9 +23,11 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set up routes
-app.use('/invoice', invoiceRouter);
+//app.use('/invoice', invoiceRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+module.exports = {db};
