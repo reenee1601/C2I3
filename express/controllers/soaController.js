@@ -1,4 +1,4 @@
-/////// INVOICE CONTROLLER
+/////// SOA CONTROLLER
 const { unlink } = require('fs') // use this to delete the file after we're done
 const utils = require('../utils/utils.js')
 const Soa = require('../models/soaModel');
@@ -67,10 +67,10 @@ exports.uploadData = async function(req, res) { // function for uploadData POST 
     await Soa.create(data);
 
     console.log()
-    res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
+    res.status(200).json({message:'Successfully uploaded SOA onto MongoDB'})}
     catch (err) {
-        console.error('Error uploading Invoice to MongoDB', err);
-        res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+        console.error('Error uploading SOA to MongoDB', err);
+        res.status(500).json({message:'Error uploading SOA to MongoDB'})
     }
 }
 
@@ -78,9 +78,9 @@ exports.uploadData = async function(req, res) { // function for uploadData POST 
 exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
 
   try {
-      const invoiceData = await Soa.find();
-        console.log('retreived invoive data')
-        res.status(200).json(invoiceData);
+      const soaData = await Soa.find();
+        console.log('retreived soa data')
+        res.status(200).json(soaData);
     } catch (error) {
         console.error('Error fetching SOA data:', error);
         res.status(500).json({ error: 'Error fetching SOA data.' });

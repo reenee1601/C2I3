@@ -19,7 +19,7 @@ const SoaPage = () => {
   const fetchSOAData = async () => {
     try {
       // Make an API call to your backend to fetch SOA data
-      const response = await axios.get("http://localhost:3000/getSOAData"); // Replace with your backend API endpoint
+      const response = await axios.get("http://localhost:3000/soa/getData"); // Replace with your backend API endpoint
 
       // Update the state with the fetched data
       setSoaData(response.data);
