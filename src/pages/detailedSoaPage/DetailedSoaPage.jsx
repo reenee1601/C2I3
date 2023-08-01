@@ -1,65 +1,56 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
-import './detailedSoaPage.css';
+// import './detailedSoaPage.css';
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import mockData from "../../data/mock_data.json";
+import { IoChevronBack } from 'react-icons/io5';
+import { LiaWalletSolid } from 'react-icons/lia';
+import { topPart, soaTitle, supplierName, dueDate, tableContainer, scrollable, 
+          customTable, td, th, bottomPart, paymentButton, paymentButtonImg,
+          rightBottom, totalAmount, goBackStyle, goBackButtonStyle} from './DetailedSoaPageStyle';
 
 const DetailedSoaPage = () => {
 
-  const [isExportClicked, setIsExportClicked] = useState(false);
-
-  const handleExportClick = () => {
-    setIsExportClicked((prevState) => !prevState);
-  }
-
-  const product_details = [
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-    { product: "Hot Dog Bun", quantity: "200", amount: "$4000.50"},
-  ]
-
-  
   return (
     <div>
       <div className='second-navbar'>
           <SecondNavBar />
       </div>
 
-      <div className="top-part">
-        <div className="go-back-container">
+      <div style={topPart}>
+        <div style={goBackStyle}>
           <Link to="/soapage">
-            <img className="go-back" src = {require("../../asserts/GoBack.png")} alt = "GoBack" />
+            <IoChevronBack size={50} color={"#3A3A3A"}/>
+            <button style={goBackButtonStyle}>GO BACK</button>
           </Link>
         </div>
+
         <div className="soa-detail">
-            <h1 className="soa-title">SOA #3379</h1>
-            <p className="supplier-name">Bakers Room</p>
-            <p className="issued-date">Issued Date: 13/06/23</p>
-            <p className="due-date">Due Date: 13/07/23</p>
+            <h1 style={soaTitle}>SOA #3379</h1>
+            <p style={supplierName}>Bakers Room</p>
+            <p style={dueDate}>Due Date: 13/07/23</p>
         </div>
       </div>
       
       {/* table */}
-      <div className="table-container">
-        <div className="scrollable">
-          <Table className="custom-table transparent-table">
+      <div style={tableContainer}>
+        <div style={scrollable}>
+          <Table style={customTable}>
             <thead className="sticky-top">
               <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Amount</th>
+                <th style={th}>Product</th>
+                <th style={th}>Quantity</th>
+                <th style={th}>Amount</th>
               </tr>
             </thead>
             <tbody>
             {
-              product_details.map((item, id) => 
+              mockData.soaProductDetails.map((item, id) => 
               <tr key={id}>
-                <td>{item.product}</td>
-                <td>{item.quantity}</td>
-                <td>{item.amount}</td>
+                <td style={td}>{item.product}</td>
+                <td style={td}>{item.quantity}</td>
+                <td style={td}>{item.amount}</td>
               </tr>      
               )  
             }
@@ -67,34 +58,15 @@ const DetailedSoaPage = () => {
           </Table>
         </div>
       </div>
-        
-      <div className="bottom-part">
-        {/* if clicked another 2 button appears */}
-        <div className="export">
-          <button className="export-button">
-            <img src = {require("../../asserts/ExportButton.png")} alt = "ExportButton" onClick={handleExportClick}/>
-          </button>
 
-          {isExportClicked && (
-            <div className="popup-button">
-              <button className="excel-button">
-                <img src = {require("../../asserts/ExcelButton.png")} alt = "ExcelButton" />
-              </button>
-
-              <button className="csv-button">
-                <img src = {require("../../asserts/CSVButton.png")} alt = "CSVButton" />
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="right-bottom">
+      <div style={bottomPart}>
+        <div style={rightBottom}>
           {/* sum of all amounts */}
-          <p className="total-amount">Total Amount: $4000.50</p>
+          <p style={totalAmount}>Total Amount: $4000.50</p>
           {/* if clicked go to compare doc page */}
-          <button className="payment-button">
+          <button style={paymentButton}>
             <Link to="/comparedocumentpage">
-              <img src = {require("../../asserts/PaymentButton.png")} alt = "PaymentButton"/>
+              <LiaWalletSolid size ={30} style={paymentButtonImg}/>
             </Link>
           </button>
         </div>
