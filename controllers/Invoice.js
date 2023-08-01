@@ -1,6 +1,5 @@
 // Assuming you have already installed and required the "john-package" and "mongoose" in your application
 const johnPackage = require('john-package');
-const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const Invoice = require('../models/invoiceModel.js');
 const express = require('express');
