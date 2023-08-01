@@ -1,184 +1,100 @@
 import React from 'react'
 import { useState } from 'react'
-import { useTable } from 'react-table'
+import { Link } from 'react-router-dom'
 
-import DocumentType from '../../components/documentType/DocumentType';
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 
 import { MdUploadFile , MdDelete } from "react-icons/md";
 import { AiFillFileImage } from "react-icons/ai";
 
+import {
+  fileupload,
+  fileinfo,
+  uploading,
+  alluploads,
+  uploadconfirm,
+  documentTypeStyle,
+  documentTypeTextStyle,
+  documentTypeSOATextStyle,
+  uploadsubmitbutton,
+  uploadcancelbutton,
+} from "./UploadPageStyle"
+
 const UploadPage = () => {
 
-  const fileupload = {
-    display: 'flex',
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    
-    borderRadius: "30px",
-    border: "2px solid rgba(49, 54, 56, 0.33)",
-    background: "#F2F4F8",
+  //VALIDATION
+  const [upload, setUpload] = useState('');
 
-    width: "400px",
-    height: "400px",
+  const [error, setError] = useState({
+    upload: false
+  });
 
-    marginTop: "50px",
-    marginLeft: "100px"
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
-  const fileinfo = {
-    color: "#535353",
-    fontFamily: "KoHo",
-    fontSize: "15px",
-    fontStyle: "normal",
-    lineHeight: "normal",
-    letterSpacing: "0.17px",
-
-    marginTop: "10px",
-    marginLeft: "100px"
-
-  }
-
-  const uploading = {
-    display: "flex",
-    flexDirection: "column",
-  }
-
-  const alluploads = {
-    display: "flex",
-    flexDirection: "row",
-  }
-
-  const tablecontainer = {
-    position: "absolute",
-    top: "33%",
-    left: "43%",
-    overflowY: "scroll",
-
-    width:"50%",
-    height: "50%"
-  }
-
-  const tablestyle = {
-    width: "100%",
-    overflow: "hidden",
-    borderCollapse: "separate",
-    borderSpacing: "10px",
-  }
-
-  const tablehead = {
-    color: "#000",
-    fontFamily: "KoHo",
-    fontSize: "24px",
-    fontStyle: "normal",
-    fontWeight: "600",
-    lineHeight: "normal",
-    letterSpacing: "0.17px",
-
-    borderBottom: "2px solid #535353"
-  }
-
-  const tablebody = {
-    background: "#F2F4F8",
-  }
-
-  const tablerow = {
-    // borderRadius: "15px",
-    height: "40px",
-    justifyContent: "space-between"
-  }
-
-  const tablecell = {
-    paddingLeft: "10px", 
-  }
-
-  const removebuttonstyle = {
-    color: "rgba(0, 0, 0, 0.46)",
-    fontFamily: "KoHo",
-    fontSize: "15px",
-    fontStyle: "normal",
-    fontWeight: "600",
-    textAlign: "right",
-
-    background: "none",
-    backgroundColor: 'transparent',
-    shadow: "none",
-    border: "none",
-
-    height:"40px",
-    width: "100px",
-
-    marginLeft: "auto",
-
-  }
-
-  const uploadconfirm = {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "end",
-
-    marginRight: "7%"
-
-  }
-
- const uploadconfirmbutton = {
-    borderRadius: "12px",
-    background: "#F3F3F3",
-    border: "none",
-
-    color: "#535353",
-    fontFamily: "KoHo",
-    fontSize: "15px",
-    fontStyle: "normal",
-    fontWeight: "700",
-    lineHeight: "26px", 
-
-    boxSizing: "border-box",
-    height: "40px",
-    width: "150px",
-
-    marginLeft: "30px"
- }
+  // END OF VALIDATION
 
   const [image, setImage] = useState(null)
   const [fileName, setFileName] = useState ("No File Selected")
+  const [selectedType, setSelectedType] = useState("INVOICE");
 
+  const handleDocumentTypeClick = (type) => {
+    setSelectedType(type);
+  };
 
-  let [uploadcontent, setUploadContent] = useState([
-    { "Uploaded" : "invoice1.pdf" },
-    { "Uploaded" : "invoice2.pdf" },
-    { "Uploaded" : "invoice3.pdf" },
-    { "Uploaded" : "invoice4.pdf" },
-    { "Uploaded" : "invoice5.pdf" },
-    { "Uploaded" : "invoice6.pdf" },
-    { "Uploaded" : "invoice7.pdf" },
-    { "Uploaded" : "invoice8.pdf" },
-    { "Uploaded" : "invoice9.pdf" },
-    { "Uploaded" : "invoice10.pdf" },
-  ])
+  const selectedButtonStyle = {
+    ...documentTypeTextStyle,
+    color: '#5995CD',
+  };
 
-  const data = React.useMemo(() => uploadcontent, [uploadcontent]);
-  const columns = React.useMemo(() => [
-    {
-      Header: "Uploaded Files",
-      accessor: "Uploaded"
-    }
-  ], []
-  )
+  const unselectedButtonStyle = {
+    ...documentTypeTextStyle,
+    color: '#3A3A3A',
+  };
 
-  // headerGroups: consist of all headers (Uploaded)
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  //specifically for SOA styling
+
+  const selectedSOAButtonStyle = {
+    ...documentTypeSOATextStyle,
+    color: '#5995CD',
+  };
+
+  const unselectedSOAButtonStyle = {
+    ...documentTypeSOATextStyle,
+    color: '#3A3A3A',
+  };
+  
 
   return (
     <div>
       <div>
         <SecondNavBar />
-        <DocumentType />
       </div>
 
       <div className="alluploads" style = {alluploads}>
+
+        <div style={documentTypeStyle}>
+          <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
+          <button
+            style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
+            onClick={() => handleDocumentTypeClick("INVOICE")}
+          >
+            INVOICE
+          </button>
+          <button
+            style={selectedType === "STATEMENT" ? selectedSOAButtonStyle : unselectedSOAButtonStyle}
+            onClick={() => handleDocumentTypeClick("STATEMENT")}
+          >
+            STATEMENT OF{'\n'}ACCOUNT
+          </button>
+          <button
+            style={selectedType === "PAYMENT" ? selectedButtonStyle : unselectedButtonStyle}
+            onClick={() => handleDocumentTypeClick("PAYMENT")}
+          >
+            PAYMENT
+          </button>
+        </div>
 
         <div style={uploading}>
 
@@ -192,7 +108,7 @@ const UploadPage = () => {
             }}}></input>
 
             {image ?
-            <img src={image} alt={"Error"}/>
+            <img src={image} alt={"Error"} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}/>
             :
             <MdUploadFile color="#535353" size={130}/>
             }
@@ -211,51 +127,17 @@ const UploadPage = () => {
           </section>
         </div>
 
-        <div style={tablecontainer}>
-          <table style={tablestyle} {...getTableProps()}>
-
-            <thead style = {tablehead}>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-
-            <tbody style = {tablebody} {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row)
-                return(
-                  <tr style = {tablerow} {...row.getRowProps()}>
-
-                    {row.cells.map((cell) => (
-                      <td style = {tablecell} {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    ))}
-
-                    <button style = {removebuttonstyle} onClick={() => {
-                        const dataCopy = [...uploadcontent];
-                        dataCopy.splice(row.index, 1);
-                        setUploadContent(dataCopy);
-                      }}>
-                        Remove
-                    </button>
-                    
-                  </tr>
-                )
-              })}
-            </tbody>
-            
-          </table>
-        </div>
       </div>
 
       <div style={uploadconfirm}>
-          <button style={uploadconfirmbutton} >Confirm</button>
-          <button style={uploadconfirmbutton} >Cancel</button>
+        <Link to="/editdocumentpage">
+          <button style={uploadsubmitbutton} >Submit</button>
+        </Link>
+          <button style={uploadcancelbutton} 
+                onClick = {() => {
+                setFileName('No File Selected')
+                setImage(null)
+              }}>Cancel</button>
       </div>
       
   </div>

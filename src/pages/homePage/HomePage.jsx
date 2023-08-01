@@ -2,14 +2,23 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
 
-import './homePage.css';
-
 import 'swiper/css/bundle';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
-// import 'swiper/css/scrollbar';
 
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
+
+import {
+  firstrow,
+  profileinfo,
+  welcomeStyle,
+  nameStyle,
+  companyStyle,
+  gridheader,
+  slider,
+  slideCompany,
+  slidecontent,
+  slideCompanyInfo,
+
+} from "./HomePageStyle"
 
 const HomePage = () => {
 
@@ -36,6 +45,14 @@ const HomePage = () => {
       address: "blk 67 Paya Lebar SingPost"}
   ]
 
+  let userInfo = [
+    { name: "Matthew Swee Jing Kai",
+      company: "Textile Fabric Centre" },
+  ]
+
+  const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
+  const companyName = userInfo.length > 0 ? userInfo[0].company : "";
+
   const renderSlide = (slide, index) => {
 
     const slidestyle = {
@@ -43,33 +60,27 @@ const HomePage = () => {
       height: "230px",
       marginRight: "20px",
 
-      backgroundColor: "rgba(65, 142, 255, 0.10)",
+      backgroundColor: "rgba(238, 255, 232, 0.60)",
       borderRadius: "12px",
       border: "none",
       scrollSnapAlign: "start",
       transition: "all 0.2s",
+      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.3)",
      };
 
     return(
 
         <SwiperSlide key = {index} style = {slidestyle}>
-          <div className="slidecontent">
-            <h4>{slide.company}</h4>
-            <p>Name: {slide.name}</p>
-            <p>Contact: {slide.contact}</p>
-            <p>Address: {slide.address}</p>
+          <div style={slidecontent}>
+            <h4 style={slideCompany} >{slide.company}</h4>
+            <p style={slideCompanyInfo}>Name: {slide.name}</p>
+            <p style={slideCompanyInfo}>Contact: {slide.contact}</p>
+            <p style={slideCompanyInfo}>Address: {slide.address}</p>
           </div>
         </SwiperSlide>
       
     )
   }
-
-  const profilepic = {
-    borderRadius: "50%", 
-    border: "10px solid #F3F3F3",
-    height: "180px",
-    weight: "180px",
-  };
 
   return (
     <div>
@@ -78,24 +89,21 @@ const HomePage = () => {
         <SecondNavBar />
       </div>
 
-      <div className = "firstrow">
-        <img style={profilepic} 
-        src= {require("../../asserts/ProfilePicture.png" )}
-        alt="ProfilePicture"/>
-        
+      <div style={firstrow}>        
 
-        <div className = "profileinfo">
-          <h1>Welcome,</h1>
-          <h2>Matthew Swee Jing Kai !</h2>
-          <p>Textile Fabric Centre</p>
+        <div style={profileinfo}>
+          <h1 style={welcomeStyle} >WELCOME,</h1>
+          <h2 style={nameStyle} >{userName} !</h2>
+          <p style={companyStyle} >{companyName}</p>
         </div>
+
       </div>
 
-        <div className ="gridheader">
-          <h3>Companies Involved:</h3>
+        <div>
+          <h3 style={gridheader}>Companies Involved:</h3>
         </div>
 
-        <div className="slider">
+        <div style={slider}>
           <Swiper
           modules={[Scrollbar]}
           spaceBetween={50}
