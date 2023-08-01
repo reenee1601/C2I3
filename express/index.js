@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const invoiceRouter = require('./routes/invoiceRoutes');
 const soaRouter = require('./routes/soaRoutes');
+const cors = require('cors'); // allow CORS
 
 const app = express();
-
+app.use(cors());
 // Set up MongoDB connection
 // const MONGODB_URI = "mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/?retryWrites=true&w=majority"
 const MONGODB_URI = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'
