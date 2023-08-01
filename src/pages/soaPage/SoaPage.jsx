@@ -1,85 +1,84 @@
 import React, { useState } from "react";
-// import Swiper from 'react-id-swiper';
-import "../../../node_modules/swiper/swiper-bundle.css";
-import "./soaPage.css";
+import { useTable, useSortBy, useGlobalFilter } from "react-table";
+// import "./soaPage.css";
 import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
-import DropDownMenu from "../../components/dropDownMenu/DropDownMenu";
-import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import mockData from "../../data/mock_data.json";
+import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
+import { FaShareSquare } from 'react-icons/fa';
+import { searchBar, tableContainer, scrollable, customTable, 
+          td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
+          exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon } from './SoaPageStyle';
 
 const SoaPage = () => {
-  const [selected_amount, setSelected_amount] = useState("");
-  const [selected_date, setSelected_date] = useState("");
-  const [selected_soanum, setSelected_soanum] = useState("");
-  const [selected_suppliername, setSelected_suppliername] = useState("");
-  const [isOpen, setIsOpen] = useState({
-    dropdown_amount: false,
-    dropdown_date: false,
-    dropdown_soanum: false,
-    dropdown_suppliername: false,
-  });
 
-  const amount_options = ["Amount", "Most to Least", "Least to Most"];
-  const date_options = ["Date", "Latest to Oldest", "Oldest to Latest"];
-  const soanum_options = [
-    "SOA Number",
-    "Smallest to Largest",
-    "Largest to Smallest",
-  ];
-  const suppliername_options = ["Supplier Name", "A - Z", "Z - A"];
+  const columns = React.useMemo(
+    () => [
+      // first argument that returns the value we want to memoize
+      // each object represents a single column
+      {
+        Header: "SOA ID",
+        accessor: "soaID", // key to access the data row
+        Cell: (
+          { row } // how the content of the cell should be rendered
+        ) => (
+          <Link to={`/detailedsoapage`} style={soaIDLink}>
+            {row.original.soaID}
+          </Link>
+        ),
+      },
+      {
+        Header: "Supplier",
+        accessor: "supplier",
+        Cell: ({ row }) => (
+          <Link to={`/detailedsoapage`} style={supplierLink}>
+            {row.original.supplier}
+          </Link>
+        ),
+      },
+      {
+        Header: "Due Date",
+        accessor: "dueDate",
+        Cell: ({ row }) => (
+          <Link to={`/detailedsoapage`} style={dueDateLink}>
+            {row.original.dueDate}
+          </Link>
+        ),
+      },
+      {
+        Header: "Amount",
+        accessor: "amount",
+        Cell: ({ row }) => (
+          <Link to={`/detailedsoapage`} style={amountLink}>
+            {row.original.amount}
+          </Link>
+        ),
+      },
+    ],
+    [] // empty dependency array: value ill be memoized and not recalculated
+  );
 
-  const handleToggleDropdown = (dropdownName) => {
-    setIsOpen((prevIsOpen) => ({
-      ...prevIsOpen,
-      [dropdownName]: !prevIsOpen[dropdownName],
-    }));
-  };
+  const tableInstance = useTable(
+    { columns, data: mockData.soaDetails},
+    useGlobalFilter, useSortBy
+  );
 
-  // table
-  const details = [
-    {
-      soaID: "#3379",
-      supplier: "Bakers Room",
-      issuedDate: "13/06/2023",
-      dueDate: "13/07/2023",
-      amount: "$4000.50",
-    },
-    {
-      soaID: "#3028",
-      supplier: "Amy's Market",
-      issuedDate: "08/06/2023",
-      dueDate: "08/07/2023",
-      amount: "$4370.00",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-    {
-      soaID: "#1342",
-      supplier: "Mom's Shop",
-      issuedDate: "08/02/2023",
-      dueDate: "08/08/2023",
-      amount: "$4340.50",
-    },
-  ];
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, setGlobalFilter } =
+    tableInstance;
+  
+  const { globalFilter } = state;
+
+// bottom-part buttons  
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  const handleDropdownItemClick = (option) => {
+    console.log("Selected option:", option);
+
+    // Perform actions based on the selected option (e.g., export Excel, CSV, or generate tax report)
+    // ...
+
+    setIsDropdownVisible(false); // Close the dropdown after selecting an option
+  }
 
   return (
     <div>
@@ -87,141 +86,73 @@ const SoaPage = () => {
         <SecondNavBar />
       </div>
 
-      <div className="filtering-options">
-        <p>Manage SOA</p>
-        <div className="dropdown">
-          <div className="amount-dropdown">
-            <div
-              className="amount-btn"
-              onClick={() => handleToggleDropdown("dropdown_amount")}
-            >
-              Amount: {selected_amount}
-            </div>
-            <div>
-              {isOpen.dropdown_amount && (
-                <DropDownMenu
-                  options={amount_options}
-                  selected={selected_amount}
-                  setSelected={setSelected_amount}
-                  setIsOpen={() => handleToggleDropdown("dropdown_amount")}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="date-dropdown">
-            <div
-              className="date-btn"
-              onClick={() => handleToggleDropdown("dropdown_date")}
-            >
-              Date: {selected_date}
-            </div>
-            <div>
-              {isOpen.dropdown_date && (
-                <DropDownMenu
-                  options={date_options}
-                  selected={selected_date}
-                  setSelected={setSelected_date}
-                  setIsOpen={() => handleToggleDropdown("dropdown_date")}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="soanum-dropdown">
-            <div
-              className="soanum-btn"
-              onClick={() => handleToggleDropdown("dropdown_soanum")}
-            >
-              SOA Number: {selected_soanum}
-            </div>
-            <div>
-              {isOpen.dropdown_soanum && (
-                <DropDownMenu
-                  options={soanum_options}
-                  selected={selected_soanum}
-                  setSelected={setSelected_soanum}
-                  setIsOpen={() => handleToggleDropdown("dropdown_soanum")}
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="suppliername-dropdown">
-            <div
-              className="suppliername-btn"
-              onClick={() => handleToggleDropdown("dropdown_suppliername")}
-            >
-              Supplier Name: {selected_suppliername}
-            </div>
-            <div>
-              {isOpen.dropdown_suppliername && (
-                <DropDownMenu
-                  options={suppliername_options}
-                  selected={selected_suppliername}
-                  setSelected={setSelected_suppliername}
-                  setIsOpen={() =>
-                    handleToggleDropdown("dropdown_suppliername")
-                  }
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* <div style={buttonContainer}>
+        <button style={buttonStyles}>Generate Yearly Tax Record</button>
+      </div> */}
 
       {/* search bar */}
-      <div className="search-bar">
-        <input type="text" placeholder="Search..." />
+      <div style={searchBar}>
+        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
       </div>
 
       {/* table */}
-      <div className="table-container">
-        <div className="scrollable">
-          <Table className="custom-table transparent-table">
+      <div style={tableContainer}>
+        <div style={scrollable}>
+          <table
+            style={customTable}
+            {...getTableProps()}
+          >
             <thead className="sticky-top">
-              <tr>
-                <th>SOA ID</th>
-                <th>Supplier</th>
-                <th>Issued Date</th>
-                <th>Due Date</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {details.map((item, id) => (
-                <tr key={id}>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="soaID-link">
-                      {item.soaID}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="supplier-link">
-                      {item.supplier}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="issuedDate-link">
-                      {item.issuedDate}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="dueDate-link">
-                      {item.dueDate}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link to={`/detailedsoapage`} className="amount-link">
-                      {item.amount}
-                    </Link>
-                  </td>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())} style={th}>
+                      {column.render("Header")}
+                      <span>
+                        {/* check whether column is sorted in descending order */}
+                        {column.isSorted ? (column.isSortedDesc ? ' ↓':' ↑'):''}
+                      </span>
+                    </th>
+                  ))}
                 </tr>
               ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()} style={td}>{cell.render("Cell")}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
-          </Table>
+          </table>
         </div>
       </div>
+
+      <div style={bottomPart}>
+        {/* "Export" button */}
+        <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
+          <FaShareSquare size ={30} style={exportButtonIcon}/>
+        </button>
+
+        <div style={dropdownContainer}>
+          {/* Render the dropdown menu */}
+          {isDropdownVisible && (
+            <div style={popupButton}>
+              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
+              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
+              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
+            </div>
+          )}
+        </div>
+      </div>
+
     </div>
   );
 };
