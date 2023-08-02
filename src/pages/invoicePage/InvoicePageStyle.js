@@ -39,7 +39,7 @@ export const td = {
 };
 
 export const th = {
-    backgroundColor: "rgba(255, 246, 232, 0.8)",
+    backgroundColor: "rgba(255, 232, 232, 0.8)",
     color: "#3A3A3A",
     border: "none",
     fontSize: "15px",

@@ -20,7 +20,7 @@ export const listOfInvoices = {
     marginBottom: "-2%",
     fontSize: "24px",
     fontWeight: "600",
-    color: "var(--color-blue)"
+    color: "rgba(215, 168, 96, 1)"
 }
 
 export const missingInvoices = {
@@ -29,15 +29,17 @@ export const missingInvoices = {
     marginLeft: "95px",
     fontSize: "24px",
     fontWeight: "600",
-    color: "var(--color-blue)"
+    color: "rgba(215, 168, 96, 1)"
 }
 
 export const soaDisplay = {
-    maxHeight: "400px",
+    maxHeight: "470px",
     width: "600px",
     borderRadius: "12px",
     backgroundColor: "var(--color-white2)",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginRight: "80px",
+    marginLeft: "0",
 }
 
 export const tableContainer = {
@@ -50,7 +52,7 @@ export const tableContainer = {
 
 export const scrollable = {
     width: "75%",
-    height: "145px",
+    height: "160px",
     display: "flex",
     justifyContent: "center",
     overflow: "scroll",
@@ -74,8 +76,8 @@ export const td = {
 };
 
 export const th = {
-    backgroundColor: "rgba(65, 142, 255, 1)",
-    color: "var(--color-white2)",
+    backgroundColor: "rgba(255, 246, 232, 0.8)",
+    color: "#3A3A3A",
     border: "none",
     fontSize: "15px",
     fontWeight: "600",
@@ -85,17 +87,17 @@ export const th = {
 export const button = {
     width: "330px",
     height: "45px",
-    flexShrink: "0",
+    flexShrink: 0,
 
     borderRadius: "15px",
     border: 'none',
-    background: "var(--color-blue)",
+    background: "#FFFFFF",
     boxShadow: "-2px 4px 30px 0px rgba(0, 0, 0, 0.25)",
 
-    color: "white",
+    color: "rgba(71, 71, 71, 0.80)",
     fontSize: "14px",
     fontStyle: "normal",
-    fontWeight: "700",
+    fontWeight: 700,
     lineHeight: "normal",
 }
 
@@ -103,5 +105,5 @@ export const buttonContainer = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "0",
+    marginTop: "1.5%",
 }
