@@ -140,22 +140,52 @@ const ProductPage = () => {
         }
 
         const imgproduct = {
-
-            margin: "30px",
+          objectFit: "cover",
+          marginTop: "20px",
         }
+
+        const imgBarcodeStyle = {
+          maxWidth: "80%",
+          objectFit: "cover",
+          marginBottom: "20px",
+        }
+        
+        const imgContainerStyle = {
+          width: "100%",
+          height: "100px",
+          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+        };
+
+        const barcodeContainerStyle = {
+          width: "100px",
+          height: "100px",
+          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: "0 auto",
+        };
         
     
         return(
     
             <SwiperSlide key = {index} style = {productstyle}>
               <div>
-                <img style={imgproduct} src={product.image} alt="Error"></img>
+                <div style={imgContainerStyle}>
+                  <img style={imgproduct} src={product.image} alt="Error" />
+                </div>
                 <h1 style={h1product}>{product.header}</h1>
                 <p style={pproduct}>{product.description}</p>
                 <p style={pproduct}>{product.measurement}</p>
                 <p style={pproduct}>{product.cost}</p>
                 <p style={pproduct}>{product.quantity}</p>
-                <img src={product.barcode} alt="Error"></img>
+                <div style={barcodeContainerStyle}>
+                  <img style={imgBarcodeStyle} src={product.barcode} alt="Error" />
+                </div>
                 <p style={pproduct}>{product.sku}</p>
               </div>
             </SwiperSlide>
@@ -174,6 +204,16 @@ const ProductPage = () => {
 
     const [addPopUp, setAddPopUp] = useState(false);
 
+    // ADDING OF NEW CARD
+
+  const [products, setProducts] = useState(productInfo);
+
+  const handleAddProduct = (newProduct) => {
+    setProducts([...products, newProduct]);
+  };
+
+  // END of ADDING OF NEW CARD
+
   return (
     <div>
         <SecondNavBar />
@@ -186,7 +226,7 @@ const ProductPage = () => {
             </button>
 
             <div style={productpopupstyle}>
-            <AddProduct trigger={addPopUp} setTrigger={setAddPopUp}>
+            <AddProduct trigger={addPopUp} setTrigger={setAddPopUp} onAddProduct={handleAddProduct}>
             </AddProduct>
           </div>
 
@@ -201,7 +241,7 @@ const ProductPage = () => {
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}>
           
-          {productInfo.map(productSlide)}
+          {products.map((product, index) => productSlide(product, index))}
 
           </Swiper>
         </div>

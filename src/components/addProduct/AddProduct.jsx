@@ -20,8 +20,8 @@ const productinputs = {
     
     border: "none",
     borderRadius: "5px",
-    marginTop: "8px",
-    marginBottom: "8px",
+    marginTop: "5px",
+    marginBottom: "5px",
 
     color: "#535353",
     textAlign: "center",
@@ -38,8 +38,8 @@ const productinputs = {
     
     border: "none",
     borderRadius: "5px",
-    marginTop: "8px",
-    marginBottom: "8px",
+    marginTop: "5px",
+    marginBottom: "5px",
 
     color: "#535353",
     textAlign: "center",
@@ -55,7 +55,7 @@ const productinputs = {
         color: "#3A3A3A",
         textAlign: "center",
         fontFamily: "Inter",
-        fontSize: "15px",
+        fontSize: "10px",
         fontStyle: "normal",
         fontWeight: "700",
         lineHeight: "normal",
@@ -83,6 +83,34 @@ const productinputs = {
     props.setTrigger(false); // Close the popup by setting the trigger prop to false
     };
 
+    //ADDING NEW CARD
+
+    const handleFormSubmit = () => {
+        // Get the values of the input fields here
+        const productName = document.querySelector('input[placeholder="PRODUCT NAME"]').value;
+        const productDescription = document.querySelector('textarea[placeholder="PRODUCT DESCRIPTION"]').value;
+        const measurementUnits = document.querySelector('input[placeholder="MEASUREMENT UNITS"]').value;
+        const productCost = document.querySelector('input[placeholder="PRODUCT COST"]').value;
+        const minimumQuantity = document.querySelector('input[placeholder="MINIMUM QUANTITY"]').value;
+        const skuNumber = document.querySelector('input[placeholder="SKU NUMBER"]').value;
+      
+        const newProduct = {
+          image: product,
+          header: productName,
+          description: productDescription,
+          measurement: measurementUnits,
+          cost: productCost,
+          quantity: minimumQuantity,
+          barcode: barcode,
+          sku: skuNumber,
+        };
+      
+        // Call the onAddProduct function passed as a prop to add the new product
+        props.onAddProduct(newProduct);
+        // Close the popup after submitting
+        props.setTrigger(false);
+      };      
+    
   return (props.trigger) ? (
     <div className = "popup2">
         <div className="popup2-inner">
@@ -91,7 +119,7 @@ const productinputs = {
                 <RxCross2 />
             </button>
 
-            <form className = "productimage"
+            <form className = "productimage" 
             onClick={() => document.querySelector(".product-image").click()}>
                 <input type="file" accept="png/*" className ="product-image" hidden
                 onChange={({ target: {files}}) => {
@@ -112,7 +140,7 @@ const productinputs = {
             <input style={productinputs} type="text" placeholder="MEASUREMENT UNITS"></input>
             <input style={productinputs} type="text" placeholder="PRODUCT COST"></input>
             <input style={productinputs} type="text" placeholder="MINIMUM QUANTITY"></input>
-
+            
             <form className = "barcodeimage"
             onClick={() => document.querySelector(".barcode-image").click()}>
                 <input type="file" accept="png/*" className ="barcode-image" hidden
@@ -135,7 +163,11 @@ const productinputs = {
 
         </div>
 
-        <button onClick={() => props.setTrigger(false)} style={productsubmit}>Submit</button>
+        <button onClick={() => {
+            handleFormSubmit();
+            props.setTrigger(false);
+        }} style={productsubmit}>Submit</button>
+        
     </div>
   ) : ""
 }
