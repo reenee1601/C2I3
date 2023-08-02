@@ -23,11 +23,7 @@ async function performOCRAndExtractDataSOA(filepath) {
       supplierID: formsDataSOA['Supplier ID'] || '',
       totalAmount: formsDataSOA['Total Amount'] || ''
     };
-
-    // Combine the extracted data if needed
-    //const combinedData = Object.assign({},formsDataSOA, tablesDataSOA);
-
-
+    
     return mappedDataSOA;
   } catch (error) {
     console.error('Error performing OCR and extracting data:', error);
@@ -280,9 +276,6 @@ async function getSOADataById(id) {
 exports.getSOADataUsingId = async function getSOADataUsingId(req, res, next){
   try {
     const { id } = req.params; // Extract the _id from the URL parameter
-    //const stringid = id;
-    // const cleanid = id.replace(/'/g, '')
-    // const objectId = mongoose.Types.ObjectId(cleanid);
     const specificSoaData = await getSOADataById(id);
     res.json(specificSoaData);
     
