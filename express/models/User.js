@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 //encrypting password
-let bcrypt = require('bcrypt');
+//let bcrypt = require('bcrypt');
 
 let Schema = mongoose.Schema;
 
@@ -36,4 +36,3 @@ const User = mongoose.model('User', userSchema);
 
 module.exports = User;
 
-//module.exports = mongoose.model.User || mongoose.model("user", userSchema);
