@@ -7,7 +7,7 @@ export const topPart = {
 
 export const goBackStyle = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   marginRight: "10px",
   alignItems: "center",
 }
@@ -94,31 +94,13 @@ export const td = {
   
 // <th style={th}>
 export const th = {
-  backgroundColor: "rgba(255, 246, 232, 0.8)",
+  backgroundColor: "rgba(255, 232, 232, 0.8)",
   /* borderRadius: "12px", */
   color: "#3A3A3A",
   border: "none",
   fontSize: "15px",
   fontWeight: "600",
 };
-
-
-//   export const transparentTableTbodyTrTd = {
-//     borderBottom: "1px solid #000000",
-//     height: "50px",
-//     lineHeight: "50px",
-//     fontSize: "15px",
-//   };
-  
-//   export const transparentTableTheadThFirst = {
-//     borderTopLeftRadius: "12px",
-//     borderBottomLeftRadius: "12px",
-//   };
-  
-//   export const transparentTableTheadThLast = {
-//     borderTopRightRadius: "12px",
-//     borderBottomRightRadius: "12px",
-//   };
 
 export const bottomPart = {
     display: "flex",
@@ -145,3 +127,20 @@ export const totalAmount = {
   fontSize: "15px",
   marginBottom: "0",
 };
+
+export const editInput = {
+  fontSize: "15px",
+  padding: "1px",
+  borderRadius: "4px",
+  border: "1px solid #ccc",
+}
+
+// .transparent-table thead th:first-child {
+//   border-top-left-radius: 12px;
+//   border-bottom-left-radius: 12px;
+// }
+
+// .transparent-table thead th:last-child {
+//   border-top-right-radius: 12px;
+//   border-bottom-right-radius: 12px;
+// }
