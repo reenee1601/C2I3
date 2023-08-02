@@ -1,22 +1,11 @@
 import React from 'react'
 import "./submitPopUp.css"
 
+import {
+  closebtn
+} from "./SubmitPopUpStyle"
+
 function SubmitPopUp(props) {
-  // Props element. --? Prop triggered? Do what...
-  // Contains all the elements in the SubmitPopUp
-
-    const closebtn = {
-        color: "#F3F3F3",
-        fontFamily: "KoHo",
-        fontSize: "15px",
-        fontStyle: "normal",
-        fontWeight: "400",
-        lineHeight: "normal",
-    
-        border: "none",
-        backgroundColor: "transparent",
-
-    }
   return (props.trigger) ? (
     <div className = "popup">
         <div className="popup-inner">
