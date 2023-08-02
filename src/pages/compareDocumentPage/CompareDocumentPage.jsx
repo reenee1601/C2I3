@@ -8,6 +8,17 @@ import { Link } from 'react-router-dom';
 
 const CompareDocumentPage = () => {
 
+  // hover button functionality
+  const [buttonHover, setButtonHover] = useState(false);
+
+const handleMouseEnter = () => {
+  setButtonHover(true);
+};
+
+const handleMouseLeave = () => {
+  setButtonHover(false);
+};
+
   const [checkboxState1, setCheckboxState1] = useState({});
     
   const columns1 = React.useMemo(
@@ -118,7 +129,7 @@ const CompareDocumentPage = () => {
         <div style={layout}>
           <div style={tables}>
             {/* list of invoices table */}
-            <h1 style={listOfInvoices}>List Of Invoices</h1>
+            <h1 style={listOfInvoices}>LIST OF INVOICES</h1>
             <div style={tableContainer}>
               <div style={scrollable}>
                 <table
@@ -159,7 +170,7 @@ const CompareDocumentPage = () => {
             </div>
 
             {/* missing invoices table */}
-            <h1 style={missingInvoices}>Missing Invoices</h1>
+            <h1 style={missingInvoices}>MISSING INVOICES</h1>
             {/* <p>Invoices that are in the Statement Of Account but not recorded in the List of Invoices </p> */}
             <div style={tableContainer}>
               <div style={scrollable}>
@@ -205,7 +216,18 @@ const CompareDocumentPage = () => {
         
         <div style={buttonContainer}>
           <Link to="/uploadpage">
-              <button style={button} type="button">Proceed to Upload Payment</button>
+              <button 
+                style={{
+                  ...button,
+                  backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
+                  color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
+                }}
+                type="button"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                Proceed to Upload Payment
+              </button>
           </Link>
         </div>
 
