@@ -1,91 +1,12 @@
-// Assuming you have already installed and required the "john-package" and "mongoose" in your application
-const johnPackage = require('john-package');
-const mongoose = require('mongoose');
-const invoiceModel = require('../models/invoiceModel.js');
-const connection = require('../db.js');
+/////// INVOICE CONTROLLER
+const { unlink } = require('fs') // use this to delete the file after we're done
+const utils = require('../utils/utils.js')
+const Invoice = require('../models/invoiceModel');
+////// CONST DICTIONARIES
+//
+//Old dicts
 
-
-// Function to perform OCR and extract data
-async function performOCRAndExtractData(filepath, dict1, dict2) {
-  try {
-    // Perform OCR and get the analysis result
-    const ocrData = await johnPackage.getTextractAnalysis(filepath);
-
-    // Extract forms and tables from the OCR result using "john-package" functions
-    const formsData = johnPackage.extractForms(ocrData, dict1);
-    const tablesData = johnPackage.extractTables(ocrData, dict2);
-    //transform the json data into object format
-    //const data = JSON.parse(formsData);
-    const mappedData = {
-      invoiceID: formsData['Invoice ID'] || '',
-      issuedDate: formsData['Issued Date'] || '',
-      supplierID: formsData['Supplier ID'] || '',
-      totalBeforeGST: formsData['Total Before GST'] || '',
-      totalAfterGST: formsData['Total After GST'] || '',
-      GST: formsData['GST'] || '',
-      productCode: tablesData['Product Code'] || '',
-      quantity: tablesData['Quantity'] || '',
-      amount: tablesData['Amount'] || '',
-      productName: tablesData['Product Name'] || ''
-    };
-
-    return mappedData;
-  } catch (error) {
-    console.error('Error performing OCR and extracting data:', error);
-    throw error;
-  }
-}
-async function uploadDataToMongoDB(data) {
-  const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
-  const dbName = 'project_data'; // Replace with your desired database name
-
-  try {
-    connection;
-    // Save the extracted data to the Invoice collection
-    await invoiceModel.create(data);
-
-    console.log('Data uploaded to MongoDB successfully!');
-    console.log(data);
-  } catch (error) {
-    console.error('Error uploading data to MongoDB:', error);
-  } finally {
-    mongoose.disconnect();
-  }
-}
-
-async function processOCRAndUploadToMongoDB(filepath, dict1, dict2) {
-  try {
-    // Perform OCR and extract data
-    const extractedData = await performOCRAndExtractData(filepath, dict1, dict2);
-
-    // Upload the extracted data to MongoDB
-    await uploadDataToMongoDB(extractedData);
-
-    console.log('OCR data extracted and uploaded to MongoDB successfully!');
-  } catch (error) {
-    console.error('Error processing OCR and uploading to MongoDB:', error);
-  }
-}
-
-exports.uploadDataInvoice = async function uploadDataInvoice(req, res, next){
-  try {
-    // Get the uploaded file path from the request object
-    const filepath = req.file.path;
-
-    // Perform OCR and upload data to MongoDB
-    await processOCRAndUploadToMongoDB(filepath);
-
-    console.log('File uploaded and data extracted successfully!');
-    res.status(200).json({ message: 'File uploaded and data extracted successfully!' });
-  } catch (error) {
-    console.error('Error uploading file and extracting data:', error);
-    res.status(500).json({ error: 'Error uploading file and extracting data.' });
-  }
-}
-
-
-// Call the controller function with the file path and dictionary as needed
-
+/*
 const dict1 = {
   headers: ['Invoice ID', 'Issued Date', 'Supplier ID','GST','Total Before GST','Total After GST', 'GST' ],
   mapping: {'INVOICE NO.': 'Invoice ID','Tax Invoice':'Invoice ID',
@@ -105,3 +26,81 @@ mapping: {
 'Description': 'Product Name','Description': 'Product Name','DESCRIPTION OF GOODS': 'Product Name',
 'DESCRIPTION': 'Product Name' }
 };
+*/
+
+
+const formsDict = { // list of key-value pairs you want to extract
+  headers: ['invoiceID', 'issuedDate', 'dueDate', 'supplierID','GST','totalBeforeGST','totalAfterGST' ],
+mapping: {'INVOICE NO.':'invoiceID','Tax Invoice':'invoiceID',
+  'Invoice Date':'issuedDate' , 'DATE':'issuedDate', 
+    'Due Date': 'dueDate',
+  'GST 7%' : 'GST',  'Add 7% GST': 'GST', 
+  'TOTAL':'totalAfterGST', 'GRAND TOTAL':'totalAfterGST', 'Grand Total':'totalAfterGST', 'Amount Payable':'totalAfterGST',
+  'Sub Total':'totalBeforeGST', 'SUB TOTAL':'totalBeforeGST', 'Net Amount':'totalBeforeGST',
+  'SUBTOTAL SGD':'totalBeforeGST', 'TOTAL':'totalBeforeGST'
+,'Salesman Code':'supplierID',
+  }
+};
+
+const tablesDict = { // list of table headers you want to extract
+headers: ['productCode', 'quantity', 'amount', 'productName' ],
+mapping: {
+'ITEM ID' : 'Product Code','Produc Code': 'Product Code','Product Code': 'Product Code'
+ ,'QTY': 'Quantity', 'Qty' : 'Quantity', 'QUANTITY': 'Quantity', 
+ 'AMOUNT': 'Amount',  'Amount': 'Amount', 
+'Description': 'Product Name','Description': 'Product Name','DESCRIPTION OF GOODS': 'Product Name',
+'DESCRIPTION': 'Product Name' }
+};
+
+////// NON EXPORTED FUNCTIONS
+////// EXPORTED FUNCTIONS
+exports.scanData = async function(req, res) { // function for textractData POST endpoint
+    console.log('start of console');
+    file = await req.file;
+    if (!file) {res.status(500).json({message: 'no file sent'})}
+    var ocrData;
+
+    // do file operations here
+    try{
+        // perform ocr AND extract the tables and forms; look at utils.js for more info
+        ocrData = await utils.performOcr(file.path, tablesDict, formsDict);
+
+    } catch (err) {
+        console.error('Error performing OCR on file ' + file.originalname, err);
+        res.status(500).json({message: 'Error performing OCR on file ' + file.originalname})
+    }
+
+    // delete the file after operations
+    unlink(file.path, err => {console.log('file deleted'); if (err) {console.log(err)} })
+    console.log('end of console')
+    
+    // return the data to the front end
+    res.json(ocrData)
+    // res.json({message:'file uploaded successfully at '})
+}
+
+
+exports.uploadData = async function(req, res) { // function for uploadData POST endpoint
+    try{data = req.body;
+    await Invoice.create(data);
+
+    console.log()
+    res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
+    catch (err) {
+        console.error('Error uploading Invoice to MongoDB', err);
+        res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+    }
+}
+
+
+exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
+
+  try {
+      const invoiceData = await Invoice.find();
+        console.log('retreived invoive data')
+        res.status(200).json(invoiceData);
+    } catch (error) {
+        console.error('Error fetching SOA data:', error);
+        res.status(500).json({ error: 'Error fetching Invoice data.' });
+    }
+}

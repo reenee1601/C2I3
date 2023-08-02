@@ -16,8 +16,12 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+<<<<<<< HEAD
     "jest": "^29.6.2",
     "john-package": "^1.0.3",
+=======
+    "john-package": "file:john-package",
+>>>>>>> dc227f9 (integrated upload with editdocumentpage(for invoice only at this point). Now the problem is that the ocr doesnt function properly)
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
     "morgan": "~1.9.1",

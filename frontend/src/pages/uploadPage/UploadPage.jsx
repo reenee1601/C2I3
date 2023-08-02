@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
@@ -39,6 +39,28 @@ const UploadPage = () => {
   const [image, setImage] = useState(null)
   const [fileName, setFileName] = useState ("No File Selected")
   const [selectedType, setSelectedType] = useState("INVOICE");
+  const [formData, setFormData] = useState(new FormData());
+
+  const dummyInvoice = { 
+    // this is a dummy invoice object to be passed on to the editDocumentPage
+    // Delete this later and replace with a call to the endpoint to get the 
+    // raw OCRed data
+
+    invoiceID: 'the first invoiceeeee',
+    issuedDate: 'yesterday',
+    dueDate: 'tomorrow',
+    supplierID: '69',
+    totalBeforeGST: 'two dollars',
+    totalAfterGST: 'a million dollars',
+    GST: 'yes there is gst',
+    productCode: [777, 86],
+    quantity: [2, 44],
+    amount: [22, 33],
+    productName: ['hot dogs', 'buns'],
+  }
+  const [ocrData, setOcrData] = useState({});
+
+  const navigate = useNavigate(); // used to redirect after waiting on promise
 
   const handleDocumentTypeClick = (type) => {
     setSelectedType(type);
@@ -72,27 +94,40 @@ const UploadPage = () => {
  /// // // // // // ///
 
 
-  const handleFileUploadInvoice = () => {
+  const handleFileUploadInvoice = async () => {
     
-    const formData = new FormData();
-    formData.append("pdfFile", image);
+    // const formData = new FormData();
+    // formData.append("pdfFile", image);
     //console.log("isInvoiceActive:", isInvoiceActive);
     console.log("image:", image);
     console.log('Invoice is clicked')
-    axios
-      .post("http://localhost:8000/invoice/uploadDataInvoice", formData, {
+    //navigate('/invoice/editdocumentpage', {state: dummyInvoice})
+    
+    let response = await axios // wait for the data to be scanned
+      .post("http://localhost:8000/invoice/scanData", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
-      .then((response) => {
+    console.log(response);
+    console.log('set ocrData');
+    setOcrData(response.data);
+    console.log(ocrData);
+    navigate('/invoice/editdocumentpage', {state: response.data})
+    
+      /*.then((response) => {
         // Handle the successful response from the backend if needed.
+        ocrData = response;
         console.log("File uploaded successfully!");
       })
       .catch((error) => {
         // Handle any error that occurred during the file upload.
         console.error("Error uploading file:", error);
       });
+    } catch (err) {
+        console.error("Error uploading file:", error);
+    }*/
+
   };
 
 
@@ -119,9 +154,10 @@ const UploadPage = () => {
         });
   };
 
-    const handleConditionalButtonClick = () =>{
+    const handleConditionalButtonClick = async () =>{
       if(selectedType == "INVOICE"){
-        // this.handleFileUploadInvoice();
+        await handleFileUploadInvoice();
+
         console.log(1);
       }
       else if(selectedType == "STATEMENT"){
@@ -137,7 +173,6 @@ const UploadPage = () => {
         console.log(4);
       }
   }
-
   return (
     <div>
       <div>
@@ -177,6 +212,9 @@ const UploadPage = () => {
             files[0] && setFileName(files[0].name)
             if (files) {
               setImage(URL.createObjectURL(files[0]))
+              let newFormData = new FormData();
+              newFormData.append('file', files[0]);
+              setFormData(newFormData);
             }}}></input>
 
             {image ?
@@ -194,6 +232,7 @@ const UploadPage = () => {
               onClick = {() => {
                 setFileName('No File Selected')
                 setImage(null)
+                setFormData(new FormData())
               }}/>
             </span>
           </section>
@@ -202,9 +241,15 @@ const UploadPage = () => {
       </div>
 
       <div style={uploadconfirm}>
-        <Link to="/editdocumentpage">
+        {/*<Link to="/editdocumentpage">*/}
+        {/*<Link to={{
+          pathname:"/editdocumentpage",
+          state: {attr:'hello from upload page'}
+          }}
+        >*/}
           <button style={uploadcancelbutton} onClick={() => handleConditionalButtonClick()}>Submit</button>;
-        </Link>
+    {/*<Link to="/invoice/editdocumentpage" state = {ocrData}>
+        </Link>*/}
           <button style={uploadcancelbutton} 
                 onClick = {() => {
                 setFileName('No File Selected')

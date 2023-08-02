@@ -11,7 +11,7 @@ const invoiceSchema = new mongoose.Schema({
   GST: {type: String },
   productCode: {type: Array},
   quantity: {type: Array },
-  amount: {type: Number, require:true },
+  amount: {type: Array},
   productName: {type: Array},
 });
 

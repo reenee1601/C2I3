@@ -44,50 +44,59 @@ const EditDocumentPage = () => {
   const location = useLocation(); // get the OCR data from the upload page
   const stateData = location.state;
 
-  const [invoiceId, setInvoiceId] = useState(""); // State for invoice ID
+  /*const [invoiceId, setInvoiceId] = useState(stateData.invoiceID); // State for invoice ID
   const [supplier, setSupplier] = useState(""); // State for supplier
   const [totalAmount, setTotalAmount] = useState(""); 
-  const [dueDate, setDueDate] = useState(""); 
+  const [dueDate, setDueDate] = useState(""); */
 
-  let [uploadcontent, setUploadContent] = useState([
+  // Form Data
+  const [invoiceID, setInvoiceID] = useState(stateData.invoiceID);
+//  const [invoiceID, setInvoiceID] = useState('Loading...');
+  const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
+  const [dueDate, setDueDate] = useState(stateData.dueDate);
+  const [supplierID, setSupplierID] = useState(stateData.supplierID);
+  const [totalBeforeGST, setTotalBeforeGST] = useState(stateData.totalBeforeGST);
+  const [totalAfterGST, setTotalAfterGST] = useState(stateData.totalAfterGST);
+  const [GST, setGST] = useState(stateData.GST);
+  // Array Data
+  const [productCode, setProductCode] = useState(stateData.productCode);
+  const [quantity, setQuantity] = useState(stateData.quantity);
+  const [amount, setAmount] = useState(stateData.amount);
+  const [productName, setProductName] = useState(stateData.productName);
+
+
+  // Now to initialise the table data
+  // What we need to do is create an array of objects
+  // each object contains a mapping of each header, to the 
+  // value in the `stateData` object at that index
+  const tableLength = stateData.productCode.length; // get the length from any array; shld be the same
+  var tableObjects = []; // declare an array of objects
+  for (let i = 0; i < tableLength; i++) {
+    let obj = {};
+    obj.productCode = stateData.productCode[i];
+    obj.quantity = stateData.quantity[i];
+    obj.amount = stateData.amount[i];
+    obj.productName = stateData.amount[i];
+    tableObjects.push(obj);
+  }
+
+  // END of initialising table data
+  // add quick check to make sure that the table data wont be empty
+  if (tableObjects.length === 0) {
+    let obj = {};
+    obj.productCode = '';
+    obj.quantity = '';
+    obj.amount = '';
+    obj.productName = '';
+    tableObjects.push(obj);
+  }
+
+  let [uploadcontent, setUploadContent] = useState(tableObjects)
+  
+  /*let [uploadcontent, setUploadContent] = useState([
 
     { 
       "Product": stateData.amount,
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product0",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product1",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product2",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product3",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product4",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product5",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product6",
       "Quantity": "1",
       "Amount": "$1",
     },
@@ -106,7 +115,7 @@ const EditDocumentPage = () => {
       "Quantity": "1",
       "Amount": "$1",
     }
-  ])
+  ])*/
   
 
   // DATA is uploadcontent. Memory update only when uploadcontent changes.
@@ -115,20 +124,20 @@ const EditDocumentPage = () => {
   // COLUMNS is every column in uploadcontent.
   const columns = React.useMemo(() => [
     {
-      Header: "PRODUCT",
-      accessor: "Product"
+      Header: "PRODUCT CODE",
+      accessor: "productCode"
     },
     {
       Header: "QTY",
-      accessor: "Quantity"
+      accessor: "quantity"
     },
     {
       Header: "$$",
-      accessor: "Amount"
+      accessor: "amount"
     },
     {
-      Header: "Price b4 gst",
-      accessor: "Price"
+      Header: "PRODUCT NAME",
+      accessor: "productName"
     }
   ], []
   )
@@ -143,17 +152,19 @@ const EditDocumentPage = () => {
     if (editRow === null) {
       // Add mode: Add a new row
       const newRow = {
-        Product: newRowData.product,
-        Quantity: newRowData.quantity,
-        Amount: newRowData.amount,
+        productCode: newRowData.productCode,
+        quantity: newRowData.quantity,
+        amount: newRowData.amount,
+        productName: newRowData.productName
       };
       setUploadContent((prevContent) => [...prevContent, newRow]);
     } else {
       // Edit mode: Update the existing row
       const updatedRow = {
-        Product: newRowData.product,
-        Quantity: newRowData.quantity,
-        Amount: newRowData.amount,
+        productCode: newRowData.productCode,
+        quantity: newRowData.quantity,
+        amount: newRowData.amount,
+        productName: newRowData.productName
       };
       const updatedContent = [...uploadcontent];
       updatedContent[editRow] = updatedRow;
@@ -228,29 +239,19 @@ const EditDocumentPage = () => {
                 <p style ={editDocumentIndiPStyle}>INVOICE ID:</p>
                 <input
                   type="text"
-                  value={invoiceId}
-                  onChange={(e) => setInvoiceId(e.target.value)}
+                  value={invoiceID}
+                  onChange={(e) => setInvoiceID(e.target.value)}
                   style ={editDocumentInvoiceInputStyle}
                 />
               </div>
 
               <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>SUPPLIER:</p>
+                <p style ={editDocumentIndiPStyle}>ISSUED DATE:</p>
                 <input
                   type="text"
-                  value={supplier}
-                  onChange={(e) => setSupplier(e.target.value)}
+                  value={issuedDate}
+                  onChange={(e) => setIssuedDate(e.target.value)}
                   style ={editDocumentSuppInputStyle}
-                />
-              </div>
-
-              <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>AMOUNT:</p>
-                <input
-                  type="text"
-                  value={totalAmount}
-                  onChange={(e) => setTotalAmount(e.target.value)}
-                  style ={editDocumentAmtInputStyle}
                 />
               </div>
 
@@ -260,6 +261,16 @@ const EditDocumentPage = () => {
                   type="text"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
+                  style ={editDocumentAmtInputStyle}
+                />
+              </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>SUPPLIER ID:</p>
+                <input
+                  type="text"
+                  value={supplierID}
+                  onChange={(e) => setSupplierID(e.target.value)}
                   style ={editDocumentDueInputStyle}
                 />
               </div>
@@ -321,14 +332,17 @@ const EditDocumentPage = () => {
                       setEditPopUpOpen(false);
                     }}
                     onSubmit={handleAddRow}
-                    defaultProduct={
-                      editRow !== null ? uploadcontent[editRow].Product : ''
+                    defaultProductCode={
+                      editRow !== null ? uploadcontent[editRow].productCode : ''
                     }
                     defaultQuantity={
-                      editRow !== null ? uploadcontent[editRow].Quantity : ''
+                      editRow !== null ? uploadcontent[editRow].quantity : ''
                     }
                     defaultAmount={
-                      editRow !== null ? uploadcontent[editRow].Amount : ''
+                      editRow !== null ? uploadcontent[editRow].amount : ''
+                    }
+                    defaultProductName={
+                      editRow !== null ? uploadcontent[editRow].productName : ''
                     }
                     isAddMode={editRow === null}
                   />
