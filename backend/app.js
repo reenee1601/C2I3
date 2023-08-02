@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Middleware to parse JSON data
 app.use(bodyParser.json());
 
+// Router setup
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/invoice', invoiceRouter);

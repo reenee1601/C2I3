@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './registerPage.css';
 import { FirstNavBar } from '../../components/firstNavBar/FirstNavBar';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import {
   header,
@@ -33,6 +35,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+
   const [error, setError] = useState({
     fullName: false,
     companyName: false,
@@ -40,6 +43,8 @@ const RegisterPage = () => {
     password: false,
     confirmPassword: false,
   });
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,7 +55,7 @@ const RegisterPage = () => {
       email: email.trim() === '',
       password: password.trim() === '',
       confirmPassword: confirmPassword.trim() === '',
-  };
+    };
 
     if (confirmPassword.trim() !== '' && confirmPassword !== password) {
       newErrors.confirmPassword = true;
@@ -62,7 +67,26 @@ const RegisterPage = () => {
       return;
     }
 
+    // Send the registration data to the server
+    const userData = {
+      name: fullName,
+      company: companyName,
+      email,
+      password,
+    };
+
+    axios
+      .post('http://localhost:8000/users/register', userData)
+      .then((response) => {
+        console.log('User registered:', response.data);
+        navigate('/homepage');
+      })
+      .catch((error) => {
+        console.error('Error registering user:', error);
+        // Handle the error, e.g., show an error message to the user
+      });
   };
+
 
   return (
     <div>
@@ -149,6 +173,7 @@ const RegisterPage = () => {
                 type="submit"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onClick={handleSubmit}
               >
                 Create Account
               </button>
@@ -159,5 +184,6 @@ const RegisterPage = () => {
     </div>
   );
 };
+
 
 export default RegisterPage;

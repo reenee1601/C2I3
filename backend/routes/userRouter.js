@@ -1,13 +1,22 @@
 var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/userController.js');
-const register = userController.register;
+const {register, signin} = userController
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+// Register endpoint --> WORKED!! tested in postman
+router.post('/register', async (request, response) => {
+  try {
+    // Call the register function from the userController
+    await register(request, response);
+  } catch (error) {
+    response.status(500).send({
+      message: 'Error in user registration',
+      error: error.message,
+    });
+  }
 });
 
-router.post('/usersRegister', register);
+// Signin endpoint --> WORKED!! tested in postman
+router.post('/signin', signin);
 
 module.exports = router;

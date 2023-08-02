@@ -24,8 +24,7 @@ const DetailedSoaPage = () => {
       } else {
         console.log("Invalid ID. Cannot make the fetch request.");
       }
-  }, [id]);
-
+  }, []);
 
   const [specificSoaData, setSpecificSoaData] = useState([]);
   const [soaTitle, setSoaTitle] = useState("");
@@ -49,13 +48,34 @@ const DetailedSoaPage = () => {
       setSoaTitle(`SOA #${data._id}`);
       console.log("WELP");
       setTotalAmount(`Total Amount: ${data.totalAmount}`);
-      console.log("WELP");
+      renderTable();
 
     } catch (error) {
       console.error('Error fetching specific SOA data:', error);
     }
   };
-  
+
+  const renderTable = async()=>{
+    // Extract the data from the JSON object
+    const _id = specificSoaData._id;
+    const invoiceID = specificSoaData.invoiceID;
+    const amount = specificSoaData.amount;
+
+    // Get the table element to populate the data
+    const table = document.getElementById('invoiceTable');
+
+    // Generate the table rows dynamically
+    for (let i = 0; i < invoiceID.length; i++) {
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      const cell3 = row.insertCell(2);
+
+      cell1.innerHTML = _id;
+      cell2.innerHTML = invoiceID[i];
+      cell3.innerHTML = amount[i];
+    }
+  }
 
 
   return (
@@ -74,36 +94,15 @@ const DetailedSoaPage = () => {
 
         <div className="soa-detail">
             <h1 style={{soaTitle}}>{soaTitle}</h1>
-            <p style={{supplierName}}>Bakers Room</p>
-            <p style={{dueDate}}>Due Date: 13/07/23</p>
+            <p style={{supplierName}}>{specificSoaData.supplierID}</p>
+            <p style={{dueDate}}>Due Date: {specificSoaData.issuedDate}</p>
         </div>
       </div>
       
       {/* table */}
       <div style={tableContainer}>
         <div style={scrollable}>
-          {/* <Table style={customTable}>
-            <thead className="sticky-top">
-              <tr>
-                <th style={th}>Product</th>
-                <th style={th}>Quantity</th>
-                <th style={th}>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              mockData.soaProductDetails.map((item, id) => 
-              <tr key={id}>
-                <td style={td}>{item.product}</td>
-                <td style={td}>{item.quantity}</td>
-                <td style={td}>{item.amount}</td>
-              </tr>      
-              )  
-            }
-            </tbody>
-          </Table> */}
-
-        <Table style={customTable}>
+        <Table style={customTable} id="invoiceTable">
               <thead className="sticky-top">
                 <tr>
                   <th style={th}>SOA ID</th>
@@ -111,28 +110,20 @@ const DetailedSoaPage = () => {
                   <th style={th}>Amount</th>
                 </tr>
               </thead>
-              <tbody>
+              {/* <tbody>
                 {(console.log(specificSoaData))}
             {(
-                Object.keys(specificSoaData).map((item) => (
-                  <tr key={item}>
-                    <td style={td}>
-                        {specificSoaData[item]}                     
-                    </td>
-                    <td style={td}>
-                        {item.supplierID}
-                    </td>
-                    <td style={td}>
-                        {item.issuedDate}
-                    </td>
-                    <td style={td}>
-                        {item.invoiceID}
-                    </td>
+                invoiceID.map((id, index) => (
+                  <tr key={index}>
+                    <td>{_id}</td>
+                    <td>{id}</td>
+                    <td>{amount[index]}</td>
                   </tr>
                 ))
               )}
-           </tbody>
+           </tbody> */}
           </Table>
+
         </div>
       </div>
 
