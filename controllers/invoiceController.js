@@ -38,15 +38,20 @@ exports.textractData = async function(req, res) { // function for textractData P
 
     } catch (err) {
         console.error('Error performing OCR on file ' + file.originalname, err);
-        res.status(500).json({message: 'Error performing OCR on file ' + file.originalname})
+        res.status(500).json({message: 'Error performing OCR on file ' + file.originalname});
+        return;
     }
 
     // delete the file after operations
-    unlink(file.path, err => {console.log('file deleted'); if (err) {console.log(err)} })
+    unlink(file.path, err => {
+        console.log('file deleted'); 
+        if (err) {
+            console.log(err);} })
     console.log('end of console')
     
     // return the data to the front end
     res.json(ocrData)
+    res.status(200).json(ocrData)
     // res.json({message:'file uploaded successfully at '})
 }
 
