@@ -5,7 +5,8 @@ import { header, suredes, right, inputdiv, checkboxWrapper, checkboxInput, check
           beforeButton, forgetPass, button, split, centered, left, input,
           inputValidationContainer, labelStyle, descriptionStyle, invalidSignin } from "./SigninPageStyle"; 
 import { useNavigate } from 'react-router-dom';
-import mockData from '../../data/mock_data.json'
+import axios from 'axios';
+//import mockData from '../../data/mock_data.json'
 
 const Signin = () => {
 // HOVER BUTTON FUNCTIONALITY
@@ -30,13 +31,13 @@ const [error, setError] = useState({
   password: false,
 });
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const newErrors = {
     email: email.trim() === '',
     password: password.trim() === '',
-};
+  };
 
   setError(newErrors);
 
@@ -44,18 +45,26 @@ const handleSubmit = (e) => {
     return;
   }
 
-  // Check if the entered email and password match any of the mock data
-  const foundUser = mockData.validEmails.find((user) => user.email === email && user.password === password);
+  try {
+    // Send the login data to the backend API
+    const response = await axios.post('http://localhost:8000/users/signin', {
+      email,
+      password,
+    });
 
-  if (foundUser) {
-    // Navigate to the homepage if the user is found in the mock data
-    navigate("/homepage");
-  } else {
-    // Show an error message or perform any other action for invalid login
-    console.log("Invalid email or password");
+    if (response.status === 200) {
+      // If login is successful, navigate to the homepage
+      navigate('/homepage');
+    } else {
+      // Show an error message or perform any other action for invalid login
+      console.log('Invalid email or password');
+      setInvalidLogin(true);
+    }
+  } catch (error) {
+    // Handle errors, e.g., show an error message to the user
+    console.error('Error signing in:', error);
     setInvalidLogin(true);
   }
-
 };
 
 return (
@@ -119,6 +128,7 @@ return (
                 type="submit"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onClick={handleSubmit}
               >
                 Sign In
               </button>
