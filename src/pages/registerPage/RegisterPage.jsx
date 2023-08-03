@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './registerPage.css';
 import { FirstNavBar } from '../../components/firstNavBar/FirstNavBar';
 
@@ -19,8 +19,24 @@ import {
 } from './RegisterPageStyle';
 
 const RegisterPage = () => {
-  // HOVER BUTTON FUNCTIONALITY
 
+  //SUCCESS MESSAGE
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const handleSuccessMessageClose = () => {
+    setShowSuccessMessage(false);
+  };
+
+  useEffect(() => {
+    if (showSuccessMessage) {
+      const timer = setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 1000); // Adjust the time (in milliseconds) as per your requirement
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessMessage]);
+
+  // HOVER BUTTON FUNCTIONALITY
   const [buttonHover, setButtonHover] = useState(false);
 
   const handleMouseEnter = () => {
@@ -55,7 +71,7 @@ const RegisterPage = () => {
       email: email.trim() === '',
       password: password.trim() === '',
       confirmPassword: confirmPassword.trim() === '',
-  };
+    };
 
     if (confirmPassword.trim() !== '' && confirmPassword !== password) {
       newErrors.confirmPassword = true;
@@ -67,11 +83,33 @@ const RegisterPage = () => {
       return;
     }
 
+    setShowSuccessMessage(true);
+    resetForm();
+  };
+
+  //RESTTING
+
+  const resetForm = () => {
+    // Reset all the form fields to empty strings
+    setFullName('');
+    setCompanyName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+
+    // Reset the error object to all false
+    setError({
+      fullName: false,
+      companyName: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+    });
   };
 
   return (
     <div>
-      <div style={{...split, ...left}}>
+      <div style={{ ...split, ...left }}>
         <div style={centered}>
           <div style={descriptionStyle}>
             <h1 style={header}>WELCOME TO SuRe !</h1>
@@ -79,90 +117,102 @@ const RegisterPage = () => {
           </div>
         </div>
       </div>
-
-      <div style={{...split, ...right}}>
-        <div style={centered}>
-          <FirstNavBar />
-
-          <div style={inputdiv}>
-            <form onSubmit={handleSubmit}>
-              <div style={inputValidationContainer}>
-                <input
-                  style={input}
-                  type="text"
-                  name="fullName"
-                  placeholder="Enter Your Full Name"
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-                {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
-
-              <div style={inputValidationContainer}>
-                <input
-                  style={input}
-                  type="text"
-                  name="company"
-                  placeholder="Enter Your Company"
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
-                {error.companyName ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
-
-              <div style={inputValidationContainer}>
-                <input
-                  style={input}
-                  type="email"
-                  name="email"
-                  placeholder="Enter Your Email Address"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
-
-              <div style={inputValidationContainer}>
-                <input
-                  style={input}
-                  type="password"
-                  name="password"
-                  placeholder="Enter Your Password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
-
-              <div style={inputValidationContainer}>
-                <input
-                  style={input}
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Your Password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                 {error.confirmPassword
-                  ? confirmPassword.trim() !== ''
-                    ? <label style={labelStyle}>Passwords mismatch.</label>
-                    : <label style={labelStyle}>This is a required field.</label>
-                  : null}
-              </div>
-
-              <button
-                style={{
-                  ...button,
-                  backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
-                  color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
-                }}
-                type="submit"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                Create Account
-              </button>
-            </form>
+  
+        <div style={{ ...split, ...right }}>
+          <div style={centered}>
+            <FirstNavBar />
+  
+            <div style={inputdiv}>
+              <form onSubmit={handleSubmit}>
+                <div style={inputValidationContainer}>
+                  <input
+                    style={input}
+                    type="text"
+                    name="fullName"
+                    placeholder="Enter Your Full Name"
+                    onChange={(e) => setFullName(e.target.value)}
+                    value={fullName}
+                  />
+                  {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null}
+                </div>
+  
+                <div style={inputValidationContainer}>
+                  <input
+                    style={input}
+                    type="text"
+                    name="company"
+                    placeholder="Enter Your Company"
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    value={companyName}
+                  />
+                  {error.companyName ? <label style={labelStyle}>This is a required field.</label> : null}
+                </div>
+  
+                <div style={inputValidationContainer}>
+                  <input
+                    style={input}
+                    type="email"
+                    name="email"
+                    placeholder="Enter Your Email Address"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  />
+                  {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
+                </div>
+  
+                <div style={inputValidationContainer}>
+                  <input
+                    style={input}
+                    type="password"
+                    name="password"
+                    placeholder="Enter Your Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                  {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
+                </div>
+  
+                <div style={inputValidationContainer}>
+                  <input
+                    style={input}
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm Your Password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={confirmPassword}
+                  />
+                  {error.confirmPassword
+                    ? confirmPassword.trim() !== ''
+                      ? <label style={labelStyle}>Passwords mismatch.</label>
+                      : <label style={labelStyle}>This is a required field.</label>
+                    : null}
+                </div>
+  
+                <button
+                  style={{
+                    ...button,
+                    backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
+                    color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
+                  }}
+                  type="submit"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  Create Account
+                </button>
+  
+                {showSuccessMessage && (
+                  <div>
+                    <p>Account successfully created!</p>
+                  </div>
+                )}
+  
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default RegisterPage;
+    );
+  };
+  
+  export default RegisterPage;
