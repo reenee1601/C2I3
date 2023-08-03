@@ -76,7 +76,7 @@ const EditDocumentPage = () => {
     obj.productCode = stateData.productCode[i];
     obj.quantity = stateData.quantity[i];
     obj.amount = stateData.amount[i];
-    obj.productName = stateData.amount[i];
+    obj.productName = stateData.productName[i];
     tableObjects.push(obj);
   }
 
