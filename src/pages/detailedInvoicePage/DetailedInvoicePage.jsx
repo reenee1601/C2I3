@@ -93,8 +93,7 @@ const DetailedInvoicePage = () => {
                         type="text"
                         value={item.product}
                         onChange={(e) => handleInputChange(rowIndex, 'product', e.target.value)}
-                        // onKeyDown={handleSaveRow(rowIndex)}
-                        onBlur={() => handleSaveRow(rowIndex)}
+                        onKeyDown={handleSaveRow(rowIndex)}
                       />
                     ) : (
                       <span>{item.product}</span>
@@ -108,7 +107,6 @@ const DetailedInvoicePage = () => {
                         value={item.quantity}
                         onChange={(e) => handleInputChange(rowIndex, 'quantity', e.target.value)}
                         onKeyDown={handleSaveRow(rowIndex)}
-                        // onBlur={() => handleSaveRow(rowIndex)}
                       />
                     ) : (
                       <span>{item.quantity}</span>

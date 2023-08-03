@@ -79,17 +79,17 @@ const InvoicePage = () => {
   
   const { globalFilter } = state;
 
-// bottom-part buttons  
-const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  // bottom-part buttons  
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-const handleDropdownItemClick = (option) => {
-  console.log("Selected option:", option);
+  const handleDropdownItemClick = (option) => {
+    console.log("Selected option:", option);
 
   // Perform actions based on the selected option (e.g., export Excel, CSV, or generate tax report)
   // ...
 
-  setIsDropdownVisible(false); // Close the dropdown after selecting an option
-}
+    setIsDropdownVisible(false); // Close the dropdown after selecting an option
+  }
 
   return (
     <div>
@@ -154,7 +154,6 @@ const handleDropdownItemClick = (option) => {
             <div style={popupButton}>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
             </div>
           )}
         </div>
