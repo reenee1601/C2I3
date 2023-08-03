@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDocumentPage, 
           InvoicePage, SoaPage, UploadPage, CompareDocumentPage, ProductPage } from './pages';
+import Signin from './pages/signInPage/Signinpage';
 
 
 const App = () => {
@@ -10,7 +11,7 @@ const App = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route index element = {<RegisterPage />} />
+          <Route index element = {<Signinpage />} />
           <Route path = '/registerpage' element = {<RegisterPage />} />
           <Route path = '/signinpage' element = {<Signinpage />} />
           <Route path = '/homepage' element = {<HomePage />} />
