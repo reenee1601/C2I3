@@ -1,5 +1,3 @@
-process.env['NODE_DEV'] = 'TEST'
-
 const app = require("../app.js"); 
 const supertest = require("supertest");
 const request = supertest(app);
@@ -73,7 +71,7 @@ test('No such email found', async() => {
 });
     
 // password does not match
-test('No such email found', async() => {
+test('Password does not match', async() => {
     const res = await request.post("/users/signin").send({
         email:myemail,
         password:"passwordddddd"

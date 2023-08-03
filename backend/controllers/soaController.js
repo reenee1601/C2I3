@@ -5,16 +5,20 @@ const soaModel = require('../models/soaModel.js');
 
 
 // Function to perform OCR and extract data
-async function performOCRAndExtractDataSOA(filepath) {
+exports.performOCRAndExtractDataSOA = async function performOCRAndExtractDataSOA(filepath) {
+  let ocrDataSOA;
   try {
     // Perform OCR and get the analysis result
-    const ocrDataSOA = await johnPackage.getTextractAnalysis(filepath);
+    ocrDataSOA = await johnPackage.getTextractAnalysis(filepath);
+
+    // if (ocrDataSOA === null || ocrDataSOA === undefined) {
+    //   throw new Error('Invalid OCR data');
+    // }
 
     // Extract forms and tables from the OCR result using "john-package" functions
     const formsDataSOA = johnPackage.extractForms(ocrDataSOA, dict3);
     const tablesDataSOA = johnPackage.extractTables(ocrDataSOA, dict4);
-    //transform the json data into object format
-    //const data = JSON.parse(formsDataSOA);
+
     const mappedDataSOA = {
       invoiceID: tablesDataSOA['Invoice ID'] || '',
       issuedDate: tablesDataSOA['Issued Date'] || '',
@@ -25,6 +29,7 @@ async function performOCRAndExtractDataSOA(filepath) {
     };
     
     return mappedDataSOA;
+    
   } catch (error) {
     console.error('Error performing OCR and extracting data:', error);
     throw error;
@@ -32,7 +37,7 @@ async function performOCRAndExtractDataSOA(filepath) {
 }
 
 // Function to upload data to MongoDB
-async function uploadDataToMongoDBSOA(data) {
+exports.uploadDataToMongoDBSOA = async function uploadDataToMongoDBSOA(data) {
 
   try {
     // TODO: make this connection more modular
@@ -48,11 +53,12 @@ async function uploadDataToMongoDBSOA(data) {
     console.log(data);
   } catch (error) {
     console.error('Error uploading data to MongoDB:', error);
+    throw error;
   } finally {
     mongoose.disconnect();
   }
 }
-async function getSOADataFromMongoDB() {
+exports.getSOADataFromMongoDB = async function getSOADataFromMongoDB() {
   try {
 
     const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
@@ -72,7 +78,7 @@ async function getSOADataFromMongoDB() {
 }
 
 // Example usage in a controller function
-async function processOCRAndUploadToMongoDBSOA(filepath) {
+exports.processOCRAndUploadToMongoDBSOA = async function processOCRAndUploadToMongoDBSOA(filepath) {
   try {
     // Perform OCR and extract data
     const extractedDataSOA = await performOCRAndExtractDataSOA(filepath);
