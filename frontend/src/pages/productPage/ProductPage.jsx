@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar'
-import { useState } from 'react'
 import { AiFillPlusCircle } from "react-icons/ai"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
@@ -9,6 +8,33 @@ import 'swiper/css/bundle';
 import AddProduct from '../../components/addProduct/AddProduct';
 
 const ProductPage = () => {
+  useEffect(() => {
+    // Fetch SOA data from the backend when the component mounts
+    fetchProdData();
+  }, []);
+
+  const fetchProdData = async () => {
+    try {
+      // Make an API call to your backend to fetch SOA data
+      const response = await fetch("http://localhost:8000/product/getProdData", {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json();
+      // Update the state with the fetched data
+      // TODO: escape this error of empty array cannot be mapped when no data is fetched. 
+      setProdData(data);
+
+      console.log("SOA data fetched successfully!");
+
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching SOA data:", error);
+    }
+  };
+  const [prodData, setProdData] = useState([]);
+  console.log(prodData);
 
     const productslider = {
         marginLeft: "150px",
@@ -36,67 +62,69 @@ const ProductPage = () => {
         lineHeight: "normal",
     }
 
-    let productInfo = [
-        { 
-            image: require("../../asserts/whitefabric.png" ),
-            header: "White Silk Fabric",
-            description: "Product Description",
-            measurement: "Unit of Measurement",
-            cost: "Product Cost",
-            quantity: "Minimum Quantity",
+    // let productInfo = [
+    //     { 
+    //         image: require("../../asserts/whitefabric.png" ),
+    //         header: "White Silk Fabric",
+    //         description: "Product Description",
+    //         measurement: "Unit of Measurement",
+    //         cost: "Product Cost",
+    //         quantity: "Minimum Quantity",
 
-            barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
-        },
+    //         barcode: require("../../asserts/barcode.png" ),
+    //         sku: "124284928491497"
+    //     },
 
-        { 
-            image: require("../../asserts/whitefabric.png" ),
-            header: "White Silk Fabric",
-            description: "Product Description",
-            measurement: "Unit of Measurement",
-            cost: "Product Cost",
-            quantity: "Minimum Quantity",
+    //     { 
+    //         image: require("../../asserts/whitefabric.png" ),
+    //         header: "White Silk Fabric",
+    //         description: "Product Description",
+    //         measurement: "Unit of Measurement",
+    //         cost: "Product Cost",
+    //         quantity: "Minimum Quantity",
 
-            barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
-        },
+    //         barcode: require("../../asserts/barcode.png" ),
+    //         sku: "124284928491497"
+    //     },
 
-        { 
-            image: require("../../asserts/whitefabric.png" ),
-            header: "White Silk Fabric",
-            description: "Product Description",
-            measurement: "Unit of Measurement",
-            cost: "Product Cost",
-            quantity: "Minimum Quantity",
+    //     { 
+    //         image: require("../../asserts/whitefabric.png" ),
+    //         header: "White Silk Fabric",
+    //         description: "Product Description",
+    //         measurement: "Unit of Measurement",
+    //         cost: "Product Cost",
+    //         quantity: "Minimum Quantity",
 
-            barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
-        },
+    //         barcode: require("../../asserts/barcode.png" ),
+    //         sku: "124284928491497"
+    //     },
 
-        { 
-            image: require("../../asserts/whitefabric.png" ),
-            header: "White Silk Fabric",
-            description: "Product Description",
-            measurement: "Unit of Measurement",
-            cost: "Product Cost",
-            quantity: "Minimum Quantity",
+    //     { 
+    //         image: require("../../asserts/whitefabric.png" ),
+    //         header: "White Silk Fabric",
+    //         description: "Product Description",
+    //         measurement: "Unit of Measurement",
+    //         cost: "Product Cost",
+    //         quantity: "Minimum Quantity",
 
-            barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
-        },
+    //         barcode: require("../../asserts/barcode.png" ),
+    //         sku: "124284928491497"
+    //     },
 
-        { 
-            image: require("../../asserts/whitefabric.png" ),
-            header: "White Silk Fabric",
-            description: "Product Description",
-            measurement: "Unit of Measurement",
-            cost: "Product Cost",
-            quantity: "Minimum Quantity",
+    //     { 
+    //         image: require("../../asserts/whitefabric.png" ),
+    //         header: "White Silk Fabric",
+    //         description: "Product Description",
+    //         measurement: "Unit of Measurement",
+    //         cost: "Product Cost",
+    //         quantity: "Minimum Quantity",
 
-            barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
-        },
-      ]
+    //         barcode: require("../../asserts/barcode.png" ),
+    //         sku: "124284928491497"
+    //     },
+    //   ]
+    let productInfo = prodData;
+    console.log(productInfo);
 
       const productSlide = (product, index) => {
 
@@ -149,13 +177,11 @@ const ProductPage = () => {
             <SwiperSlide key = {index} style = {productstyle}>
               <div>
                 <img style={imgproduct} src={product.image} alt="Error"></img>
-                <h1 style={h1product}>{product.header}</h1>
-                <p style={pproduct}>{product.description}</p>
-                <p style={pproduct}>{product.measurement}</p>
-                <p style={pproduct}>{product.cost}</p>
+                <h1 style={h1product}>{product.productName}</h1>
+                <p style={pproduct}>{product.price}</p>
+                <p style={pproduct}>{product.productCode}</p>
                 <p style={pproduct}>{product.quantity}</p>
-                <img src={product.barcode} alt="Error"></img>
-                <p style={pproduct}>{product.sku}</p>
+                {/* <img src={product.barcode} alt="Error"></img> */}
               </div>
             </SwiperSlide>
         )

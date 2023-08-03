@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../db');
 
 // Define the schema
 const invoiceSchema = new mongoose.Schema({

@@ -11,8 +11,12 @@ var usersRouter = require('./routes/userRouter');
 var invoiceRouter = require('./routes/invoiceRouter');
 var soaRouter = require('./routes/soaRouter');
 var creditNoteRouter = require('./routes/creditNoteRouter');
+<<<<<<< Updated upstream
 var taxReportRouter = require('./routes/taxReportRouter');
 
+=======
+var productRouter = require('./routes/productRouter');
+>>>>>>> Stashed changes
 
 var app = express();
 
@@ -36,7 +40,11 @@ app.use('/users', usersRouter);
 app.use('/invoice', invoiceRouter);
 app.use('/soa', soaRouter);
 app.use('/cd', creditNoteRouter);
+<<<<<<< Updated upstream
 app.use('/tax', taxReportRouter);
+=======
+app.use('/product', productRouter);
+>>>>>>> Stashed changes
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
