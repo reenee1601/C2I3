@@ -45,19 +45,21 @@ mapping: {'INVOICE NO.':'invoiceID','Tax Invoice':'invoiceID',
 const tablesDict = { // list of table headers you want to extract
 headers: ['productCode', 'quantity', 'amount', 'productName' ],
 mapping: {
-'ITEM ID' : 'Product Code','Produc Code': 'Product Code','Product Code': 'Product Code'
- ,'QTY': 'Quantity', 'Qty' : 'Quantity', 'QUANTITY': 'Quantity', 
- 'AMOUNT': 'Amount',  'Amount': 'Amount', 
-'Description': 'Product Name','Description': 'Product Name','DESCRIPTION OF GOODS': 'Product Name',
-'DESCRIPTION': 'Product Name' }
+'ITEM ID' :'productCode','Produc Code':'productCode','Product Code':'productCode'
+ ,'QTY':'quantity', 'Qty' :'quantity', 'QUANTITY':'quantity', 
+ 'AMOUNT':'amount',  'Amount':'amount', 
+'Description':'productName','Description':'productName','DESCRIPTION OF GOODS':'productName',
+'DESCRIPTION':'productName' }
 };
+
 
 ////// NON EXPORTED FUNCTIONS
 ////// EXPORTED FUNCTIONS
 exports.scanData = async function(req, res) { // function for textractData POST endpoint
     console.log('start of console');
-    file = await req.file;
-    if (!file) {res.status(500).json({message: 'no file sent'})}
+    //file = await req.file;
+    file = req.file;
+    if (!file) {return res.status(500).json({message: 'no file sent'})}
     var ocrData;
 
     // do file operations here

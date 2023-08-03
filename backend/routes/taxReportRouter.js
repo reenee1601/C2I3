@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const generateTaxReport = require('../controllers/generateTaxReport'); 
+const generateTaxReport = require('../controllers/taxReportController'); 
 
 router.get('/tax-report', async (req, res, next) => {
   try {

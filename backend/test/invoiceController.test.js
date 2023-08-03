@@ -17,7 +17,7 @@ scanData should return 200 status and empty data for successful OCR but no extra
 */
 
 const { scanData, uploadData, getData } = require("../controllers/invoiceController");
-const { uploadDataInvoice } = require("../controllers/invoiceController_old");
+//const { uploadDataInvoice } = require("../controllers/invoiceController_old");
 const utils = require("../utils/utils");
 
 const tableDict = {
