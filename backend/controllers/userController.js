@@ -16,6 +16,37 @@ exports.register = async function(req, res, next){
           message: 'Email already exists. Please use a different email.',
         });
       }
+      
+      // Check if the email is missing or empty
+      if (!email || email.trim() === '') {
+        return res.status(400).send({
+          message: 'Email is required.',
+        });
+      }
+
+      // Check if the email is too long
+      const maxEmailLength = 255; // Assuming a maximum email length of 255 characters
+      if (email.length > maxEmailLength) {
+        return res.status(400).send({
+          message: 'Email is too long. Please use a shorter email.',
+        });
+      }
+
+      // Check if the password is too short
+      const minPasswordLength = 8; // Assuming a minimum password length of 8 characters
+      if (password.length < minPasswordLength) {
+        return res.status(400).send({
+          message: 'Password is too short. Please use a longer password.',
+        });
+      }
+
+      // Check if the name is too long
+      const maxNameLength = 50; // Assuming a maximum name length of 50 characters
+      if (name.length > maxNameLength) {
+        return res.status(400).send({
+          message: 'Name is too long. Please use a shorter name.',
+        });
+      }
   
       // Hash the password with bcrypt
       const saltRounds = 10;
