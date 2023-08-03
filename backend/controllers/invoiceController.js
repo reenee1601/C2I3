@@ -84,13 +84,17 @@ exports.scanData = async function(req, res) { // function for textractData POST 
 
 exports.uploadData = async function(req, res) { // function for uploadData POST endpoint
     try{data = req.body;
+      if (!data) {
+        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+      }
     await Invoice.create(data);
 
+
     console.log()
-    res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
+    return res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
     catch (err) {
         console.error('Error uploading Invoice to MongoDB', err);
-        res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
     }
 }
 

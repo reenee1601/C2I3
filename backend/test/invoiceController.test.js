@@ -1,4 +1,26 @@
 //worked
+//const app = require("../app.js"); 
+//const supertest = require("supertest");
+//const request = supertest(app);
+const mongoose = require('mongoose')
+const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+
+beforeAll(async () => {
+    //connection to mongoDB database
+
+    await mongoose
+      .connect(url,{
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .then(() => {
+        console.log("Successfully connect to MongoDB.");
+      })
+      .catch(err => {
+        console.error("Connection error", err);
+        process.exit();
+      });
+});
 /*//Boundary Test Cases:
 
 scanData should handle OCR failure and return 500 status.
@@ -185,7 +207,8 @@ describe("Invoice Controller Tests", () => {
 
 
   test("ScanData should perform OCR successfully and return data", async () => {
-    const req = { file: { path: "/mocked/path/to/file.txt" } };
+    //const req = { file: { path: "/mocked/path/to/file.txt" } };
+    const req = { file: { path: "test/censored.jpg" } };
     const res = {
       status: jest.fn(() => res),
       json: jest.fn(),
@@ -294,7 +317,8 @@ describe("Invoice Controller Tests", () => {
 
     await scanData(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(200);
+    //expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.status).toEqual(200);
     expect(res.json).toHaveBeenCalledWith({}); // Empty OCR data
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledTimes(1);
@@ -480,4 +504,11 @@ describe("Invoice Controller Tests", () => {
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledTimes(1);
   });
+});
+
+
+afterAll(async () => {
+    await mongoose.connection.close();
+    //await request.post('/close-mongoose-connection');
+    console.log('connection closed');
 });
