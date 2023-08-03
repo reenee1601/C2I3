@@ -117,7 +117,8 @@ const RegisterPage = () => {
   
         <div style={{ ...split, ...right }}>
           <div style={centered}>
-            <FirstNavBar />
+
+          <FirstNavBar />
   
             <div style={inputdiv}>
               <form onSubmit={handleSubmit}>

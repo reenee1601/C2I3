@@ -87,24 +87,28 @@ const UploadPage = () => {
         <div style={documentTypeStyle}>
           <h1 style={documentTypeH1TextStyle}>DOCUMENT TYPE:</h1>
           <button
+            data-testid="btn-invoice"
             style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("INVOICE")}
           >
             INVOICE
           </button>
           <button
+            data-testid="btn-invoice"
             style={selectedType === "STATEMENT" ? selectedSOAButtonStyle : unselectedSOAButtonStyle}
             onClick={() => handleDocumentTypeClick("STATEMENT")}
           >
             STATEMENT OF{'\n'}ACCOUNT
           </button>
           <button
+            data-testid="btn-invoice"
             style={selectedType === "PAYMENT" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("PAYMENT")}
           >
             PAYMENT
           </button>
           <button
+            data-testid="btn-invoice"
             style={selectedType === "CREDIT NOTE" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("CREDIT NOTE")}
           >
@@ -118,7 +122,7 @@ const UploadPage = () => {
           onClick={() => document.querySelector(".input-field").click()}>
             <input
               type="file"
-              accept="pdf/*"
+              accept="png/*"
               className="input-field"
               hidden
               onChange={(e) => {
@@ -158,9 +162,13 @@ const UploadPage = () => {
 
       <div style={uploadconfirm}>
         <Link to={image ? "/editdocumentpage" : "#"}>
-          <button style={uploadsubmitbutton} onClick={handleSubmit}>Submit</button>
+          <button 
+          data-testid="submit-button"
+          style={uploadsubmitbutton} onClick={handleSubmit}>Submit</button>
         </Link>
-          <button style={uploadcancelbutton} 
+          <button 
+          data-testid="cancel-button"
+          style={uploadcancelbutton} 
                 onClick = {() => {
                 setFileName('No File Selected')
                 setImage(null)
