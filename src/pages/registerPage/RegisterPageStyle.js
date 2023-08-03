@@ -97,3 +97,14 @@ export const left = {
 export const right = {
   right: 0,
 };
+
+export const successfulRegisterStyle = {
+  color: "#535353",
+  fontFamily: "Inter",
+  fontSize: "15px",
+  fontStyle: "italic",
+  fontWeight: "500",
+  lineHeight: "normal",
+
+  marginTop: "15px",
+}
