@@ -5,6 +5,25 @@ const {
     getSOADataFromMongoDB,
     uploadDataSOA
   } = require('../controllers/soaController');
+  const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+  const mongoose = require('mongoose');
+
+  beforeAll(async () => {
+    //connection to mongoDB database
+
+    await mongoose
+      .connect(url,{
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .then(() => {
+        console.log("Successfully connect to MongoDB.");
+      })
+      .catch(err => {
+        console.error("Connection error", err);
+        process.exit();
+      });
+});
   
   // Mock the john-package module and other required modules
   jest.mock('john-package', () => ({
@@ -239,3 +258,9 @@ describe('uploadDataToMongoDBSOA', () => {
     jest.restoreAllMocks();
   });
   
+// close the mongoose connection
+afterAll(async () => {
+    await mongoose.connection.close();
+    //await request.post('/close-mongoose-connection');
+    console.log('connection closed');
+});
