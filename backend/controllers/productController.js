@@ -28,10 +28,13 @@ async function uploadDataToMongoDBProd(data) {
 exports.handleUploadProd = async function handleUploadProd(req, res, next){
   try{
     const data = req.body;
+    console.log(data);
     await uploadDataToMongoDBProd(data);
     console.log('OCR data extracted and uploaded to MongoDB successfully!');
+    res.status(200).json({ message: 'File uploaded and data extracted successfully!' });
   } catch (error) {
     console.error('Error processing OCR and uploading to MongoDB:', error);
+    res.status(500).json({ error: 'Error uploading file and extracting data.' });
   }
 
 }

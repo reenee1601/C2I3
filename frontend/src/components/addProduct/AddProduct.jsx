@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { TbPhoto, TbFileBarcode} from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
+import axios from 'axios';
 
 import "./addProduct.css"
 
@@ -89,27 +90,52 @@ const productinputs = {
         // Get the values of the input fields here
         const productName = document.querySelector('input[placeholder="PRODUCT NAME"]').value;
         const productDescription = document.querySelector('textarea[placeholder="PRODUCT DESCRIPTION"]').value;
-        const measurementUnits = document.querySelector('input[placeholder="MEASUREMENT UNITS"]').value;
         const productCost = document.querySelector('input[placeholder="PRODUCT COST"]').value;
         const minimumQuantity = document.querySelector('input[placeholder="MINIMUM QUANTITY"]').value;
         const skuNumber = document.querySelector('input[placeholder="SKU NUMBER"]').value;
       
         const newProduct = {
-          image: product,
-          header: productName,
-          description: productDescription,
-          measurement: measurementUnits,
-          cost: productCost,
+          image: "",
+          productName: productName,
+          supplierID: "",
+          price: productCost,
+          productCode: skuNumber,
           quantity: minimumQuantity,
-          barcode: barcode,
-          sku: skuNumber,
+          description: productDescription,
         };
       
         // Call the onAddProduct function passed as a prop to add the new product
-        props.onAddProduct(newProduct);
+        onAddProduct(newProduct);
         // Close the popup after submitting
         props.setTrigger(false);
-      };      
+      };
+
+      const onAddProduct = async (newProduct) => {
+    //     try {
+    //         // Make an API call to your backend to fetch SOA data
+    //         console.log(newProduct);
+    //         const response = await fetch("http://localhost:8000/product/uploadDataProd", {
+    //         headers: {
+    //           'Content-Type': 'application/json'
+    //         }, 
+    //         method: "POST",
+    //         body: newProduct 
+    //       })
+    //       const data = await response.json();
+    //         console.log("Prod data posted successfully!");
+      
+    //         console.log(response);
+    //       } catch (error) {
+    //         console.error("Error fetching Prod data:", error);
+    //       }
+        let response = await axios // wait for the data to be scanned
+        .post("http://localhost:8000/product/uploadDataProd", newProduct, {
+        // headers: {
+        //     "Content-Type": "multipart/form-data",
+        // },
+        })
+        console.log(response);
+      }
     
   return (props.trigger) ? (
     <div className = "popup2">
@@ -137,11 +163,11 @@ const productinputs = {
 
             <input style={productinputs} type="text" placeholder="PRODUCT NAME"></input>
             <textArea className= "productTextArea" style={producttextarea} type="text" placeholder="PRODUCT DESCRIPTION"></textArea>
-            <input style={productinputs} type="text" placeholder="MEASUREMENT UNITS"></input>
+            {/* <input style={productinputs} type="text" placeholder="MEASUREMENT UNITS"></input> */}
             <input style={productinputs} type="text" placeholder="PRODUCT COST"></input>
             <input style={productinputs} type="text" placeholder="MINIMUM QUANTITY"></input>
             
-            <form className = "barcodeimage"
+            {/* <form className = "barcodeimage"
             onClick={() => document.querySelector(".barcode-image").click()}>
                 <input type="file" accept="png/*" className ="barcode-image" hidden
                 onChange={({ target: {files}}) => {
@@ -155,7 +181,7 @@ const productinputs = {
                 :
                 <TbFileBarcode color="#535353" size={30}/>
                 }
-            </form>
+            </form> */}
 
             <input style={productinputs} type="text" placeholder="SKU NUMBER"></input>
 

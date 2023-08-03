@@ -62,67 +62,6 @@ const ProductPage = () => {
         lineHeight: "normal",
     }
 
-    // let productInfo = [
-    //     { 
-    //         image: require("../../asserts/whitefabric.png" ),
-    //         header: "White Silk Fabric",
-    //         description: "Product Description",
-    //         measurement: "Unit of Measurement",
-    //         cost: "Product Cost",
-    //         quantity: "Minimum Quantity",
-
-    //         barcode: require("../../asserts/barcode.png" ),
-    //         sku: "124284928491497"
-    //     },
-
-    //     { 
-    //         image: require("../../asserts/whitefabric.png" ),
-    //         header: "White Silk Fabric",
-    //         description: "Product Description",
-    //         measurement: "Unit of Measurement",
-    //         cost: "Product Cost",
-    //         quantity: "Minimum Quantity",
-
-    //         barcode: require("../../asserts/barcode.png" ),
-    //         sku: "124284928491497"
-    //     },
-
-    //     { 
-    //         image: require("../../asserts/whitefabric.png" ),
-    //         header: "White Silk Fabric",
-    //         description: "Product Description",
-    //         measurement: "Unit of Measurement",
-    //         cost: "Product Cost",
-    //         quantity: "Minimum Quantity",
-
-    //         barcode: require("../../asserts/barcode.png" ),
-    //         sku: "124284928491497"
-    //     },
-
-    //     { 
-    //         image: require("../../asserts/whitefabric.png" ),
-    //         header: "White Silk Fabric",
-    //         description: "Product Description",
-    //         measurement: "Unit of Measurement",
-    //         cost: "Product Cost",
-    //         quantity: "Minimum Quantity",
-
-    //         barcode: require("../../asserts/barcode.png" ),
-    //         sku: "124284928491497"
-    //     },
-
-    //     { 
-    //         image: require("../../asserts/whitefabric.png" ),
-    //         header: "White Silk Fabric",
-    //         description: "Product Description",
-    //         measurement: "Unit of Measurement",
-    //         cost: "Product Cost",
-    //         quantity: "Minimum Quantity",
-
-    //         barcode: require("../../asserts/barcode.png" ),
-    //         sku: "124284928491497"
-    //     },
-    //   ]
     let productInfo = prodData;
     console.log(productInfo);
 
@@ -177,10 +116,11 @@ const ProductPage = () => {
             <SwiperSlide key = {index} style = {productstyle}>
               <div>
                 <img style={imgproduct} src={product.image} alt="Error"></img>
-                <h1 style={h1product}>{product.productName}</h1>
-                <p style={pproduct}>{product.price}</p>
-                <p style={pproduct}>{product.productCode}</p>
-                <p style={pproduct}>{product.quantity}</p>
+                <h1 style={h1product}>Name: {product.productName}</h1>
+                <p style={pproduct}>Price: {product.price}</p>
+                <p style={pproduct}>Product Code: {product.productCode}</p>
+              <p style={pproduct}>Quantity: {product.quantity}</p>
+              <p style={pproduct}>Description: {product.description}</p>
                 {/* <img src={product.barcode} alt="Error"></img> */}
               </div>
             </SwiperSlide>
