@@ -138,34 +138,21 @@ const SoaPage = () => {
               </tr>
             </thead>
             <tbody>
-            {(
+              {soaData.length > 0 ? ( // Check if data has been fetched
                 soaData.map((item) => (
                   <tr key={item._id}>
-                    <td style={td}>
-                      <Link to={`/detailedsoapage/${item._id}`} className="soaID-link">
-                        {item._id}
-                        
-                      </Link>
-                      
-                    </td>
-                    <td style={td}>
-                      <Link to={`/detailedsoapage/${item._id}`} className="supplier-link">
-                        {item.supplierID}
-                      </Link>
-                    </td>
-                    <td style={td}>
-                      <Link to={`/detailedsoapage/${item._id}`} className="amount-link">
-                        {item.totalAmount}
-                      </Link>
-                    </td>
+                    {/* ... Table cell JSX code ... */}
                   </tr>
                 ))
+              ) : (
+                <tr>
+                  <td colSpan={3}>Loading data...</td>
+                </tr>
               )}
             </tbody>
           </Table>
         </div>
       </div>
-
       <div style={bottomPart}>
         {/* "Export" button */}
         <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
