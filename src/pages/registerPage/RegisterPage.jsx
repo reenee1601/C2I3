@@ -15,6 +15,7 @@ import {
   left,
   right,
   centered,
+  successfulRegisterStyle
   
 } from './RegisterPageStyle';
 
@@ -23,15 +24,11 @@ const RegisterPage = () => {
   //SUCCESS MESSAGE
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const handleSuccessMessageClose = () => {
-    setShowSuccessMessage(false);
-  };
-
   useEffect(() => {
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
         setShowSuccessMessage(false);
-      }, 1000); // Adjust the time (in milliseconds) as per your requirement
+      }, 2000); // Adjust the time (in milliseconds) as per your requirement
       return () => clearTimeout(timer);
     }
   }, [showSuccessMessage]);
@@ -202,8 +199,8 @@ const RegisterPage = () => {
                 </button>
   
                 {showSuccessMessage && (
-                  <div>
-                    <p>Account successfully created!</p>
+                  <div style={successfulRegisterStyle}>
+                    <p>Account registered!</p>
                   </div>
                 )}
   
