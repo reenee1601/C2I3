@@ -113,7 +113,7 @@ const UploadPage = () => {
     console.log('set ocrData');
     setOcrData(response.data);
     console.log(ocrData);
-    navigate('/invoice/editdocumentpage', {state: response.data})
+    navigate('/invoice/editdocumentpage', {state: response.data, url:image})
     
       /*.then((response) => {
         // Handle the successful response from the backend if needed.

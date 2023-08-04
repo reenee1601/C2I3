@@ -15,35 +15,38 @@ import {
     errorStyle
   } from './EditPopUpStyle';
 
-  const EditPopUp = ({ closeEditPopUp, onSubmit, defaultProduct, defaultQuantity, defaultAmount, isAddMode }) => {
+  const EditPopUp = ({ closeEditPopUp, onSubmit, defaultProductCode, defaultQuantity, defaultAmount, defaultProductName, isAddMode }) => {
     const [formState, setFormState] = useState({
-      product: isAddMode ? '' : defaultProduct || '',
+      productName: isAddMode ? '' : defaultProductName || '',
       quantity: isAddMode ? '' : defaultQuantity || '',
-      amount: isAddMode ? '' : defaultAmount || ''
+      amount: isAddMode ? '' : defaultAmount || '',
+      productCode: isAddMode ? '' : defaultProductCode || ''
     });
   
     useEffect(() => {
       if (isAddMode) {
         // If it's Add mode, reset the form fields
         setFormState({
-          product: '',
+          productCode: '',
           quantity: '',
           amount: '',
+          productName: ''
         });
       } else {
         // If it's Edit mode, set the form fields with default values
         setFormState({
-          product: defaultProduct || '',
+          productCode: defaultProductCode || '',
           quantity: defaultQuantity || '',
           amount: defaultAmount || '',
+          productName: defaultProductName || '',
         });
       }
-    }, [defaultProduct, defaultQuantity, defaultAmount, isAddMode]);
+    }, [defaultProductCode, defaultQuantity, defaultAmount, defaultProductName, isAddMode]);
 
   const [errors, setErrors] = useState("")
 
   const validateForm = () => {
-    if(formState.product && formState.amount && formState.quantity) {
+    if(formState.productCode && formState.amount && formState.quantity && formState.productCode) {
       setErrors("")
       return true;
     }
@@ -80,9 +83,10 @@ import {
     } else {
       // For Edit mode, set the formState to the default values for the current row
       setFormState({
-        product: defaultProduct || "",
+        productCode: defaultProductCode || "",
         quantity: defaultQuantity || "",
         amount: defaultAmount || "",
+        productName: defaultProductName || "",
       });
     }
   };
@@ -100,9 +104,14 @@ import {
 
               <div style={addRowInputStyle}>
 
-                <div style={addStyle}>
+    {/*<div style={addStyle}>
                   <label style={addLabelStyle} htmlFor='product'>PRODUCT:  </label>
                   <input style= {addInputStyle} name="product" value={formState.product} onChange={handleChange}/>
+                </div>*/}
+      
+                <div style={addStyle}>
+                  <label style={addLabelStyle} htmlFor='productCode'>PRODUCT CODE:  </label>
+                  <input style= {addInputStyle} name="productCode" value={formState.productCode} onChange={handleChange}/>
                 </div>
 
                 <div style={addStyle}>
@@ -113,6 +122,11 @@ import {
                 <div style={addStyle}>
                   <label style={addLabelStyle} htmlFor="amount">AMOUNT:</label>
                   <input style= {addInputStyle} name="amount" value={formState.amount} onChange={handleChange}/>
+                </div>
+
+                <div style={addStyle}>
+                  <label style={addLabelStyle} htmlFor='productName'>PRODUCT NAME:  </label>
+                  <input style= {addInputStyle} name="productName" value={formState.productName} onChange={handleChange}/>
                 </div>
 
               </div>

@@ -43,6 +43,7 @@ import {
 const EditDocumentPage = () => {
   const location = useLocation(); // get the OCR data from the upload page
   const stateData = location.state;
+  const [image, setImage] = useState(location.url);
 
   /*const [invoiceId, setInvoiceId] = useState(stateData.invoiceID); // State for invoice ID
   const [supplier, setSupplier] = useState(""); // State for supplier
@@ -229,7 +230,7 @@ const EditDocumentPage = () => {
           <div style={editDocumentContainer}>
 
             <div style={imageStyle}>
-              <img src="not-found.png" />
+              <img src={image} />
             </div>
 
             <div style={scanContentStyle}>
@@ -275,7 +276,36 @@ const EditDocumentPage = () => {
                 />
               </div>
 
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>TOTAL BEFORE GST:</p>
+                <input
+                  type="text"
+                  value={totalBeforeGST}
+                  onChange={(e) => setTotalBeforeGST(e.target.value)}
+                  style ={editDocumentDueInputStyle}
+                />
+              </div>
             </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>GST</p>
+                <input
+                  type="text"
+                  value={GST}
+                  onChange={(e) => setGST(e.target.value)}
+                  style ={editDocumentDueInputStyle}
+                />
+              </div>
+
+              <div style={indiInputStyle}>
+                <p style ={editDocumentIndiPStyle}>TOTAL AFTER GST:</p>
+                <input
+                  type="text"
+                  value={totalAfterGST}
+                  onChange={(e) => setTotalAfterGST(e.target.value)}
+                  style ={editDocumentDueInputStyle}
+                />
+              </div>
 
               <div style={tableContainerStyle}>
                 <table style={tableStyle} {...getTableProps()}>
