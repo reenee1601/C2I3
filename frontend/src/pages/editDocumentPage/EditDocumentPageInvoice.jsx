@@ -45,25 +45,23 @@ const EditDocumentPage = () => {
   const stateData = location.state;
   const [image, setImage] = useState(location.url);
 
-  /*const [invoiceId, setInvoiceId] = useState(stateData.invoiceID); // State for invoice ID
-  const [supplier, setSupplier] = useState(""); // State for supplier
-  const [totalAmount, setTotalAmount] = useState(""); 
-  const [dueDate, setDueDate] = useState(""); */
+  // Function to clean numerical fields
+  const getNumber = (s) => { return parseFloat( s.replace( /[^0-9.]+/g , '') ); }
 
   // Form Data
   const [invoiceID, setInvoiceID] = useState(stateData.invoiceID);
-//  const [invoiceID, setInvoiceID] = useState('Loading...');
   const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
   const [dueDate, setDueDate] = useState(stateData.dueDate);
   const [supplierID, setSupplierID] = useState(stateData.supplierID);
-  const [totalBeforeGST, setTotalBeforeGST] = useState(stateData.totalBeforeGST);
-  const [totalAfterGST, setTotalAfterGST] = useState(stateData.totalAfterGST);
-  const [GST, setGST] = useState(stateData.GST);
+  const [totalBeforeGST, setTotalBeforeGST] = useState( getNumber(stateData.totalBeforeGST) );
+  const [totalAfterGST, setTotalAfterGST] = useState( getNumber(stateData.totalAfterGST) );
+  const [GST, setGST] = useState( getNumber(stateData.GST) );
   // Array Data
   const [productCode, setProductCode] = useState(stateData.productCode);
   const [quantity, setQuantity] = useState(stateData.quantity);
   const [amount, setAmount] = useState(stateData.amount);
   const [productName, setProductName] = useState(stateData.productName);
+
 
 
   // Now to initialise the table data
@@ -75,8 +73,10 @@ const EditDocumentPage = () => {
   for (let i = 0; i < tableLength; i++) {
     let obj = {};
     obj.productCode = stateData.productCode[i];
-    obj.quantity = stateData.quantity[i];
-    obj.amount = stateData.amount[i];
+    //obj.quantity = stateData.quantity[i];
+    //obj.amount = stateData.amount[i];
+    obj.quantity =  getNumber(stateData.quantity[i]);
+    obj.amount =  getNumber(stateData.amount[i]);
     obj.productName = stateData.productName[i];
     tableObjects.push(obj);
   }
@@ -154,8 +154,8 @@ const EditDocumentPage = () => {
       // Add mode: Add a new row
       const newRow = {
         productCode: newRowData.productCode,
-        quantity: newRowData.quantity,
-        amount: newRowData.amount,
+        quantity: getNumber(newRowData.quantity),
+        amount:  getNumber(newRowData.amount),
         productName: newRowData.productName
       };
       setUploadContent((prevContent) => [...prevContent, newRow]);
@@ -163,8 +163,8 @@ const EditDocumentPage = () => {
       // Edit mode: Update the existing row
       const updatedRow = {
         productCode: newRowData.productCode,
-        quantity: newRowData.quantity,
-        amount: newRowData.amount,
+        quantity:  getNumber(newRowData.quantity),
+        amount:  getNumber(newRowData.amount),
         productName: newRowData.productName
       };
       const updatedContent = [...uploadcontent];
