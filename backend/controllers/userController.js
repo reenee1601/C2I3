@@ -1,8 +1,13 @@
-const mongoose = require('mongoose');
 const userModel = require('../models/userModel.js');
 const connection = require('../db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
+// Generate a secure random secret key
+const secretKey = crypto.randomBytes(32).toString('hex');
+console.log('Generated Secret Key:', secretKey);
+
 
 exports.register = async function(req, res, next){
     const { email, password, company, name } = req.body;
@@ -102,9 +107,15 @@ exports.signin = async function(req, res, next){
         userId: user._id,
         userEmail: user.email,
       },
-      'RANDOM-TOKEN', // Replace "RANDOM-TOKEN" with your actual JWT secret key
+      secretKey,
       { expiresIn: '24h' }
     );
+
+    // Set user session
+    req.session.user = {
+      userId: user._id,
+      userEmail: user.email,
+    };
 
     // Return success response
     res.status(200).send({
@@ -117,5 +128,14 @@ exports.signin = async function(req, res, next){
       message: 'Error signing in',
       error: error.message,
     });
+  }
+};
+
+exports.signout = async (req, res) => {
+  try {
+    req.session = null;
+    return res.status(200).send({ message: "You've been signed out!" });
+  } catch (err) {
+    res.status(500).send({message: "Error while signing out!"});
   }
 };
