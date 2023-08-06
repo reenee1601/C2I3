@@ -173,7 +173,7 @@ const UploadPage = () => {
     const handleConditionalButtonClick = async () =>{
       if(selectedType == "INVOICE"){
         await handleFileUploadInvoice();
-
+        
         console.log(1);
       }
       else if(selectedType == "STATEMENT"){

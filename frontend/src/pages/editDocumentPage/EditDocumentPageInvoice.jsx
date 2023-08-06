@@ -10,7 +10,7 @@ import { IoChevronBack } from 'react-icons/io5'
 import { LuEdit3 } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 import { VscDiffAdded } from "react-icons/vsc"
-
+import axios from 'axios';
 import {
   goBackStyle,
   goBackButtonStyle,
@@ -41,12 +41,19 @@ import {
 } from './EditDocumentPageStyle';
 
 const EditDocumentPage = () => {
+  
+
   const location = useLocation(); // get the OCR data from the upload page
   const stateData = location.state;
   const [image, setImage] = useState(location.url);
 
   // Function to clean numerical fields
-  const getNumber = (s) => { return parseFloat( s.replace( /[^0-9.]+/g , '') ); }
+  const getNumber = (s) => {
+    if (typeof s === 'string') {
+      return parseFloat(s.replace(/[^0-9.]+/g, ''));
+    }
+    return NaN; // Or a default value if appropriate
+  };
 
   // Form Data
   const [invoiceID, setInvoiceID] = useState(stateData.invoiceID);
@@ -94,31 +101,33 @@ const EditDocumentPage = () => {
 
   let [uploadcontent, setUploadContent] = useState(tableObjects)
   
-  /*let [uploadcontent, setUploadContent] = useState([
-
-    { 
-      "Product": stateData.amount,
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product7",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product8",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product9",
-      "Quantity": "1",
-      "Amount": "$1",
-    }
-  ])*/
+  const handleSubmit = async () => {
+    try {
+  const dataToSend = {
+    invoiceID,
+    issuedDate,
+    dueDate,
+    supplierID,
+    totalBeforeGST,
+    totalAfterGST,
+    GST,
+    productCode,
+    quantity,
+    amount, 
+    productName
+    // ... other fields
+     // This should be the data you want to upload
+  };
   
+      // Make a POST request to the backend API's uploadData endpoint
+      const response = await axios.post('/uploadDataInvoice', dataToSend);
 
+      // Handle the response as needed
+      console.log(response.data.message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // DATA is uploadcontent. Memory update only when uploadcontent changes.
   const data = React.useMemo(() => uploadcontent, [uploadcontent]);
 
@@ -150,16 +159,16 @@ const EditDocumentPage = () => {
   };
 
   const handleAddRow = (newRowData) => {
-    if (editRow === null) {
-      // Add mode: Add a new row
-      const newRow = {
-        productCode: newRowData.productCode,
-        quantity: getNumber(newRowData.quantity),
-        amount:  getNumber(newRowData.amount),
-        productName: newRowData.productName
-      };
-      setUploadContent((prevContent) => [...prevContent, newRow]);
-    } else {
+      if (editRow === null) {
+        // Add mode: Add a new row
+        const newRow = {
+          productCode: newRowData.productCode,
+          quantity: newRowData.quantity ? getNumber(newRowData.quantity) : '',
+          amount: newRowData.amount ? getNumber(newRowData.amount) : '',
+          productName: newRowData.productName
+        };
+        setUploadContent((prevContent) => [...prevContent, newRow]);
+      } else {
       // Edit mode: Update the existing row
       const updatedRow = {
         productCode: newRowData.productCode,
@@ -344,7 +353,7 @@ const EditDocumentPage = () => {
 
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
-                <button style={submitStyle}>Submit</button>
+                <button style={submitStyle} onClick={handleSubmit}>Submit</button>
 
                 <button
                   onClick={() => {

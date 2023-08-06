@@ -6,27 +6,6 @@ const Invoice = require('../models/invoiceModel');
 //
 //Old dicts
 
-/*
-const dict1 = {
-  headers: ['Invoice ID', 'Issued Date', 'Supplier ID','GST','Total Before GST','Total After GST', 'GST' ],
-  mapping: {'INVOICE NO.': 'Invoice ID','Tax Invoice':'Invoice ID',
-  'Invoice Date': 'Issued Date' , 'DATE': 'Issued Date', 
-  'GST 7%' : 'GST',  'Add 7% GST': 'GST', 
-  'TOTAL':'Total After GST', 'GRAND TOTAL': 'Total After GST', 'Grand Total': 'Total After GST', 
-  'Sub Total': 'Total Before GST', 'SUB TOTAL': 'Total Before GST', 
-  'SUBTOTAL SGD': 'Total Before GST', 'TOTAL': 'Total Before GST'
-,'Salesman Code': 'Supplier ID'}
-};
-const dict2 = {
-headers: ['Product Code', 'Quantity', 'Amount', 'Product Name' ],
-mapping: {
-'ITEM ID' : 'Product Code','ode': 'Product Code','Product Code': 'Product Code'
- ,'QTY': 'Quantity', 'Qty' : 'Quantity', 'QUANTITY': 'Quantity', 
- 'AMOUNT': 'Amount',  'Amount': 'Amount', 
-'Description': 'Product Name','Description': 'Product Name','DESCRIPTION OF GOODS': 'Product Name',
-'DESCRIPTION': 'Product Name' }
-};
-*/
 
 
 const formsDict = { // list of key-value pairs you want to extract
@@ -52,6 +31,23 @@ mapping: {
 'DESCRIPTION':'productName' }
 };
 
+async function uploadDataToMongoDB(data) {
+  const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+  const dbName = 'project_data'; // Replace with your desired database name
+
+  try {
+    connection;
+    // Save the extracted data to the Invoice collection
+    await invoiceModel.create(data);
+
+    console.log('Data uploaded to MongoDB successfully!');
+    console.log(data);
+  } catch (error) {
+    console.error('Error uploading data to MongoDB:', error);
+  } finally {
+    mongoose.disconnect();
+  }
+}
 
 ////// NON EXPORTED FUNCTIONS
 ////// EXPORTED FUNCTIONS
@@ -82,12 +78,12 @@ exports.scanData = async function(req, res) { // function for textractData POST 
 }
 
 
-exports.uploadData = async function(req, res) { // function for uploadData POST endpoint
+exports.uploadDataInvoice = async function(req, res) { // function for uploadData POST endpoint
     try{data = req.body;
       if (!data) {
         return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
       }
-    await Invoice.create(data);
+    await uploadDataToMongoDB(data)
 
 
     console.log()
