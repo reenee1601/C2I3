@@ -1,40 +1,40 @@
 {
     "soaDetails":[
     {
-      "soaID": "#3379",
+      "soaID": "3379",
       "supplier": "Bakers Room",
-      "dueDate": "13/07/2023",
-      "amount": "$4000.50"
+      "dueDate": "2023-07-13",
+      "amount": "4000.50"
     },
     {
-      "soaID": "#3028",
+      "soaID": "3028",
       "supplier": "Amy's Market",
-      "dueDate": "08/07/2023",
-      "amount": "$4370.00"
+      "dueDate": "2023-07-08",
+      "amount": "4370.00"
     },
     {
-      "soaID": "#1342",
+      "soaID": "1342",
       "supplier": "Mom's Shop",
-      "dueDate": "08/08/2023",
-      "amount": "$4340.50"
+      "dueDate": "2023-08-08",
+      "amount": "4340.50"
     },
     {
-      "soaID": "#2222",
+      "soaID": "2222",
       "supplier": "Mom's Shop",
-      "dueDate": "08/08/2023",
-      "amount": "$4340.50"
+      "dueDate": "2023-08-08",
+      "amount": "4340.50"
     },
     {
-      "soaID": "#4125",
+      "soaID": "4125",
       "supplier": "Mom's Shop",
-      "dueDate": "08/08/2023",
-      "amount": "$4340.50"
+      "dueDate": "2023-08-08",
+      "amount": "4340.50"
     },
     {
-      "soaID": "#0001",
+      "soaID": "0001",
       "supplier": "Mom's Shop",
-      "dueDate": "08/08/2023",
-      "amount": "$4340.50"
+      "dueDate": "2023-08-09",
+      "amount": "4340.50"
     }
   ],
 
@@ -71,35 +71,35 @@
 
   "invoiceDetails": [
   {
-    "invoiceID": "#1111",
+    "invoiceID": "1111",
     "supplier": "Bakers Room",
-    "issuedDate": "13/06/2023",
-    "dueDate": "13/07/2023",
-    "amount": "$4000.50"},
+    "issuedDate": "2023-06-13",
+    "dueDate": "2023-07-13",
+    "amount": "4000.50"},
   {
-    "invoiceID": "#2550",
+    "invoiceID": "2550",
     "supplier": "Amy's Market",
-    "issuedDate": "08/06/2023",
-    "dueDate": "08/07/2023",
-    "amount": "$4370.00" },
+    "issuedDate": "2023-06-08",
+    "dueDate": "2023-07-08",
+    "amount": "4370.00" },
   {
-    "invoiceID": "#2090",
+    "invoiceID": "2090",
     "supplier": "Mom's Shop",
-    "issuedDate": "08/02/2023",
-    "dueDate": "08/08/2023",
-    "amount": "$4340.50" },
+    "issuedDate": "2023-02-08",
+    "dueDate": "2023-08-08",
+    "amount": "4340.50" },
   {
-    "invoiceID": "#0002",
+    "invoiceID": "0002",
     "supplier": "Dad's Shop",
-    "issuedDate": "08/04/2023",
-    "dueDate": "09/04/2023",
-    "amount": "$2340.50" },
+    "issuedDate": "2023-04-08",
+    "dueDate": "2023-04-09",
+    "amount": "2340.50" },
   {
-    "invoiceID": "#2002",
+    "invoiceID": "2002",
     "supplier": "Aunty's Market",
-    "issuedDate": "08/07/2023",
-    "dueDate": "08/08/2023",
-    "amount": "$3300.70"}
+    "issuedDate": "2023-07-08",
+    "dueDate": "2023-08-08",
+    "amount": "3300.70"}
   ],
 
   "invoiceProductDetails":[
