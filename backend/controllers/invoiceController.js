@@ -77,7 +77,7 @@ exports.scanData = async function(req, res) { // function for textractData POST 
     console.log('end of console')
     
     // return the data to the front end
-    res.json(ocrData)
+    res.status(200).json(ocrData)
     // res.json({message:'file uploaded successfully at '})
 }
 

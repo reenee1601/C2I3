@@ -131,9 +131,25 @@ const UploadPage = () => {
   };
 
 
-  const handleFileUploadSOA = () => {
+  const handleFileUploadSOA = async () => {
+    
+    console.log("image:", image);
+    console.log('SOA is clicked')
+    //navigate('/invoice/editdocumentpage', {state: dummyInvoice})
+    
+    let response = await axios // wait for the data to be scanned
+      .post("http://localhost:8000/soa/scanData", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    console.log(response);
+    console.log('set ocrData');
+    setOcrData(response.data);
+    console.log(ocrData);
+    navigate('/soa/editdocumentpage', {state: response.data, url:image})
       
-      const formData = new FormData();
+      /*const formData = new FormData();
       formData.append("pdfFile", image);
       //console.log("isInvoiceActive:", isInvoiceActive);
       console.log("image:", image);
@@ -151,7 +167,7 @@ const UploadPage = () => {
         .catch((error) => {
           // Handle any error that occurred during the file upload.
           console.error("Error uploading file:", error);
-        });
+        });*/
   };
 
     const handleConditionalButtonClick = async () =>{
@@ -161,7 +177,7 @@ const UploadPage = () => {
         console.log(1);
       }
       else if(selectedType == "STATEMENT"){
-        // this.handleFileUploadSOA();
+        await handleFileUploadSOA();
         console.log(2);
       }
       else if(selectedType == "PAYMENT"){

@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDocumentPage, 
-     EditDocumentPageInvoice,
+import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, //EditDocumentPage, 
+     EditDocumentPageInvoice, EditDocumentPageSOA,
           InvoicePage, SoaPage, UploadPage, CompareDocumentPage, ProductPage } from './pages';
 
 
@@ -23,8 +23,9 @@ const App = () => {
           <Route path = '/productpage' element = {<ProductPage />}/>
           <Route path = '/uploadpage' element = {<UploadPage />} />
           <Route path = '/comparedocumentpage' element = {<CompareDocumentPage />} />
-          <Route path = '/editdocumentpage' element = {<EditDocumentPage />} />
+    {/*<Route path = '/editdocumentpage' element = {<EditDocumentPage />} />*/}
           <Route path = '/invoice/editdocumentpage' element = {<EditDocumentPageInvoice />} />
+          <Route path = '/soa/editdocumentpage' element = {<EditDocumentPageSOA />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
-import EditPopUp from '../../components/editPopUp/EditPopUpInvoice';
+import EditPopUp from '../../components/editPopUp/EditPopUpSOA';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
@@ -49,18 +49,13 @@ const EditDocumentPage = () => {
   const getNumber = (s) => { return parseFloat( s.replace( /[^0-9.]+/g , '') ); }
 
   // Form Data
+  const [supplierID, setSupplierID] = useState(stateData.supplierID);
+  const [totalAmount, setTotalAmount] = useState(stateData.totalAmount);
+  // Array Data
   const [invoiceID, setInvoiceID] = useState(stateData.invoiceID);
   const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
   const [dueDate, setDueDate] = useState(stateData.dueDate);
-  const [supplierID, setSupplierID] = useState(stateData.supplierID);
-  const [totalBeforeGST, setTotalBeforeGST] = useState( getNumber(stateData.totalBeforeGST) );
-  const [totalAfterGST, setTotalAfterGST] = useState( getNumber(stateData.totalAfterGST) );
-  const [GST, setGST] = useState( getNumber(stateData.GST) );
-  // Array Data
-  const [productCode, setProductCode] = useState(stateData.productCode);
-  const [quantity, setQuantity] = useState(stateData.quantity);
   const [amount, setAmount] = useState(stateData.amount);
-  const [productName, setProductName] = useState(stateData.productName);
 
 
 
@@ -68,16 +63,14 @@ const EditDocumentPage = () => {
   // What we need to do is create an array of objects
   // each object contains a mapping of each header, to the 
   // value in the `stateData` object at that index
-  const tableLength = stateData.productCode.length; // get the length from any array; shld be the same
+  const tableLength = stateData.invoiceID.length; // get the length from any array; shld be the same
   var tableObjects = []; // declare an array of objects
   for (let i = 0; i < tableLength; i++) {
     let obj = {};
-    obj.productCode = stateData.productCode[i];
-    //obj.quantity = stateData.quantity[i];
-    //obj.amount = stateData.amount[i];
-    obj.quantity =  getNumber(stateData.quantity[i]);
+    obj.invoiceID = stateData.invoiceID[i];
+    obj.issuedDate =stateData.issuedDate[i];
+    obj.dueDate= stateData.dueDate[i];
     obj.amount =  getNumber(stateData.amount[i]);
-    obj.productName = stateData.productName[i];
     tableObjects.push(obj);
   }
 
@@ -85,38 +78,15 @@ const EditDocumentPage = () => {
   // add quick check to make sure that the table data wont be empty
   if (tableObjects.length === 0) {
     let obj = {};
-    obj.productCode = '';
-    obj.quantity = '';
+    obj.invoiceID= '';
+    obj.issuedDate= '';
+    obj.dueDate= '';
     obj.amount = '';
-    obj.productName = '';
     tableObjects.push(obj);
   }
 
   let [uploadcontent, setUploadContent] = useState(tableObjects)
   
-  /*let [uploadcontent, setUploadContent] = useState([
-
-    { 
-      "Product": stateData.amount,
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product7",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product8",
-      "Quantity": "1",
-      "Amount": "$1",
-    },
-    { 
-      "Product": "Product9",
-      "Quantity": "1",
-      "Amount": "$1",
-    }
-  ])*/
   
 
   // DATA is uploadcontent. Memory update only when uploadcontent changes.
@@ -125,20 +95,20 @@ const EditDocumentPage = () => {
   // COLUMNS is every column in uploadcontent.
   const columns = React.useMemo(() => [
     {
-      Header: "PRODUCT CODE",
-      accessor: "productCode"
+      Header: "INVOICE ID",
+      accessor: "invoiceID"
     },
     {
-      Header: "QTY",
-      accessor: "quantity"
+      Header: "ISSUED DATE",
+      accessor: "issuedDate"
     },
     {
-      Header: "$$",
+      Header: "DUE DATE",
+      accessor: "dueDate"
+    },
+    {
+      Header: "AMOUNT",
       accessor: "amount"
-    },
-    {
-      Header: "PRODUCT NAME",
-      accessor: "productName"
     }
   ], []
   )
@@ -153,19 +123,19 @@ const EditDocumentPage = () => {
     if (editRow === null) {
       // Add mode: Add a new row
       const newRow = {
-        productCode: newRowData.productCode,
-        quantity: getNumber(newRowData.quantity),
+        invoiceID: newRowData.invoiceID,
+        issuedDate: newRowData.issuedDate,
+        dueDate: newRowData.dueDate,
         amount:  getNumber(newRowData.amount),
-        productName: newRowData.productName
       };
       setUploadContent((prevContent) => [...prevContent, newRow]);
     } else {
       // Edit mode: Update the existing row
       const updatedRow = {
-        productCode: newRowData.productCode,
-        quantity:  getNumber(newRowData.quantity),
+        invoiceID: newRowData.invoiceID,
+        issuedDate: newRowData.issuedDate,
+        dueDate: newRowData.dueDate,
         amount:  getNumber(newRowData.amount),
-        productName: newRowData.productName
       };
       const updatedContent = [...uploadcontent];
       updatedContent[editRow] = updatedRow;
@@ -237,75 +207,28 @@ const EditDocumentPage = () => {
 
             <div style={topScanStyle}>
               <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>INVOICE ID:</p>
-                <input
-                  type="text"
-                  value={invoiceID}
-                  onChange={(e) => setInvoiceID(e.target.value)}
-                  style ={editDocumentInvoiceInputStyle}
-                />
-              </div>
-
-              <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>ISSUED DATE:</p>
-                <input
-                  type="text"
-                  value={issuedDate}
-                  onChange={(e) => setIssuedDate(e.target.value)}
-                  style ={editDocumentSuppInputStyle}
-                />
-              </div>
-
-              <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>DUE DATE:</p>
-                <input
-                  type="text"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  style ={editDocumentAmtInputStyle}
-                />
-              </div>
-
-              <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>SUPPLIER ID:</p>
                 <input
                   type="text"
                   value={supplierID}
                   onChange={(e) => setSupplierID(e.target.value)}
-                  style ={editDocumentDueInputStyle}
+                  style ={editDocumentInvoiceInputStyle}
                 />
               </div>
 
               <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>TOTAL BEFORE GST:</p>
+                <p style ={editDocumentIndiPStyle}>TOTAL AMOUNT:</p>
                 <input
                   type="text"
-                  value={totalBeforeGST}
-                  onChange={(e) => setTotalBeforeGST(e.target.value)}
-                  style ={editDocumentDueInputStyle}
+                  value={totalAmount}
+                  onChange={(e) => setTotalAmount(e.target.value)}
+                  style ={editDocumentSuppInputStyle}
                 />
               </div>
+
             </div>
 
-              <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>GST</p>
-                <input
-                  type="text"
-                  value={GST}
-                  onChange={(e) => setGST(e.target.value)}
-                  style ={editDocumentDueInputStyle}
-                />
-              </div>
 
-              <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>TOTAL AFTER GST:</p>
-                <input
-                  type="text"
-                  value={totalAfterGST}
-                  onChange={(e) => setTotalAfterGST(e.target.value)}
-                  style ={editDocumentDueInputStyle}
-                />
-              </div>
 
               <div style={tableContainerStyle}>
                 <table style={tableStyle} {...getTableProps()}>
@@ -362,17 +285,17 @@ const EditDocumentPage = () => {
                       setEditPopUpOpen(false);
                     }}
                     onSubmit={handleAddRow}
-                    defaultProductCode={
-                      editRow !== null ? uploadcontent[editRow].productCode : ''
+                    defaultInvoiceID={
+                      editRow !== null ? uploadcontent[editRow].invoiceID: ''
                     }
-                    defaultQuantity={
-                      editRow !== null ? uploadcontent[editRow].quantity : ''
+                    defaultIssuedDate={
+                      editRow !== null ? uploadcontent[editRow].issuedDate: ''
+                    }
+                    defaultDueDate={
+                      editRow !== null ? uploadcontent[editRow].dueDate: ''
                     }
                     defaultAmount={
                       editRow !== null ? uploadcontent[editRow].amount : ''
-                    }
-                    defaultProductName={
-                      editRow !== null ? uploadcontent[editRow].productName : ''
                     }
                     isAddMode={editRow === null}
                   />
@@ -388,5 +311,6 @@ const EditDocumentPage = () => {
     
   )
 }
+
 
 export default EditDocumentPage
