@@ -58,7 +58,7 @@ exports.uploadDataToMongoDBSOA = async function uploadDataToMongoDBSOA(data) {
     mongoose.disconnect();
   }
 }
-exports.getSOADataFromMongoDB = async function getSOADataFromMongoDB() {
+async function getSOADataFromMongoDB() {
   try {
 
     const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information

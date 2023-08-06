@@ -126,7 +126,7 @@ const SoaPage = () => {
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
       </div>
 
-      {/* table */}
+         {/* table */}
       <div style={tableContainer}>
         <div style={scrollable}>
           <Table style={customTable} {...getTableProps()}>
@@ -138,9 +138,27 @@ const SoaPage = () => {
               </tr>
             </thead>
             <tbody>
-              {soaData.length > 0 ? ( // Check if data has been fetched
+            {(
+              (soaData.length > 0 ? ( // Check if data has been fetched
                 soaData.map((item) => (
                   <tr key={item._id}>
+                    <td style={td}>
+                      <Link to={`/detailedsoapage/${item._id}`} className="soaID-link">
+                        {item._id}
+                        
+                      </Link>
+                      
+                    </td>
+                    <td style={td}>
+                      <Link to={`/detailedsoapage/${item._id}`} className="supplier-link">
+                        {item.supplierID}
+                      </Link>
+                    </td>
+                    <td style={td}>
+                      <Link to={`/detailedsoapage/${item._id}`} className="amount-link">
+                        {item.totalAmount}
+                      </Link>
+                    </td>
                     {/* ... Table cell JSX code ... */}
                   </tr>
                 ))
@@ -148,7 +166,9 @@ const SoaPage = () => {
                 <tr>
                   <td colSpan={3}>Loading data...</td>
                 </tr>
-              )}
+              ))
+            )}
+              
             </tbody>
           </Table>
         </div>
