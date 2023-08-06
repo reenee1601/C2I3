@@ -1,3 +1,5 @@
+// invoiceRouter.js
+
 var express = require('express');
 var router = express.Router();
 const invoiceController = require('../controllers/invoiceController.js');
@@ -14,10 +16,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-// Create a route to handle the data upload
-router.post('/scanData', upload.single('file'), invoiceController.scanData); // run textract analysis on given data. 
-router.post('/uploadData', invoiceController.uploadData); // upload edited data
-
-router.get('/getData', invoiceController.getData); // query data
+router.post('/scanData', upload.single('file'), invoiceController.scanData);
+router.post('/uploadDataInvoice', invoiceController.uploadDataInvoice); 
+router.get('/getData', invoiceController.getData);
 
 module.exports = router;
