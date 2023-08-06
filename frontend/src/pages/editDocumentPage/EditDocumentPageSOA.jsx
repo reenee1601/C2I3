@@ -10,7 +10,7 @@ import { IoChevronBack } from 'react-icons/io5'
 import { LuEdit3 } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 import { VscDiffAdded } from "react-icons/vsc"
-
+import axios from 'axios';
 import {
   goBackStyle,
   goBackButtonStyle,
@@ -56,7 +56,28 @@ const EditDocumentPage = () => {
   const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
   const [dueDate, setDueDate] = useState(stateData.dueDate);
   const [amount, setAmount] = useState(stateData.amount);
+  const handleSubmit = async () => {
+    try {
+  const dataToSend = {
+    invoiceID,
+    issuedDate,
+    dueDate,
+    supplierID,
+    amount, 
+    uploadcontent
+    // ... other fields
+     // This should be the data you want to upload
+  };
+  
+      // Make a POST request to the backend API's uploadData endpoint
+      const response = await axios.post('http://localhost:8000/soa/uploadDataSOA', dataToSend);
 
+      // Handle the response as needed
+      console.log(response.data.message);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
   // Now to initialise the table data
@@ -267,7 +288,7 @@ const EditDocumentPage = () => {
 
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
-                <button style={submitStyle}>Submit</button>
+                <button style={submitStyle} onClick={handleSubmit}>Submit</button>
 
                 <button
                   onClick={() => {

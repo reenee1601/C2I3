@@ -1,12 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const soaController = require('../controllers/soaController.js');
-//const uploadDataSOA= soaController.uploadDataSOA;
-const getSOAData= soaController.getSOAData;
-const exportDataCSV= soaController.exportDataCSV;
-const exportDataExcel= soaController.exportDataExcel;
-const getSOADataUsingId= soaController.getSOADataUsingId;
 
+//const uploadDataSOA= soaController.uploadDataSOA;
+
+const {getSOAData, exportDataCSV,exportDataExcel,getSOADataUsingId,uploadDataSOA,scanData} =require('../controllers/soaController.js');
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,9 +17,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 //router.post('/uploadDataSOA', upload.single('pdfFile'), uploadDataSOA);
-router.post('/scanData', upload.single('file'), soaController.scanData)
+router.post('/scanData', upload.single('file'), scanData)
   
-router.post('/uploadData', soaController.uploadData); // upload edited data
+//router.post('/uploadData', soaController.uploadData); // upload edited data
 
 router.get('/getSOAData', getSOAData);
 
@@ -31,7 +28,7 @@ router.get('/exportToCSV', exportDataCSV);
 router.get('/exportToExcel', exportDataExcel);
 
 router.get('/getSOAData/:id', getSOADataUsingId);
-
+router.post('/uploadDataSOA', uploadDataSOA);
 
 
 module.exports = router;

@@ -1,10 +1,22 @@
 // Assuming you have already installed and required the "john-package" and "mongoose" in your application
 const johnPackage = require('john-package');
 const utils = require('../utils/utils.js')
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const { unlink } = require('fs') // use this to delete the file after we're done
 const soaModel = require('../models/soaModel.js');
+mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
+// Get the connection object
+const connection = mongoose.connection;
+
+connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+connection.once('open', () => {
+  console.log('Connected to the database');
+});
 // CONST DICTIONARIES
 /*
 const tablesDict = {
@@ -65,13 +77,40 @@ const formsDict = {
 
 }
 };
+async function uploadDataToMongoDB(data) {
+  
+  try {
+    // Save the extracted data to the Invoice collection
+    await soaModel.create(data);
 
+    console.log('Data uploaded to MongoDB successfully!');
+    console.log(data);
+  } catch (error) {
+    console.error('Error uploading data to MongoDB:', error);
+  }
+}
 
 
 // END OF CONST DICTIONARIES
 
 // Function to perform OCR and extract data
+exports.uploadDataSOA = async function(req, res) {
 
+  try {
+    const data = req.body; // Declare 'data' using 'const'
+    if (!data) {
+      return res.status(400).json({ message: 'No data provided for upload.' });
+    }
+
+    await uploadDataToMongoDB(data);
+
+    console.log('Invoice data uploaded successfully');
+    return res.status(200).json({ message: 'Successfully uploaded invoice data.' });
+  } catch (err) {
+    console.error('Error uploading Invoice to MongoDB', err);
+    return res.status(500).json({ message: 'Error uploading invoice data.' });
+  }
+};
 exports.scanData = async function(req, res) { // function for textractData POST endpoint
     console.log('start of console');
     //file = await req.file;
@@ -134,7 +173,7 @@ exports.performOCRAndExtractDataSOA = async function performOCRAndExtractDataSOA
 
 // Function to upload data to MongoDB
 
-exports.uploadData = async function(req, res) { // function for uploadData POST endpoint
+exports.uploadDataSOA = async function(req, res) { // function for uploadData POST endpoint
     try{data = req.body;
       if (!data) {
         return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
