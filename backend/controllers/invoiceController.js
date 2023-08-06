@@ -2,6 +2,7 @@
 const { unlink } = require('fs') // use this to delete the file after we're done
 const utils = require('../utils/utils.js')
 const Invoice = require('../models/invoiceModel');
+const mongoose = require('../db');
 ////// CONST DICTIONARIES
 //
 //Old dicts
@@ -33,7 +34,7 @@ mapping: {
 
 async function uploadDataToMongoDB(data) {
   const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
-  const dbName = 'project_data'; // Replace with your desired database name
+  //const dbName = 'project_data'; // Replace with your desired database name
 
   try {
     connection;
@@ -77,22 +78,22 @@ exports.scanData = async function(req, res) { // function for textractData POST 
     // res.json({message:'file uploaded successfully at '})
 }
 
-
-exports.uploadDataInvoice = async function(req, res) { // function for uploadData POST endpoint
-    try{data = req.body;
-      if (!data) {
-        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
-      }
-    await uploadDataToMongoDB(data)
-
-
-    console.log()
-    return res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
-    catch (err) {
-        console.error('Error uploading Invoice to MongoDB', err);
-        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+exports.uploadDataInvoice = async function(req, res) {
+  try {
+    const data = req.body; // Declare 'data' using 'const'
+    if (!data) {
+      return res.status(400).json({ message: 'No data provided for upload.' });
     }
-}
+
+    await uploadDataToMongoDB(data);
+
+    console.log('Invoice data uploaded successfully');
+    return res.status(200).json({ message: 'Successfully uploaded invoice data.' });
+  } catch (err) {
+    console.error('Error uploading Invoice to MongoDB', err);
+    return res.status(500).json({ message: 'Error uploading invoice data.' });
+  }
+};
 
 
 exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
@@ -106,3 +107,5 @@ exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
         res.status(500).json({ error: 'Error fetching Invoice data.' });
     }
 }
+
+
