@@ -7,7 +7,7 @@ import { IoChevronBack } from 'react-icons/io5';
 import { LuEdit3 } from 'react-icons/lu';
 import { topPart, invoiceTitle, supplierName, issuedDate, dueDate,
   tableContainer, scrollable, customTable, td, th, bottomPart,
-  rightBottom, totalAmount, goBackButtonStyle, goBackStyle, editInput} from './DetailedInvoicePageStyle';
+  rightBottom, totalAmount, goBackButtonStyle, goBackStyle, editInput, goBackLinkStyle} from './DetailedInvoicePageStyle';
 
 const DetailedInvoicePage = () => {
 
@@ -55,12 +55,13 @@ const DetailedInvoicePage = () => {
       </div>
 
       <div style={topPart}>
-      <div style={goBackStyle}>
-          <Link to="/invoicepage">
+        
+        <Link style={goBackLinkStyle} to="/uploadpage">
+          <div style={goBackStyle}>
             <IoChevronBack size={50} color={"#3A3A3A"}/>
             <button style={goBackButtonStyle}>GO BACK</button>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         <div className="invoice-detail">
             <h1 style={invoiceTitle}>Invoice #1111</h1>

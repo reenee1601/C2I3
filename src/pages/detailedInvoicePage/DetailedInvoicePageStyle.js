@@ -8,17 +8,21 @@ export const topPart = {
 export const goBackStyle = {
   display: "flex",
   flexDirection: "column",
-  marginRight: "10px",
   alignItems: "center",
 }
 
+export const goBackLinkStyle = {
+  textDecoration: "none",
+  marginLeft: "-5%",
+  marginRight: "2%",
+}
+
 export const goBackButtonStyle = {
-  display: "block", 
   background: "transparent",
-  width: "50px",
+  width: "125px",
   height: "43px",
   transform: "rotate(90deg)",
-  marginTop: "8px",
+  marginTop: "40px",
 
   color: "#3A3A3A",
   textAlign: "center",
@@ -29,7 +33,6 @@ export const goBackButtonStyle = {
   lineHeight: "normal",
 
   border: "none",
-  textDecoration: "none",
 }
   
 export const invoiceTitle = {
