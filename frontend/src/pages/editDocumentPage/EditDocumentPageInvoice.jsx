@@ -11,6 +11,7 @@ import { LuEdit3 } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 import { VscDiffAdded } from "react-icons/vsc"
 import axios from 'axios';
+
 import {
   goBackStyle,
   goBackButtonStyle,
@@ -114,13 +115,14 @@ const EditDocumentPage = () => {
     productCode,
     quantity,
     amount, 
-    productName
+    productName,
+    uploadcontent
     // ... other fields
      // This should be the data you want to upload
   };
   
       // Make a POST request to the backend API's uploadData endpoint
-      const response = await axios.post('http://localhost:3000/uploadDataInvoice', dataToSend);
+      const response = await axios.post('http://localhost:8000/invoice/uploadDataInvoice', dataToSend);
 
       // Handle the response as needed
       console.log(response.data.message);

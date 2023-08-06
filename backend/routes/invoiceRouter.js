@@ -2,8 +2,8 @@
 
 var express = require('express');
 var router = express.Router();
-const invoiceController = require('../controllers/invoiceController.js');
-
+//const invoiceController = require('../controllers/invoiceController.js');
+const {scanData, uploadDataInvoice,getData} = require('../controllers/invoiceController.js');
 const multer = require('multer');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -16,8 +16,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-router.post('/scanData', upload.single('file'), invoiceController.scanData);
-router.post('/uploadDataInvoice', invoiceController.uploadDataInvoice); 
-router.get('/getData', invoiceController.getData);
+router.post('/scanData', upload.single('file'), scanData);
+router.post('/uploadDataInvoice', uploadDataInvoice); 
+router.get('/getData', getData);
 
 module.exports = router;

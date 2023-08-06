@@ -2,13 +2,22 @@
 const { unlink } = require('fs') // use this to delete the file after we're done
 const utils = require('../utils/utils.js')
 const Invoice = require('../models/invoiceModel');
-const mongoose = require('../db');
-////// CONST DICTIONARIES
-//
-//Old dicts
+const mongoose = require('mongoose');
 
+// Establish the MongoDB connection
+mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
+// Get the connection object
+const connection = mongoose.connection;
 
+connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+connection.once('open', () => {
+  console.log('Connected to the database');
+});
 const formsDict = { // list of key-value pairs you want to extract
   headers: ['invoiceID', 'issuedDate', 'dueDate', 'supplierID','GST','totalBeforeGST','totalAfterGST' ],
 mapping: {'INVOICE NO.':'invoiceID','Tax Invoice':'invoiceID',
@@ -33,20 +42,15 @@ mapping: {
 };
 
 async function uploadDataToMongoDB(data) {
-  const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
-  //const dbName = 'project_data'; // Replace with your desired database name
-
+  
   try {
-    connection;
     // Save the extracted data to the Invoice collection
-    await invoiceModel.create(data);
+    await Invoice.create(data);
 
     console.log('Data uploaded to MongoDB successfully!');
     console.log(data);
   } catch (error) {
     console.error('Error uploading data to MongoDB:', error);
-  } finally {
-    mongoose.disconnect();
   }
 }
 
@@ -79,6 +83,7 @@ exports.scanData = async function(req, res) { // function for textractData POST 
 }
 
 exports.uploadDataInvoice = async function(req, res) {
+
   try {
     const data = req.body; // Declare 'data' using 'const'
     if (!data) {
