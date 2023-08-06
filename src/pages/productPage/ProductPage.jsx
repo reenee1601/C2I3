@@ -226,9 +226,9 @@ const ProductPage = () => {
             </button>
 
             <div style={productpopupstyle}>
-            <AddProduct trigger={addPopUp} setTrigger={setAddPopUp} onAddProduct={handleAddProduct}>
-            </AddProduct>
-          </div>
+              <AddProduct trigger={addPopUp} setTrigger={setAddPopUp} onAddProduct={handleAddProduct}>
+              </AddProduct>
+            </div>
 
         </div>
 
