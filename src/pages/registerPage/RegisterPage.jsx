@@ -15,7 +15,8 @@ import {
   left,
   right,
   centered,
-  successfulRegisterStyle
+  successfulRegisterStyle,
+  hintStyle
   
 } from './RegisterPageStyle';
 
@@ -59,13 +60,33 @@ const RegisterPage = () => {
     confirmPassword: false,
   });
 
+  const nameRegex = /^[A-Za-z\s]+$/;
+  const emailRegex = /^[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]+$/;
+
+  const getFieldHint = (fieldName) => {
+    if (fieldName === 'fullName') {
+      return 'You can use letters';
+    } if (fieldName === 'email') {
+      return 'You can use letters & numbers';
+    }
+    return '';
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // const newErrors = {
+    //   fullName: fullName.trim() === '',
+    //   companyName: companyName.trim() === '',
+    //   email: email.trim() === '',
+    //   password: password.trim() === '',
+    //   confirmPassword: confirmPassword.trim() === '',
+    // };
+
     const newErrors = {
-      fullName: fullName.trim() === '',
+      fullName: fullName.trim() === '' || !fullName.match(nameRegex),
       companyName: companyName.trim() === '',
-      email: email.trim() === '',
+      email: email.trim() === '' || !email.match(emailRegex),
       password: password.trim() === '',
       confirmPassword: confirmPassword.trim() === '',
     };
@@ -131,7 +152,12 @@ const RegisterPage = () => {
                     onChange={(e) => setFullName(e.target.value)}
                     value={fullName}
                   />
-                  {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null}
+                  {/* {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null} */}
+                  {error.fullName ? (
+                    <label style={labelStyle}>
+                      {fullName.trim() === '' ? 'This is a required field.' : 'Only letters allowed.'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('fullName')}</label>}
                 </div>
   
                 <div style={inputValidationContainer}>
@@ -155,7 +181,12 @@ const RegisterPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                   />
-                  {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
+                  {/* {error.email ? <label style={labelStyle}>This is a required field.</label> : null} */}
+                  {error.email ? (
+                    <label style={labelStyle}>
+                      {email.trim() === '' ? 'This is a required field.' : 'Only letters and.'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('email')}</label>}
                 </div>
   
                 <div style={inputValidationContainer}>

@@ -27,9 +27,9 @@ const DetailedSoaPage = () => {
         </div>
 
         <div className="soa-detail">
-            <h1 style={soaTitle}>SOA #3379</h1>
-            <p style={supplierName}>Bakers Room</p>
-            <p style={dueDate}>Due Date: 13/07/23</p>
+            <h1 style={soaTitle} data-testid="soaTitle">SOA #3379</h1>
+            <p style={supplierName} data-testid="supplierName">Bakers Room</p>
+            <p style={dueDate} data-testid="dueDate">Due Date: 13/07/23</p>
         </div>
       </div>
       
@@ -66,7 +66,7 @@ const DetailedSoaPage = () => {
           {/* if clicked go to compare doc page */}
           <button style={paymentButton}>
             <Link to="/comparedocumentpage">
-              <LiaWalletSolid size ={30} style={paymentButtonImg}/>
+              <LiaWalletSolid size ={30} style={paymentButtonImg} data-testid="payment-button"/>
             </Link>
           </button>
         </div>

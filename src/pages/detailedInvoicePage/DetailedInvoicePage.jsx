@@ -56,7 +56,7 @@ const DetailedInvoicePage = () => {
 
       <div style={topPart}>
       <div style={goBackStyle}>
-          <Link to="/soapage">
+          <Link to="/invoicepage">
             <IoChevronBack size={50} color={"#3A3A3A"}/>
             <button style={goBackButtonStyle}>GO BACK</button>
           </Link>

@@ -68,9 +68,16 @@ export const inputValidationContainer = {
 }
 
 export const labelStyle = {
-  fontSize: '12px',
-  color: 'red', // Change the color to your desired label color
+  fontSize: '10px',
+  color: 'red',
+  marginTop: '-3%',
 };
+
+export const hintStyle = {
+  fontSize: '10px',
+  color: '#535353',
+  marginTop: '-3%',
+}
 
 export const split = {
   height: "100%",

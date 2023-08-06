@@ -4,21 +4,28 @@ import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
 import mockData from "../../data/mock_data.json";
 import { layout, tables, listOfInvoices, missingInvoices, soaDisplay,
           tableContainer, scrollable, customTable, td, th, button, buttonContainer } from './CompareDocumentPageStyle';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CompareDocumentPage = () => {
 
   // hover button functionality
   const [buttonHover, setButtonHover] = useState(false);
 
-const handleMouseEnter = () => {
-  setButtonHover(true);
-};
+  const handleMouseEnter = () => {
+    setButtonHover(true);
+  };
 
-const handleMouseLeave = () => {
-  setButtonHover(false);
-};
+  const handleMouseLeave = () => {
+    setButtonHover(false);
+  };
 
+  const navigate=useNavigate();
+
+  const handleOnClick = () => {
+    navigate("/uploadpage")
+  }
+
+  // checkbox
   const [checkboxState1, setCheckboxState1] = useState({});
     
   const columns1 = React.useMemo(
@@ -52,7 +59,8 @@ const handleMouseLeave = () => {
         Header: "Recorded in SOA",
         accessor: "checkbox",
         Cell: ({ row }) => (
-          <span
+          <span className="checkbox-cell"
+          
             onClick={() =>
               setCheckboxState1((prevState) => ({
                 ...prevState,
@@ -215,20 +223,19 @@ const handleMouseLeave = () => {
         </div>
         
         <div style={buttonContainer}>
-          <Link to="/uploadpage">
-              <button 
-                style={{
-                  ...button,
-                  backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
-                  color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
-                }}
-                type="button"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+            <button 
+              style={{
+                ...button,
+                backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
+                color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
+              }}
+              type="button"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleOnClick}
+            >
                 Proceed to Upload Payment
-              </button>
-          </Link>
+            </button>
         </div>
 
     </div>
