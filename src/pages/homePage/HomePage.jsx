@@ -1,8 +1,10 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
 
 import 'swiper/css/bundle';
+import GridLoader from "react-spinners/GridLoader";
 
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
 
@@ -17,10 +19,22 @@ import {
   slideCompany,
   slidecontent,
   slideCompanyInfo,
+  loadingStyle,
 
 } from "./HomePageStyle"
 
 const HomePage = () => {
+
+   // LOADING FUNCTIONALITY
+   const [loading, setLoading] = useState(false)
+
+   //API CALL HERE: Replace SetTimeOut to fetching of data
+   useEffect(() => {
+     setLoading(true);
+     setTimeout(() => {
+       setLoading(false);
+     }, 1000);
+   }, []);
 
   // Requires fetching from Database
   let slideInfo = [
@@ -83,6 +97,15 @@ const HomePage = () => {
   }
 
   return (
+    <>
+    {loading ? (
+      <div style={loadingStyle}>
+        <GridLoader 
+        color={"#3A3A3A"} 
+        loading={loading} 
+        size={20} />
+      </div>
+    ) : (
     <div>
 
       <div>
@@ -118,9 +141,10 @@ const HomePage = () => {
           </Swiper>
         </div>
 
-    </div>
-    
-  )
-}
+        </div>
+      )}
+    </>
+  );
+};
 
 export default HomePage
