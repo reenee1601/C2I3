@@ -255,7 +255,7 @@ const SoaPage = () => {
 
       <div style={bottomPart}>
         {/* "Export" button */}
-        <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
+        <button data-testid="export-button" style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
           <FaShareSquare size ={30} style={exportButtonIcon}/>
         </button>
 
