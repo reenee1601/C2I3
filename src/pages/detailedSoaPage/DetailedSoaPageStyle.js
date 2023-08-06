@@ -6,31 +6,34 @@ export const topPart = {
 }
 
 export const goBackStyle = {
-    display: "flex",
-    flexDirection: "row",
-    marginRight: "10px",
-    alignItems: "center",
-  }
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+}
+
+export const goBackLinkStyle = {
+  textDecoration: "none",
+  marginLeft: "-5%",
+  marginRight: "2%",
+}
 
 export const goBackButtonStyle = {
-    display: "block", 
-    background: "transparent",
-    width: "50px",
-    height: "43px",
-    transform: "rotate(90deg)",
-    marginTop: "8px",
+  background: "transparent",
+  width: "125px",
+  height: "43px",
+  transform: "rotate(90deg)",
+  marginTop: "40px",
 
-    color: "#3A3A3A",
-    textAlign: "center",
-    fontFamily: "Inter",
-    fontSize: "20px",
-    fontStyle: "normal",
-    fontWeight: "800",
-    lineHeight: "normal",
+  color: "#3A3A3A",
+  textAlign: "center",
+  fontFamily: "Inter",
+  fontSize: "20px",
+  fontStyle: "normal",
+  fontWeight: "800",
+  lineHeight: "normal",
 
-    border: "none",
-    textDecoration: "none",
-  }
+  border: "none",
+}
   
 export const soaTitle = {
   color: "#3A3A3A",
