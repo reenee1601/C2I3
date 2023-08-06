@@ -2,7 +2,8 @@ export const searchBar = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "3%"
+
+    marginRight: "3%",
 }
   
 export const tableContainer = {
@@ -39,7 +40,8 @@ export const td = {
 };
 
 export const th = {
-    backgroundColor: "rgba(255, 246, 232, 0.8)",
+    zIndex: "0",
+    backgroundColor: "rgba(255, 246, 232)",
     color: "#3A3A3A",
     border: "none",
     fontSize: "15px",
@@ -98,6 +100,7 @@ export const bottomPart = {
     bottom: "5px",
     width: "100%",
     padding: "10px 38px",
+    zIndex: "0", 
   };
 
 export const popupButton = {
@@ -118,15 +121,18 @@ export const popupButtonp = {
     color: "#FFFFFF",
     cursor: "pointer",
     backgroundColor: "transparent",
+    zIndex: "3",
 }
 
 export const dropdownContainer = {
-    position: "relative",
-    zIndex: "2",
-    marginLeft: "20px",
-    
+    position: "absolute", 
+    left: "6%",
+    bottom: "40%",
+
     backgroundColor: "rgba(58, 58, 58, 0.8)",
     borderRadius: "10px",
+
+    zIndex: "2",
 }
 
 export const button = {
@@ -151,5 +157,36 @@ export const buttonContainer = {
     justifyContent: "flex-start",
     alignItems: "center",
     marginTop: "0",
+}
+
+export const filterTextStyle = {
+    color: "#3A3A3A",
+    textAlign: "center",
+    fontFamily: "Inter",
+    fontSize: "15px",
+    fontStyle: "normal",
+    fontWeight: "600",
+    lineHeight: "26px",
+
+    marginRight: "5px",
+}
+
+export const filterIconStyle = {
+    color: "#3A3A3A",
+    width: "25px",
+    height: "25px",
+}
+
+export const filterStyle = {
+    border: "none",
+    background: "transparent",
+}
+
+export const searchFilterStyle = {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+
+    marginTop: "5%",
 }
 

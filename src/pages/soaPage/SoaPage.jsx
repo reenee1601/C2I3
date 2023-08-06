@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { useTable, useSortBy, useGlobalFilter } from "react-table";
-// import "./soaPage.css";
-import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import { Link } from "react-router-dom";
-import mockData from "../../data/mock_data.json";
+
+import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
+import SoaQueryBar from "../../components/soaQueryBar/SoaQueryBar";
+
+import mockData from "../../data/mock_data.json";
 import { FaShareSquare } from 'react-icons/fa';
+import { HiOutlineFilter } from 'react-icons/hi';
+
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
-          exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon } from './SoaPageStyle';
+          exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon,
+          filterStyle, filterIconStyle, filterTextStyle, searchFilterStyle
+        } from './SoaPageStyle';
 
 const SoaPage = () => {
 
@@ -28,7 +34,7 @@ const SoaPage = () => {
         ),
       },
       {
-        Header: "Supplier",
+        Header: "SUPPLIER",
         accessor: "supplier",
         Cell: ({ row }) => (
           <Link to={`/detailedsoapage`} style={supplierLink}>
@@ -37,7 +43,7 @@ const SoaPage = () => {
         ),
       },
       {
-        Header: "Due Date",
+        Header: "DUE DATE",
         accessor: "dueDate",
         Cell: ({ row }) => (
           <Link to={`/detailedsoapage`} style={dueDateLink}>
@@ -46,7 +52,7 @@ const SoaPage = () => {
         ),
       },
       {
-        Header: "Amount",
+        Header: "AMOUNT",
         accessor: "amount",
         Cell: ({ row }) => (
           <Link to={`/detailedsoapage`} style={amountLink}>
@@ -58,8 +64,87 @@ const SoaPage = () => {
     [] // empty dependency array: value ill be memoized and not recalculated
   );
 
+  // QUERY METHOD
+
+  // queryBar states
+  const [soaQueryBar, setSoaQueryBar] = useState(false);
+
+  // dueDate states
+  const [dueStartDate, setDueStartDate] = useState(null);
+  const [dueEndDate, setDueEndDate] = useState(null);
+
+  // // amount states
+  const [minAmount, setMinAmount] = useState(null);
+  const [maxAmount, setMaxAmount] = useState(null);
+
+  // invoice states
+  const [soa, setSoa] = useState(null);
+
+  // supplierName states
+  const [supplierName, setSupplierName] = useState("")
+
+  // function: handle table filtering
+  const handleApplyFilters = ({
+
+    dueStartDate,
+    dueEndDate,
+
+    minAmount,
+    maxAmount,
+
+    soa,
+
+    supplierName,
+
+  }) => {
+
+    let filteredData = mockData.soaDetails;
+
+  // FILTERING: "Due Date" filtering
+  if (dueStartDate && dueEndDate) {
+    filteredData = filteredData.filter((row) => {
+      const dueDate = new Date(row.dueDate);
+      return dueDate >= dueStartDate && dueDate <= dueEndDate;
+    });
+  }
+
+  // FILTERING: "Amount" filtering
+  if (minAmount !== null && maxAmount !== null) {
+    const minAmountValue = parseFloat(minAmount);
+    const maxAmountValue = parseFloat(maxAmount);
+
+    filteredData = filteredData.filter((row) => {
+      const amount = parseFloat(row.amount);
+      return amount >= minAmountValue && amount <= maxAmountValue;
+    });
+  }
+
+  // FILTERING: "Soa" filtering
+  if (soa  !== null) {
+    const soaValue = parseFloat(soa);
+
+    filteredData = filteredData.filter((row) => {
+      const number = parseFloat(row.soaID);
+      return number === soaValue
+    })
+  }
+
+  // FILTERING: "Supplier Name" filtering
+  if (supplierName !== null) {
+    filteredData = filteredData.filter((row) => {
+      return row.supplier === supplierName;
+    });
+  }
+
+  // Update the state with filtered data
+  setFilteredData(filteredData);
+};
+
+  // Create a state to hold filtered data
+  const [filteredData, setFilteredData] = useState(mockData.soaDetails);
+
   const tableInstance = useTable(
-    { columns, data: mockData.soaDetails},
+    { columns, data: filteredData},
     useGlobalFilter, useSortBy
   );
 
@@ -91,8 +176,41 @@ const SoaPage = () => {
       </div> */}
 
       {/* search bar */}
-      <div style={searchBar}>
-        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
+      <div style={searchFilterStyle}>
+        <div style={searchBar}>
+          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
+        </div>
+
+        <button style={filterStyle} onClick={ () => setSoaQueryBar(true)}>
+          <span style={filterTextStyle}>Filter</span>
+          <HiOutlineFilter style={filterIconStyle}/>
+        </button>
+
+          <div>
+          <SoaQueryBar
+            trigger={soaQueryBar}
+            setTrigger={setSoaQueryBar}
+
+            dueStartDate={dueStartDate}
+            setDueStartDate={setDueStartDate}
+            dueEndDate={dueEndDate}
+            setDueEndDate={setDueEndDate}
+
+            minAmount={minAmount}
+            setMinAmount={setMinAmount}
+            maxAmount={maxAmount}
+            setMaxAmount={setMaxAmount}
+
+            soa={soa}
+            setSoa={setSoa}
+
+            supplierName={supplierName}
+            setSupplierName={setSupplierName}
+
+            handleApplyFilters={handleApplyFilters}
+          />
+          </div>
+
       </div>
 
       {/* table */}
