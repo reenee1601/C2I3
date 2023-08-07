@@ -28,6 +28,9 @@ async function uploadDataToMongoDBProd(data) {
 exports.handleUploadProd = async function handleUploadProd(req, res, next){
   try{
     const data = req.body;
+    if (data==null){
+      return res.status(400).json({ error: 'No valid data provided for upload.' });
+    }
     console.log(data);
     await uploadDataToMongoDBProd(data);
     console.log('OCR data extracted and uploaded to MongoDB successfully!');
@@ -80,8 +83,13 @@ async function getProdDataById(id) {
 exports.getProdDataUsingId = async function getProdDataUsingId(req, res, next){
 try {
     const { id } = req.params; // Extract the _id from the URL parameter
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: 'Invalid id format.' });
+    }
+    
     const specificProdData = await getProdDataById(id);
     res.json(specificProdData);
+    res.status(200).json({ message: 'Fetch specific product data by id successful!' });
     
 } catch (error) {
     console.error('Error fetching specific products data:', error);
