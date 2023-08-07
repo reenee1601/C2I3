@@ -13,6 +13,7 @@ var soaRouter = require('./routes/soaRouter');
 var creditNoteRouter = require('./routes/creditNoteRouter');
 var taxReportRouter = require('./routes/taxReportRouter');
 var productRouter = require('./routes/productRouter');
+var paymentRouter = require('./routes/paymentRouter');
 
 var app = express();
 
@@ -68,6 +69,7 @@ app.use('/soa', soaRouter);
 app.use('/cd', creditNoteRouter);
 app.use('/tax', taxReportRouter);
 app.use('/product', productRouter);
+app.use('/payment', paymentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

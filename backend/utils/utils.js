@@ -24,6 +24,26 @@ exports.performOcr = async (filepath, tablesDict, formsDict) => {
     return res
 }
 
+// function to run OCR for payment
+exports.performOcrPayment = async (filepath, tablesDict) => {
+    var ocrDataPayment 
+    try {
+        ocrDataPayment = await johnPackage.getTextractAnalysis(filepath);
+    } catch (err) {
+        console.error('error performing ocr payment');
+        console.error(err)
+        return ({})
+    }
+
+    const tablesData = johnPackage.extractForms(ocrDataPayment, tablesDict);
+    console.log('utils tables')
+    console.log(tablesData);
+    console.log('utils tables')
+    
+    res = {...tablesData}
+    return res
+}
+
 
 /*
 exports.textractData = async function(req, res) { // function for textractData POST endpoint

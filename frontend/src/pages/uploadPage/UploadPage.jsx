@@ -114,19 +114,7 @@ const UploadPage = () => {
     setOcrData(response.data);
     console.log(ocrData);
     navigate('/invoice/editdocumentpage', {state: response.data, url:image})
-    
-      /*.then((response) => {
-        // Handle the successful response from the backend if needed.
-        ocrData = response;
-        console.log("File uploaded successfully!");
-      })
-      .catch((error) => {
-        // Handle any error that occurred during the file upload.
-        console.error("Error uploading file:", error);
-      });
-    } catch (err) {
-        console.error("Error uploading file:", error);
-    }*/
+
 
   };
 
@@ -148,27 +136,24 @@ const UploadPage = () => {
     setOcrData(response.data);
     console.log(ocrData);
     navigate('/soa/editdocumentpage', {state: response.data, url:image})
-      
-      /*const formData = new FormData();
-      formData.append("pdfFile", image);
-      //console.log("isInvoiceActive:", isInvoiceActive);
-      console.log("image:", image);
-      console.log('Soa is clicked')
-      axios
-        .post("http://localhost:8000/soa/uploadDataSOA", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          // Handle the successful response from the backend if needed.
-          console.log("File uploaded successfully!");
-        })
-        .catch((error) => {
-          // Handle any error that occurred during the file upload.
-          console.error("Error uploading file:", error);
-        });*/
+
   };
+    const handleFileUploadReceipt = async () => {
+      
+    // const formData = new FormData();
+    // formData.append("pdfFile", image);
+    //console.log("isInvoiceActive:", isInvoiceActive);
+    console.log("image:", image);
+    console.log('Payment is clicked')
+    let response = await axios // wait for the data to be scanned
+      .post("http://localhost:8000/payment/scanDataPayment", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    console.log(response);
+
+};
 
     const handleConditionalButtonClick = async () =>{
       if(selectedType == "INVOICE"){
@@ -181,7 +166,7 @@ const UploadPage = () => {
         console.log(2);
       }
       else if(selectedType == "PAYMENT"){
-        // this.handleFileUploadReceipt();
+        await handleFileUploadReceipt();
         console.log(3);
       }
       else{
