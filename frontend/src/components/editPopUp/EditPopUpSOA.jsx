@@ -15,38 +15,39 @@ import {
     errorStyle
   } from './EditPopUpStyle';
 
-  const EditPopUp = ({ closeEditPopUp, onSubmit, defaultProductCode, defaultQuantity, defaultAmount, defaultProductName, isAddMode }) => {
+
+  const EditPopUp = ({ closeEditPopUp, onSubmit,  defaultInvoiceID, defaultIssuedDate, defaultDueDate, defaultAmount, isAddMode }) => {
     const [formState, setFormState] = useState({
-      productName: isAddMode ? '' : defaultProductName || '',
-      quantity: isAddMode ? '' : defaultQuantity || '',
+      invoiceID: isAddMode ? '' : defaultInvoiceID || '', 
+      issuedDate: isAddMode ? '' : defaultIssuedDate || '', 
+      dueDate: isAddMode ? '' : defaultDueDate || '', 
       amount: isAddMode ? '' : defaultAmount || '',
-      productCode: isAddMode ? '' : defaultProductCode || ''
     });
   
     useEffect(() => {
       if (isAddMode) {
         // If it's Add mode, reset the form fields
         setFormState({
-          productCode: '',
-          quantity: '',
-          amount: '',
-          productName: ''
+          invoiceID: '',
+          issuedDate: '',
+          dueDate: '',
+          amount: ''
         });
       } else {
         // If it's Edit mode, set the form fields with default values
         setFormState({
-          productCode: defaultProductCode || '',
-          quantity: defaultQuantity || '',
+          invoiceID: defaultInvoiceID || '',
+          issuedDate: defaultIssuedDate || '',
+          dueDate: defaultDueDate || '',
           amount: defaultAmount || '',
-          productName: defaultProductName || '',
         });
       }
-    }, [defaultProductCode, defaultQuantity, defaultAmount, defaultProductName, isAddMode]);
+    }, [defaultInvoiceID, defaultIssuedDate, defaultDueDate, defaultAmount, isAddMode]);
 
   const [errors, setErrors] = useState("")
 
   const validateForm = () => {
-    if(formState.productCode && formState.amount && formState.quantity && formState.productCode) {
+    if(formState.invoiceID && formState.issuedDate && formState.dueDate && formState.amount) {
       setErrors("")
       return true;
     }
@@ -83,10 +84,10 @@ import {
     } else {
       // For Edit mode, set the formState to the default values for the current row
       setFormState({
-        productCode: defaultProductCode || "",
-        quantity: defaultQuantity || "",
-        amount: defaultAmount || "",
-        productName: defaultProductName || "",
+        invoiceID: defaultInvoiceID || '',
+        issuedDate: defaultIssuedDate || '',
+        dueDate: defaultDueDate || '',
+        amount: defaultAmount || '',
       });
     }
   };
@@ -110,23 +111,23 @@ import {
                 </div>*/}
       
                 <div style={addStyle}>
-                  <label style={addLabelStyle} htmlFor='productCode'>PRODUCT CODE:  </label>
-                  <input style= {addInputStyle} name="productCode" value={formState.productCode} onChange={handleChange}/>
+                  <label style={addLabelStyle} htmlFor='invoiceID'>INVOICE ID:  </label>
+                  <input style= {addInputStyle} name="invoiceID" value={formState.invoiceID} onChange={handleChange}/>
                 </div>
 
                 <div style={addStyle}>
-                  <label style={addLabelStyle} htmlFor='quantity'>QUANTITY:</label>
-                  <input style= {addInputStyle} name="quantity" value={formState.quantity} onChange={handleChange}/>
+                  <label style={addLabelStyle} htmlFor='issuedDate'>ISSUED DATE:</label>
+                  <input style= {addInputStyle} name="issuedDate" value={formState.issuedDate} onChange={handleChange}/>
                 </div>
 
                 <div style={addStyle}>
-                  <label style={addLabelStyle} htmlFor="amount">AMOUNT:</label>
+                  <label style={addLabelStyle} htmlFor="dueDate">DUE DATE:</label>
+                  <input style= {addInputStyle} name="dueDate" value={formState.dueDate} onChange={handleChange}/>
+                </div>
+
+                <div style={addStyle}>
+                  <label style={addLabelStyle} htmlFor='amount'>AMOUNT:  </label>
                   <input style= {addInputStyle} name="amount" value={formState.amount} onChange={handleChange}/>
-                </div>
-
-                <div style={addStyle}>
-                  <label style={addLabelStyle} htmlFor='productName'>PRODUCT NAME:  </label>
-                  <input style= {addInputStyle} name="productName" value={formState.productName} onChange={handleChange}/>
                 </div>
 
               </div>
