@@ -151,3 +151,13 @@ export const labelStyle = {
   fontSize: '15px',
   color: 'red', // Change the color to your desired label color
 };
+
+export const loadingStyle = {
+  textAlign: "center",
+  backgroundColor: "FFFFFF",
+  display:"flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "100%",
+  height: "100vh",
+}

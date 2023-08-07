@@ -1,11 +1,14 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
+import GridLoader from "react-spinners/GridLoader";
 
 import { MdUploadFile , MdDelete } from "react-icons/md";
 import { AiFillFileImage } from "react-icons/ai";
+
+import backgroundImage from '../../asserts/UploadBackground.png';
 
 import {
   fileupload,
@@ -20,9 +23,23 @@ import {
   uploadcancelbutton,
   documentTypeH1TextStyle,
   labelStyle,
+  loadingStyle,
 } from "./UploadPageStyle"
 
 const UploadPage = () => {
+
+  // LOADING FUNCTIONALITY
+  const [loading, setLoading] = useState(false)
+
+  //API CALL HERE: Replace SetTimeOut to fetching of data
+  useEffect(() => {
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+  }, []);
 
   //START VALIDATION
   const [upload, setUpload] = useState('');
@@ -77,7 +94,22 @@ const UploadPage = () => {
   
 
   return (
-    <div>
+    <>
+    {loading ? (
+      <div style={loadingStyle}>
+        <GridLoader 
+        color={"#3A3A3A"} 
+        loading={loading} 
+        size={20} />
+      </div>
+    ) : (
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div>
         <SecondNavBar />
       </div>
@@ -175,8 +207,10 @@ const UploadPage = () => {
               }}>Cancel</button>
       </div>
       
-  </div>
-  )
-}
+      </div>
+      )}
+    </>
+  );
+};
 
 export default UploadPage
