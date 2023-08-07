@@ -68,6 +68,8 @@ const RegisterPage = () => {
       return 'You can use letters';
     } if (fieldName === 'email') {
       return 'You can use letters & numbers';
+    } if (fieldName === 'password') {
+      return 'YMinimum 8 characters';
     }
     return '';
   };
@@ -75,19 +77,11 @@ const RegisterPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const newErrors = {
-    //   fullName: fullName.trim() === '',
-    //   companyName: companyName.trim() === '',
-    //   email: email.trim() === '',
-    //   password: password.trim() === '',
-    //   confirmPassword: confirmPassword.trim() === '',
-    // };
-
     const newErrors = {
       fullName: fullName.trim() === '' || !fullName.match(nameRegex),
       companyName: companyName.trim() === '',
       email: email.trim() === '' || !email.match(emailRegex),
-      password: password.trim() === '',
+      password: password.trim() === '' || password.length < 8,
       confirmPassword: confirmPassword.trim() === '',
     };
 
@@ -198,7 +192,11 @@ const RegisterPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                   />
-                  {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
+                  {error.password ? (
+                    <label style={labelStyle}>
+                      {password.trim() === '' ? 'This is a required field.' : 'Minimum 8 characters'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('password')}</label>}
                 </div>
   
                 <div style={inputValidationContainer}>
@@ -244,4 +242,4 @@ const RegisterPage = () => {
     );
   };
   
-  export default RegisterPage;
+export default RegisterPage;
