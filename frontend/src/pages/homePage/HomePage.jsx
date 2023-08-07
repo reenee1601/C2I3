@@ -5,6 +5,8 @@ import axios from 'axios'
 import 'swiper/css/bundle';
 
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
+import { useLocation } from 'react-router-dom';
+
 
 import {
   firstrow,
@@ -20,30 +22,31 @@ import {
 
 } from "./HomePageStyle"
 
-import { useLocation } from 'react-router-dom';
 
 const HomePage = () => {
   const location = useLocation();
   const userEmail = location.state?.email || '';
-
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState({userEmail: '', userName: '', userCompany: '' });
 
   useEffect(() => {
-    // Fetch user information using userEmail
-    if (userEmail) {
-      console.log('Making request to:', '/users/getUserInfo');
-      axios.get(`http://localhost:8000/users/getUserInfo?email=${userEmail}`)
-      console.log('user email = ${userEmail}')
-        .then(response => {
-          setUserInfo(response.data);
-        })
-        .catch(error => {
-          console.error('Error fetching user information:', error);
-        });
-    }
+    axios
+      .get('http://localhost:8000/users/getUserInfo', {
+        params: {
+          email: userEmail,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUserInfo(response.data);
+      })
+      .catch((error) => {
+        console.error('Error registering user:', error);
+        // Handle the error, e.g., show an error message to the user
+      });
   }, [userEmail]);
+  
 
-
+  console.log("user info name",userInfo.name);
 
   // Requires fetching from Database
   let slideInfo = [
@@ -70,8 +73,8 @@ const HomePage = () => {
 
   
 
-  //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
-  const companyName = userInfo.length > 0 ? userInfo[0].company : "";
+  // //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
+  // const companyName = userInfo.length > 0 ? userInfo[0].company : "";
 
   const renderSlide = (slide, index) => {
 
@@ -112,16 +115,15 @@ const HomePage = () => {
       <div style={firstrow}>        
 
         <div style={profileinfo}>
-          <h1 style={welcomeStyle} >WELCOME,</h1>
-          <h2 style={nameStyle}>{userInfo.length > 0 ? userInfo[0].name : ''}</h2>
-          <p style={companyStyle}>{userInfo.length > 0 ? userInfo[0].company : ''}</p>
-        
+          <h1 style={welcomeStyle} >WELCOME, {userInfo.userName} </h1>
+          {/* {userInfo.userName && <h2 style={nameStyle}>{userInfo.userName}</h2>}
+          {userInfo.userCompany && <p style={companyStyle}>{userInfo.userCompany}</p>} */}
         </div>
 
       </div>
 
         <div>
-          <h3 style={gridheader}>Companies Involved:</h3>
+          <h3 style={gridheader}>Companies Involved: {userInfo.userCompany}</h3>
         </div>
 
         <div style={slider}>
@@ -141,7 +143,7 @@ const HomePage = () => {
 
     </div>
     
-  )
-}
+  );
+};
 
 export default HomePage

@@ -2,11 +2,13 @@ const userModel = require('../models/userModel.js');
 const connection = require('../db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 
-// Generate a secure random secret key
-const secretKey = crypto.randomBytes(32).toString('hex');
-console.log('Generated Secret Key:', secretKey);
+
+const secretKey = require('../config/secret');
+
+// // Generate a secure random secret key
+// const secretKey = crypto.randomBytes(32).toString('hex');
+// console.log('Generated Secret Key:', secretKey);
 
 
 exports.register = async function(req, res, next){
@@ -107,15 +109,28 @@ exports.signin = async function(req, res, next){
         userId: user._id,
         userEmail: user.email,
       },
-      secretKey,
+      'secretKey',
       { expiresIn: '24h' }
     );
 
-    // Set user session
-    req.session.user = {
-      userId: user._id,
-      userEmail: user.email,
-    };
+    // // Set user session
+    // req.session.user = {
+    //   userId: user._id,
+    //   userEmail: user.email,
+    //   userName: user.name,
+    // };
+
+    // // Set user session data using req.session
+    // req.session.userId = user._id;
+    // req.session.userEmail = user.email;
+    // req.session.userName = user.name;
+
+    // // Set the session cookie manually
+    // res.cookie('session', req.sessionID, {
+    //   maxAge: 24 * 60 * 60 * 1000, // Session expiration time
+    //   httpOnly: true, // Prevent client-side access
+    //   sameSite: 'lax',
+    // });
 
     // Return success response
     res.status(200).send({
@@ -142,9 +157,25 @@ exports.signout = async (req, res) => {
 
 exports.getUserInfo = async (req, res) => {
   try {
-    const { userEmail } = req.session; // Retrieve user's email from the session
-    const user = await userModel.findOne({ email: userEmail }); // Find user by email in your MongoDB collection
-    res.json(user);
+    const { email } = req.query;
+
+    if (!email){
+      return res.status(422).json({error: 'Not in params'});
+    }
+
+    const user = await userModel.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const userData = {
+      userEmail: user.email, 
+      userName: user.name,
+      userCompany: user.company,
+    };
+    
+    res.json(userData);
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving user information' });
   }

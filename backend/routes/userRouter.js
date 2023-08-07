@@ -21,7 +21,8 @@ router.post('/signin', signin);
 
 //Signout endpoints
 router.post('/signout', signout);
-router.get('/getUserInfo', getUserInfo)
+
+router.get('/getUserInfo', getUserInfo);
 
 module.exports = router;
 

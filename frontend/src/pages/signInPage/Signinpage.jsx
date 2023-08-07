@@ -54,7 +54,7 @@ const handleSubmit = async (e) => {
 
     if (response.status === 200) {
       // If login is successful, navigate to the homepage
-      navigate('/homepage');
+      navigate('/homepage', { state: { email: email } });
     } else {
       // Show an error message or perform any other action for invalid login
       console.log('Invalid email or password');
