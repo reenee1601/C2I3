@@ -142,7 +142,8 @@ return (
             <tr>
               <th style={th}>Invoice ID</th>
               <th style={th}>Supplier</th>
-              <th style={th}>Amount</th>
+              <th style={th}>Total</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -152,7 +153,7 @@ return (
                 <tr key={item._id}>
                   <td style={td}>
                     <Link to={`/detailedInvoicepage/${item._id}`} className="InvoiceID-link">
-                      {item._id}
+                      {item.invoiceID}
                       
                     </Link>
                     
@@ -164,7 +165,7 @@ return (
                   </td>
                   <td style={td}>
                     <Link to={`/detailedInvoicepage/${item._id}`} className="amount-link">
-                      {item.totalAmount}
+                      {item.totalAfterGST}
                     </Link>
                   </td>
                   {/* ... Table cell JSX code ... */}

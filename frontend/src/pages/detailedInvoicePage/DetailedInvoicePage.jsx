@@ -42,9 +42,9 @@ const DetailedInvoicePage = () => {
       setSpecificInvoiceData(data);
       console.log(specificInvoiceData);
       // Update the Invoice title and total amount with the specific data
-      setInvoiceTitle(`Invoice #${data._id}`);
+      setInvoiceTitle(`Invoice #${data.invoiceID}`);
       console.log("WELP");
-      setTotalAmount(`Total Amount: ${data.totalAmount}`);
+      setTotalAmount(`Total Amount: ${data.totalAfterGST}`);
       console.log("WELP");
 
     } catch (error) {
