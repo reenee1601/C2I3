@@ -48,7 +48,7 @@ const ProductPage = () => {
             quantity: "Minimum Quantity",
 
             barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
+            sku: "124284928491491"
         },
 
         { 
@@ -60,7 +60,7 @@ const ProductPage = () => {
             quantity: "Minimum Quantity",
 
             barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
+            sku: "124284928491492"
         },
 
         { 
@@ -72,7 +72,7 @@ const ProductPage = () => {
             quantity: "Minimum Quantity",
 
             barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
+            sku: "124284928491493"
         },
 
         { 
@@ -84,7 +84,7 @@ const ProductPage = () => {
             quantity: "Minimum Quantity",
 
             barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
+            sku: "124284928491494"
         },
 
         { 
@@ -96,7 +96,19 @@ const ProductPage = () => {
             quantity: "Minimum Quantity",
 
             barcode: require("../../asserts/barcode.png" ),
-            sku: "124284928491497"
+            sku: "124284928491495"
+        },
+
+        { 
+            image: require("../../asserts/whitefabric.png" ),
+            header: "White Silk Fabric",
+            description: "Product Description",
+            measurement: "Unit of Measurement",
+            cost: "Product Cost",
+            quantity: "Minimum Quantity",
+
+            barcode: require("../../asserts/barcode.png" ),
+            sku: "124284928491496"
         },
       ]
 
@@ -169,7 +181,22 @@ const ProductPage = () => {
           alignItems: "center",
           margin: "0 auto",
         };
-        
+
+        const deleteButtonStyle = {
+          color: "#3A3A3A",
+          border: "None",
+          borderRadius: "5px",
+          fontSize: "14px",
+          background: "#F2E8FF",
+
+        };
+
+        // delete product card
+        const handleDeleteProduct = (sku) => {
+          const updatedProducts = products.filter((product) => product.sku !== sku);
+          setProducts(updatedProducts);
+          
+        };
     
         return(
     
@@ -187,6 +214,7 @@ const ProductPage = () => {
                   <img style={imgBarcodeStyle} src={product.barcode} alt="Error" />
                 </div>
                 <p style={pproduct}>{product.sku}</p>
+                <button style={deleteButtonStyle} onClick={() => handleDeleteProduct(product.sku)}>Delete</button>
               </div>
             </SwiperSlide>
         )
@@ -205,14 +233,13 @@ const ProductPage = () => {
     const [addPopUp, setAddPopUp] = useState(false);
 
     // ADDING OF NEW CARD
+    const [products, setProducts] = useState(productInfo);
 
-  const [products, setProducts] = useState(productInfo);
+    const handleAddProduct = (newProduct) => {
+      setProducts([...products, newProduct]);
+    };
+    // END of ADDING OF NEW CARD
 
-  const handleAddProduct = (newProduct) => {
-    setProducts([...products, newProduct]);
-  };
-
-  // END of ADDING OF NEW CARD
 
   return (
     <div>
@@ -233,7 +260,7 @@ const ProductPage = () => {
         </div>
 
         <div style={productslider}>
-          <Swiper
+          {/* <Swiper
           modules={[Scrollbar]}
           spaceBetween={50}
           slidesPerView={4}
@@ -243,7 +270,24 @@ const ProductPage = () => {
           
           {products.map((product, index) => productSlide(product, index))}
 
-          </Swiper>
+          </Swiper> */}
+
+          {products.length > 0 ? (
+            <Swiper
+              modules={[Scrollbar]}
+              spaceBetween={50}
+              slidesPerView={4}
+              scrollbar={{ draggable: true }}
+              // onSlideChange={() => console.log('slide change')}
+              // onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={(swiper) => console.log('Slide changed. Current slide index:', swiper.activeIndex)}
+              onSwiper={(swiper) => console.log('Swiper instance:', swiper)}
+            >
+              {products.map((product) => productSlide(product))}
+            </Swiper>
+          ) : (
+            <p>No products available.</p>
+          )}
         </div>
 
     </div>
