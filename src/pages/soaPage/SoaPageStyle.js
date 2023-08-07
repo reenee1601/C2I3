@@ -190,3 +190,13 @@ export const searchFilterStyle = {
     marginTop: "5%",
 }
 
+export const loadingStyle = {
+    textAlign: "center",
+    backgroundColor: "FFFFFF",
+    display:"flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "100vh",
+}
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTable, useSortBy, useGlobalFilter } from "react-table";
 import { Link } from "react-router-dom";
 
@@ -10,13 +10,29 @@ import mockData from "../../data/mock_data.json";
 import { FaShareSquare } from 'react-icons/fa';
 import { HiOutlineFilter } from 'react-icons/hi';
 
+import GridLoader from "react-spinners/GridLoader";
+
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
           exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon,
-          filterStyle, filterIconStyle, filterTextStyle, searchFilterStyle
+          filterStyle, filterIconStyle, filterTextStyle, searchFilterStyle, loadingStyle,
         } from './SoaPageStyle';
 
 const SoaPage = () => {
+
+  // LOADING FUNCTIONALITY
+  const [loading, setLoading] = useState(false)
+
+  //API CALL HERE: Replace SetTimeOut to fetching of data
+  useEffect(() => {
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+  }, []);
+
 
   const columns = React.useMemo(
     () => [
@@ -165,7 +181,16 @@ const SoaPage = () => {
     setIsDropdownVisible(false); // Close the dropdown after selecting an option
   }
 
-  return (
+ return (
+    <>
+    {loading ? (
+      <div style={loadingStyle}>
+        <GridLoader 
+        color={"#3A3A3A"} 
+        loading={loading} 
+        size={20} />
+      </div>
+    ) : (
     <div>
       <div className="second-navbar">
         <SecondNavBar />
@@ -271,7 +296,9 @@ const SoaPage = () => {
         </div>
       </div>
 
-    </div>
+      </div>
+      )}
+    </>
   );
 };
 
