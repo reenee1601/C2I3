@@ -33,7 +33,7 @@ const HomePage = () => {
     if (userEmail) {
       console.log('Making request to:', '/users/getUserInfo');
       axios.get(`http://localhost:8000/users/getUserInfo`)
-      console.log('User Email --> ' , userEmail)
+      
         .then(response => {
           setUserInfo(response.data);
         })
@@ -114,12 +114,12 @@ const HomePage = () => {
         <div style={profileinfo}>
           <h1 style={welcomeStyle} >WELCOME,</h1>
           <h2 style={nameStyle}>
-      {userInfo.length > 0 ? userInfo[0].name : ''}
-      {userInfo.length > 0 && console.log('Name:', userInfo[0].name)}
+      {/* {userInfo.length > 0 ? userInfo[0].name : ''}
+      {userInfo.length > 0 && console.log('Name:', userInfo[0].name)} x*/}
     </h2>
     <p style={companyStyle}>
-      {userInfo.length > 0 ? userInfo[0].company : ''}
-      {userInfo.length > 0 && console.log('Company:', userInfo[0].company)}
+      {/* {userInfo.length > 0 ? userInfo[0].company : ''}
+      {userInfo.length > 0 && console.log('Company:', userInfo[0].company)} */}
     </p>
         </div>
 
