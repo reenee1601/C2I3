@@ -3,6 +3,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 
 import { MdUploadFile , MdDelete } from "react-icons/md";
@@ -37,6 +40,7 @@ const UploadPage = () => {
   // END OF VALIDATION
 
   const [image, setImage] = useState(null)
+  const [isScanning, setIsScanning] = useState(false)
   const [fileName, setFileName] = useState ("No File Selected")
   const [selectedType, setSelectedType] = useState("INVOICE");
   const [formData, setFormData] = useState(new FormData());
@@ -156,13 +160,34 @@ const UploadPage = () => {
 };
 
     const handleConditionalButtonClick = async () =>{
-      if(selectedType == "INVOICE"){
-        await handleFileUploadInvoice();
+      if (image === null) {
+        // handle when the used doesnt select an image to scan
+        toast('Please select an image first', {autoclose: 1000, closeOnClick: true});
+      }
+      else if(isScanning){
+        toast('Scanning is in progress', {autoclose: 1000, closeOnClick: true});
+      }
+      else if(selectedType == "INVOICE"){
+        setIsScanning(true)
+        await toast.promise(
+          handleFileUploadInvoice(),
+          {
+            pending:'Scanning data...',
+            succerss:'redirecting to edit page...',
+            error:'Scanning failed :('}
+        );
         
         console.log(1);
       }
       else if(selectedType == "STATEMENT"){
-        await handleFileUploadSOA();
+        setIsScanning(true)
+        await toast.promise(
+          handleFileUploadSOA(),
+          {
+            pending:'Scanning data...',
+            succerss:'redirecting to edit page...',
+            error:'Scanning failed :('}
+        );
         console.log(2);
       }
       else if(selectedType == "PAYMENT"){
@@ -178,6 +203,7 @@ const UploadPage = () => {
     <div>
       <div>
         <SecondNavBar />
+          <ToastContainer />
       </div>
 
       <div className="alluploads" style = {alluploads}>
