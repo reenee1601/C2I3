@@ -2,7 +2,7 @@ import React from 'react';
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
 // import './detailedSoaPage.css';
 import { Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import mockData from "../../data/mock_data.json";
 import { IoChevronBack } from 'react-icons/io5';
 import { LiaWalletSolid } from 'react-icons/lia';
@@ -11,6 +11,12 @@ import { topPart, soaTitle, supplierName, dueDate, tableContainer, scrollable,
           rightBottom, totalAmount, goBackStyle, goBackButtonStyle, goBackLinkStyle} from './DetailedSoaPageStyle';
 
 const DetailedSoaPage = () => {
+
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    navigate("/uploadpage");
+  }
 
   return (
     <div>
@@ -65,9 +71,10 @@ const DetailedSoaPage = () => {
           <p style={totalAmount}>Total Amount: $4000.50</p>
           {/* if clicked go to compare doc page */}
           <button style={paymentButton}>
-            <Link to="/uploadpage">
-              <LiaWalletSolid size ={30} style={paymentButtonImg} data-testid="payment-button"/>
-            </Link>
+              <LiaWalletSolid 
+                size ={30} style={paymentButtonImg} 
+                data-testid="payment-button"
+                onClick={handleButtonClick}/>
           </button>
         </div>
       </div>
