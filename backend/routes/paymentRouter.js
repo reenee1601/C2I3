@@ -16,6 +16,7 @@ const upload = multer({ storage: storage })
 
 // Create a route to handle the data upload
 router.post('/scanDataPayment', upload.single('file'), paymentController.scanDataPayment); // run textract analysis on given data. 
+router.post('/sendWhatsApp', paymentController.sendWhatsApp);
 
 
 module.exports = router;

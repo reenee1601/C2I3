@@ -26,6 +26,8 @@ const UploadPage = () => {
   //VALIDATION
   const [upload, setUpload] = useState('');
 
+  const [qrCode, setQrCode] = useState('');
+
   const [error, setError] = useState({
     upload: false
   });
@@ -144,7 +146,8 @@ const UploadPage = () => {
     // formData.append("pdfFile", image);
     //console.log("isInvoiceActive:", isInvoiceActive);
     console.log("image:", image);
-    console.log('Payment is clicked')
+    console.log('Payment is clicked');
+
     let response = await axios // wait for the data to be scanned
       .post("http://localhost:8000/payment/scanDataPayment", formData, {
         headers: {
@@ -153,6 +156,21 @@ const UploadPage = () => {
       })
     console.log(response);
 
+};
+
+const sendWhatsAppNotification = async () => {
+  try {
+    // client.on('qr', (qr) => {
+    //   // Set the QR code string to the state variable
+    //   setQrCode(qr);
+    // });
+    const response = await axios.post("http://localhost:8000/payment/sendWhatsApp", {
+      // Include any necessary data for the notification
+    });
+    console.log('WhatsApp notification sent:', response.data);
+  } catch (error) {
+    console.error('Error sending WhatsApp notification:', error);
+  }
 };
 
     const handleConditionalButtonClick = async () =>{
@@ -167,6 +185,7 @@ const UploadPage = () => {
       }
       else if(selectedType == "PAYMENT"){
         await handleFileUploadReceipt();
+        await sendWhatsAppNotification();
         console.log(3);
       }
       else{
@@ -238,6 +257,7 @@ const UploadPage = () => {
             </span>
           </section>
         </div>
+
 
       </div>
 

@@ -6,12 +6,31 @@ const paymentModel = require('../models/paymentModel');
 const johnPackage = require('john-package');
 const mongoose = require('mongoose');
 
+const accountSid = 'ACb10e36162bf1e9c551cdf7a8ce779d97';
+const authToken = '0a0d792f5d5809e00ec4f1ceccc3fadf';
+const client = require('twilio')(accountSid, authToken);
+
+
+// const { Client } = require('whatsapp-web.js');
+// const client = new Client();
 
 const tablesDict = { // list of table headers you want to extract
 headers: ['PayerName', 'Comment', 'Reference'],
 mapping: {
 'From': 'PayerName', 'Your Comments' : 'Comment','Reference No.': 'Reference'}
 };
+
+// client.on('qr', (qr) => {
+
+//   });
+// client.on('ready', () => {
+//     console.log('WhatsApp client is ready');
+//     // Now the client is ready, you can send messages
+//   });
+  
+// client.initialize();
+
+
 
 ////// NON EXPORTED FUNCTIONS
 ////// EXPORTED FUNCTIONS
@@ -45,27 +64,18 @@ exports.scanDataPayment = async function(req, res) { // function for textractDat
 }
 
 
-exports.uploadDataPayment = async function(req, res) { // function for uploadData POST endpoint
-    try{data = req.body;
-    await paymentModel.create(data);
-
-    console.log()
-    res.status(200).json({message:'Successfully uploaded payment onto MongoDB'})}
-    catch (err) {
-        console.error('Error uploading payment to MongoDB', err);
-        res.status(500).json({message:'Error uploading payment to MongoDB'})
-    }
-}
-
-
-exports.getDataPayment = async function(req, res){ // funciton for getData GET endpoint
-
-  try {
-      const paymentData = await paymentModel.find();
-        console.log('retreived invoive data')
-        res.status(200).json(paymentData);
+exports.sendWhatsApp = async function(req, res) {
+    //const phoneNumber = '+6583023966'; // Replace with the recipient's phone number including country code (e.g., +1234567890)
+    try {
+        client.messages
+            .create({
+                body: 'Payment received!',
+                from: 'whatsapp:+14155238886',
+                to: 'whatsapp:+6583023966'
+            })
+            .then(message => console.log(message.sid))
+            .done();
     } catch (error) {
-        console.error('Error fetching payment data:', error);
-        res.status(500).json({ error: 'Error fetching payment data.' });
+      console.error('Error sending WhatsApp notification:', error);
     }
-}
+  }
