@@ -31,9 +31,11 @@ const HomePage = () => {
    //API CALL HERE: Replace SetTimeOut to fetching of data
    useEffect(() => {
      setLoading(true);
+     
      setTimeout(() => {
        setLoading(false);
      }, 1000);
+
    }, []);
 
   // Requires fetching from Database

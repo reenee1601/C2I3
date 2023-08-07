@@ -1,6 +1,8 @@
 import React from 'react'
+
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 import EditPopUp from '../../components/editPopUp/EditPopUp';
+import ScanSuccessfully from '../../components/scanSuccessfully/ScanSuccessfully';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
@@ -191,6 +193,11 @@ const EditDocumentPage = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: updatedColumns, data });
 
+  // SUBMIT SUCCESSFULLY BUTTON
+  const [scanSuccessfully, setScanSuccessfully] = useState(false)
+
+
+
   return (
     <div>
         <SecondNavBar />
@@ -292,7 +299,13 @@ const EditDocumentPage = () => {
 
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
-                <button style={submitStyle}>Submit</button>
+                <button 
+                style={submitStyle}
+                onClick={ () => { setScanSuccessfully(true);}}>Submit</button>
+
+                <div>
+                  <ScanSuccessfully trigger={scanSuccessfully} setTrigger={setScanSuccessfully}/>
+                </div>
 
                 <button
                   onClick={() => {
