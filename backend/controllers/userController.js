@@ -4,13 +4,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
-const secretKey = require('../config/secret');
-
-// // Generate a secure random secret key
-// const secretKey = crypto.randomBytes(32).toString('hex');
-// console.log('Generated Secret Key:', secretKey);
-
-
 exports.register = async function(req, res, next){
     const { email, password, company, name } = req.body;
 
