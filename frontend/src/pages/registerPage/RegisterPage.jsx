@@ -79,7 +79,7 @@ const RegisterPage = () => {
       .post('http://localhost:8000/users/register', userData)
       .then((response) => {
         console.log('User registered:', response.data);
-        navigate('/homepage');
+        navigate('/homepage',{ state: { email: email } });
       })
       .catch((error) => {
         console.error('Error registering user:', error);
