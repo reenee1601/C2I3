@@ -142,7 +142,8 @@ exports.signout = async (req, res) => {
 
 exports.getUserInfo = async (req, res) => {
   try {
-    const { userEmail } = req.session; // Retrieve user's email from the session
+    const { userEmail } = req.body; // Retrieve user's email from the session
+    console.log('User Email:', userEmail);
     const user = await userModel.findOne({ email: userEmail }); // Find user by email in your MongoDB collection
     res.json(user);
   } catch (error) {
