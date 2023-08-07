@@ -2,7 +2,7 @@
 const johnPackage = require('john-package');
 const mongoose = require('mongoose');
 const creditNoteModel = require('../models/creditNoteModel.js');
-
+const db = require('../db'); // Import the db object
 
 // Function to perform OCR and extract data
 async function performOCRAndExtractDataCD(filepath) {

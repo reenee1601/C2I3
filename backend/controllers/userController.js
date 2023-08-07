@@ -139,3 +139,14 @@ exports.signout = async (req, res) => {
     res.status(500).send({message: "Error while signing out!"});
   }
 };
+
+exports.getUserInfo = async (req, res) => {
+  try {
+    const { userEmail } = req.body; // Retrieve user's email from the session
+    console.log('User Email:', userEmail);
+    const user = await userModel.findOne({ email: userEmail }); // Find user by email in your MongoDB collection
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving user information' });
+  }
+};

@@ -46,7 +46,7 @@ const EditDocumentPage = () => {
   const [image, setImage] = useState(location.url);
 
   // Function to clean numerical fields
-  const getNumber = (s) => { return parseFloat( s.replace( /[^0-9.]+/g , '') ); }
+  const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
 
   // Form Data
   const [supplierID, setSupplierID] = useState(stateData.supplierID);

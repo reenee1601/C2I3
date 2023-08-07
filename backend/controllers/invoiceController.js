@@ -34,7 +34,7 @@ mapping: {'INVOICE NO.':'invoiceID','Tax Invoice':'invoiceID',
 const tablesDict = { // list of table headers you want to extract
 headers: ['productCode', 'quantity', 'amount', 'productName' ],
 mapping: {
-'ITEM ID' :'productCode','Produc Code':'productCode','Product Code':'productCode'
+'ITEM ID' :'productCode','Produc Code':'productCode','Product Code':'productCode', 'ode': 'ProductCode'
  ,'QTY':'quantity', 'Qty' :'quantity', 'QUANTITY':'quantity', 
  'AMOUNT':'amount',  'Amount':'amount', 
 'Description':'productName','Description':'productName','DESCRIPTION OF GOODS':'productName',

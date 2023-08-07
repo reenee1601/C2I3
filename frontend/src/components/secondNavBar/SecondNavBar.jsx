@@ -24,6 +24,26 @@ export const SecondNavBar = () => {
     { label: 'PRODUCT', active: false, hovered: false, route:"productpage" },
   ]);
 
+  const handleSignOut = async () => {
+    try {
+      // Make an API request to your signout endpoint
+      const response = await fetch('http://localhost:8000/users/signout', {
+        method: 'POST',  
+        // You might need to include authentication headers if required
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., redirect to a sign-in page
+        window.location.href = '/signinpage'; // Redirect to the sign-in page
+      } else {
+        // Handle error
+        console.error('Signout failed');
+      }
+    } catch (error) {
+      console.error('Error during signout:', error);
+    }
+  };
+
   return (
     <div style={navbarContainer}>
       <div style={navbar}>
@@ -56,7 +76,7 @@ export const SecondNavBar = () => {
 
       <div style={logoutStyle}>
         <a href="/signinpage">
-          <IoLogOut style = {logouticon}/>
+          <IoLogOut style = {logouticon} onClick={handleSignOut}/>
         </a>
       </div>
 
