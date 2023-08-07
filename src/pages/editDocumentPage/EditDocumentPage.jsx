@@ -3,6 +3,7 @@ import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 import EditPopUp from '../../components/editPopUp/EditPopUp';
 import ScanSuccessfully from '../../components/scanSuccessfully/ScanSuccessfully';
+import backgroundImage from '../../asserts/UploadBackground.png';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
@@ -199,7 +200,13 @@ const EditDocumentPage = () => {
 
 
   return (
-    <div>
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
         <SecondNavBar />
         
         <div style={allEditDocumentContentStyle}>

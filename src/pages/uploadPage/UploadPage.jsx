@@ -8,6 +8,8 @@ import GridLoader from "react-spinners/GridLoader";
 import { MdUploadFile , MdDelete } from "react-icons/md";
 import { AiFillFileImage } from "react-icons/ai";
 
+import backgroundImage from '../../asserts/UploadBackground.png';
+
 import {
   fileupload,
   fileinfo,
@@ -101,7 +103,13 @@ const UploadPage = () => {
         size={20} />
       </div>
     ) : (
-    <div>
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div>
         <SecondNavBar />
       </div>

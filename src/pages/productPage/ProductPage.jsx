@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
 
 import GridLoader from "react-spinners/GridLoader";
+import backgroundImage from '../../asserts/ProductBackground.png';
 
 import 'swiper/css/bundle';
 import AddProduct from '../../components/addProduct/AddProduct';
@@ -175,54 +176,62 @@ const ProductPage = () => {
           size={20} />
         </div>
       ) : (
-      <div>
-        <SecondNavBar />
+        <div
+        style={{
+          backgroundImage: `url(${backgroundImage})`, // Set the background image
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          minHeight: '100vh', 
+        }}>
+          <div>
+            <SecondNavBar />
 
-        <div style = {productheader}>
-            <h1 style={productcompany}>TEXTILE FABRIC CENTER</h1>
+            <div style = {productheader}>
+                <h1 style={productcompany}>TEXTILE FABRIC CENTER</h1>
 
-            <button style={pluscirclestyle} onClick={ () => setAddPopUp(true)}>
-            < AiFillPlusCircle color="#6D479E" size="50px"/>
-            </button>
+                <button style={pluscirclestyle} onClick={ () => setAddPopUp(true)}>
+                < AiFillPlusCircle color="#6D479E" size="50px"/>
+                </button>
 
-            <div style={productpopupstyle}>
-              <AddProduct trigger={addPopUp} setTrigger={setAddPopUp} onAddProduct={handleAddProduct}>
-              </AddProduct>
+                <div style={productpopupstyle}>
+                  <AddProduct trigger={addPopUp} setTrigger={setAddPopUp} onAddProduct={handleAddProduct}>
+                  </AddProduct>
+                </div>
+
             </div>
 
-        </div>
-
-        <div style={productslider}>
-          {/* <Swiper
-          modules={[Scrollbar]}
-          spaceBetween={50}
-          slidesPerView={4}
-          scrollbar={{draggable: true }}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}>
-          
-          {products.map((product, index) => productSlide(product, index))}
-
-          </Swiper> */}
-
-          {products.length > 0 ? (
-            <Swiper
+            <div style={productslider}>
+              {/* <Swiper
               modules={[Scrollbar]}
               spaceBetween={50}
               slidesPerView={4}
-              scrollbar={{ draggable: true }}
-              // onSlideChange={() => console.log('slide change')}
-              // onSwiper={(swiper) => console.log(swiper)}
-              onSlideChange={(swiper) => console.log('Slide changed. Current slide index:', swiper.activeIndex)}
-              onSwiper={(swiper) => console.log('Swiper instance:', swiper)}
-            >
-              {products.map((product) => productSlide(product))}
-            </Swiper>
-          ) : (
-            <p>No products available.</p>
-          )}
-        </div>
+              scrollbar={{draggable: true }}
+              onSlideChange={() => console.log('slide change')}
+              onSwiper={(swiper) => console.log(swiper)}>
+              
+              {products.map((product, index) => productSlide(product, index))}
 
+              </Swiper> */}
+
+              {products.length > 0 ? (
+                <Swiper
+                  modules={[Scrollbar]}
+                  spaceBetween={50}
+                  slidesPerView={4}
+                  scrollbar={{ draggable: true }}
+                  // onSlideChange={() => console.log('slide change')}
+                  // onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={(swiper) => console.log('Slide changed. Current slide index:', swiper.activeIndex)}
+                  onSwiper={(swiper) => console.log('Swiper instance:', swiper)}
+                >
+                  {products.map((product) => productSlide(product))}
+                </Swiper>
+              ) : (
+                <p>No products available.</p>
+              )}
+            </div>
+
+            </div>
         </div>
       )}
     </>

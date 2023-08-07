@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
+import backgroundImage from '../../asserts/HomePageBackground.png';
 
 import 'swiper/css/bundle';
 import GridLoader from "react-spinners/GridLoader";
@@ -108,7 +109,14 @@ const HomePage = () => {
         size={20} />
       </div>
     ) : (
-    <div>
+      <div
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Set the background image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh', 
+      }}
+    >
 
       <div>
         <SecondNavBar />

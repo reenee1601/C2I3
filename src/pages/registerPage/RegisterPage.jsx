@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './registerPage.css';
 import { FirstNavBar } from '../../components/firstNavBar/FirstNavBar';
+import backgroundImage from '../../asserts/RegisterPageBackground.png';
 
 import {
   header,
@@ -120,7 +121,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
+    <div style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div style={{ ...split, ...left }}>
         <div style={centered}>
           <div style={descriptionStyle}>

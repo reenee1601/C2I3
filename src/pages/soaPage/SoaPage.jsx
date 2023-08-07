@@ -11,6 +11,7 @@ import { FaShareSquare } from 'react-icons/fa';
 import { HiOutlineFilter } from 'react-icons/hi';
 
 import GridLoader from "react-spinners/GridLoader";
+import backgroundImage from '../../asserts/SOABackground.png';
 
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
@@ -191,7 +192,13 @@ const SoaPage = () => {
         size={20} />
       </div>
     ) : (
-    <div>
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div className="second-navbar">
         <SecondNavBar />
       </div>

@@ -12,6 +12,8 @@ import { HiOutlineFilter } from 'react-icons/hi';
 
 import GridLoader from "react-spinners/GridLoader";
 
+import backgroundImage from '../../asserts/InvoiceBackground.png';
+
 import { searchBar, tableContainer, scrollable, customTable, 
   td, th, invoiceIDLink, supplierLink, issuedDateLink, dueDateLink, amountLink,
   exportButton, bottomPart, dropdownContainer, popupButton, popupButtonp, filterStyle, 
@@ -220,7 +222,13 @@ const InvoicePage = () => {
       </div>
     ) : (
 
-    <div>
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div className="second-navbar">
         <SecondNavBar />
       </div>
