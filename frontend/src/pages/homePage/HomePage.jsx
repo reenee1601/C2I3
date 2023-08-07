@@ -73,8 +73,8 @@ const HomePage = () => {
 
   
 
-  // //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
-  // const companyName = userInfo.length > 0 ? userInfo[0].company : "";
+  //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
+  const companyName = userInfo.length > 0 ? userInfo[0].company : "";
 
   const renderSlide = (slide, index) => {
 
@@ -115,9 +115,10 @@ const HomePage = () => {
       <div style={firstrow}>        
 
         <div style={profileinfo}>
-          <h1 style={welcomeStyle} >WELCOME, {userInfo.userName} </h1>
-          {/* {userInfo.userName && <h2 style={nameStyle}>{userInfo.userName}</h2>}
-          {userInfo.userCompany && <p style={companyStyle}>{userInfo.userCompany}</p>} */}
+          <h1 style={welcomeStyle} >WELCOME,</h1>
+          <h2 style={nameStyle}>{userInfo.length > 0 ? userInfo[0].name : ''}</h2>
+          <p style={companyStyle}>{userInfo.length > 0 ? userInfo[0].company : ''}</p>
+        
         </div>
 
       </div>

@@ -3,6 +3,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 
 import { MdUploadFile , MdDelete } from "react-icons/md";
@@ -26,6 +29,8 @@ const UploadPage = () => {
   //VALIDATION
   const [upload, setUpload] = useState('');
 
+  const [qrCode, setQrCode] = useState('');
+
   const [error, setError] = useState({
     upload: false
   });
@@ -37,6 +42,7 @@ const UploadPage = () => {
   // END OF VALIDATION
 
   const [image, setImage] = useState(null)
+  const [isScanning, setIsScanning] = useState(false)
   const [fileName, setFileName] = useState ("No File Selected")
   const [selectedType, setSelectedType] = useState("INVOICE");
   const [formData, setFormData] = useState(new FormData());
@@ -144,7 +150,8 @@ const UploadPage = () => {
     // formData.append("pdfFile", image);
     //console.log("isInvoiceActive:", isInvoiceActive);
     console.log("image:", image);
-    console.log('Payment is clicked')
+    console.log('Payment is clicked');
+
     let response = await axios // wait for the data to be scanned
       .post("http://localhost:8000/payment/scanDataPayment", formData, {
         headers: {
@@ -155,18 +162,55 @@ const UploadPage = () => {
 
 };
 
+const sendWhatsAppNotification = async () => {
+  try {
+    // client.on('qr', (qr) => {
+    //   // Set the QR code string to the state variable
+    //   setQrCode(qr);
+    // });
+    const response = await axios.post("http://localhost:8000/payment/sendWhatsApp", {
+      // Include any necessary data for the notification
+    });
+    console.log('WhatsApp notification sent:', response.data);
+  } catch (error) {
+    console.error('Error sending WhatsApp notification:', error);
+  }
+};
+
     const handleConditionalButtonClick = async () =>{
-      if(selectedType == "INVOICE"){
-        await handleFileUploadInvoice();
+      if (image === null) {
+        // handle when the used doesnt select an image to scan
+        toast('Please select an image first', {autoclose: 1000, closeOnClick: true});
+      }
+      else if(isScanning){
+        toast('Scanning is in progress', {autoclose: 1000, closeOnClick: true});
+      }
+      else if(selectedType == "INVOICE"){
+        setIsScanning(true)
+        await toast.promise(
+          handleFileUploadInvoice(),
+          {
+            pending:'Scanning data...',
+            succerss:'redirecting to edit page...',
+            error:'Scanning failed :('}
+        );
         
         console.log(1);
       }
       else if(selectedType == "STATEMENT"){
-        await handleFileUploadSOA();
+        setIsScanning(true)
+        await toast.promise(
+          handleFileUploadSOA(),
+          {
+            pending:'Scanning data...',
+            succerss:'redirecting to edit page...',
+            error:'Scanning failed :('}
+        );
         console.log(2);
       }
       else if(selectedType == "PAYMENT"){
         await handleFileUploadReceipt();
+        await sendWhatsAppNotification();
         console.log(3);
       }
       else{
@@ -178,6 +222,7 @@ const UploadPage = () => {
     <div>
       <div>
         <SecondNavBar />
+          <ToastContainer />
       </div>
 
       <div className="alluploads" style = {alluploads}>
@@ -238,6 +283,7 @@ const UploadPage = () => {
             </span>
           </section>
         </div>
+
 
       </div>
 
