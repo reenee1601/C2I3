@@ -1,42 +1,45 @@
 import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AiFillPlusCircle } from "react-icons/ai"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
 
+import GridLoader from "react-spinners/GridLoader";
+
 import 'swiper/css/bundle';
 import AddProduct from '../../components/addProduct/AddProduct';
 
+import {
+  productslider,
+  productheader,
+  productcompany,
+  productstyle,
+  h1product,
+  pproduct,
+  imgproduct,
+  imgBarcodeStyle,
+  imgContainerStyle,
+  barcodeContainerStyle,
+  deleteButtonStyle,
+  loadingStyle
+
+} from "./ProductPageStyle"
+
 const ProductPage = () => {
 
-    const productslider = {
-        marginLeft: "150px",
-        marginRight: "150px",
+  // LOADING FUNCTIONALITY
+  const [loading, setLoading] = useState(false)
 
-        marginTop: "40px",
-    }
+  //API CALL HERE: Replace SetTimeOut to fetching of data
+  useEffect(() => {
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
 
-    const productheader = {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: 'center',
-        justifyContent: "space-between",
-
-        marginTop: "10px",
-        marginLeft: "40%", //not a permeanant solution. texts of different sizes may enter.
-        marginRight: "15%",
-    }
-
-    const productcompany = {
-        color: "#6D479E",
-        fontFamily: "Inter",
-        fontSize: "25px",
-        fontStyle: "normal",
-        fontWeight: "800",
-        lineHeight: "normal",
-        whiteSpace: "nowrap"
-    }
+  }, []);
 
     let productInfo = [
         { 
@@ -114,83 +117,6 @@ const ProductPage = () => {
 
       const productSlide = (product, index) => {
 
-        const productstyle = {
-          width: "120px",
-          height: "450px",
-          marginRight: "30px",
-          marginLeft: "30px",
-          textAlign: "center",
-    
-          backgroundColor: "rgba(65, 142, 255, 0.10)",
-          borderRadius: "12px",
-          border: "none",
-          scrollSnapAlign: "start",
-          transition: "all 0.2s",
-          boxShadow: "0 5px 5px rgba(0, 0, 0, 0.4)",
-          
-
-          borderRadius: "12px",
-          background: "linear-gradient(180deg, rgba(243, 243, 243, 0.70) 0%, rgba(242, 232, 255, 0.00) 100%)",
-         };
-
-         const h1product = {
-            color: "#535353",
-            fontFamily: "Inter",
-            fontSize: "20px",
-            fontStyle: "normal",
-            fontWeight: "700",
-            lineHeight: "normal",
-        }
-
-        const pproduct = {
-            color: "#000",
-            fontFamily: "Inter",
-            fontSize: "14px",
-            fontStyle: "normal",
-            fontWeight: "400",
-            lineHeight:"normal",
-        }
-
-        const imgproduct = {
-          objectFit: "cover",
-          marginTop: "20px",
-        }
-
-        const imgBarcodeStyle = {
-          maxWidth: "80%",
-          objectFit: "cover",
-          marginBottom: "20px",
-        }
-        
-        const imgContainerStyle = {
-          width: "100%",
-          height: "100px",
-          overflow: "hidden",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        };
-
-        const barcodeContainerStyle = {
-          width: "100px",
-          height: "100px",
-          overflow: "hidden",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: "0 auto",
-        };
-
-        const deleteButtonStyle = {
-          color: "#3A3A3A",
-          border: "None",
-          borderRadius: "5px",
-          fontSize: "14px",
-          background: "#F2E8FF",
-
-        };
-
         // delete product card
         const handleDeleteProduct = (sku) => {
           const updatedProducts = products.filter((product) => product.sku !== sku);
@@ -239,10 +165,17 @@ const ProductPage = () => {
       setProducts([...products, newProduct]);
     };
     // END of ADDING OF NEW CARD
-
-
-  return (
-    <div>
+    return (
+      <>
+      {loading ? (
+        <div style={loadingStyle}>
+          <GridLoader 
+          color={"#3A3A3A"} 
+          loading={loading} 
+          size={20} />
+        </div>
+      ) : (
+      <div>
         <SecondNavBar />
 
         <div style = {productheader}>
@@ -290,8 +223,11 @@ const ProductPage = () => {
           )}
         </div>
 
-    </div>
-  )
-}
+        </div>
+      )}
+    </>
+  );
+};
+
 
 export default ProductPage
