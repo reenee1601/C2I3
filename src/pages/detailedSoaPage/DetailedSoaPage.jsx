@@ -65,7 +65,7 @@ const DetailedSoaPage = () => {
           <p style={totalAmount}>Total Amount: $4000.50</p>
           {/* if clicked go to compare doc page */}
           <button style={paymentButton}>
-            <Link to="/comparedocumentpage">
+            <Link to="/uploadpage">
               <LiaWalletSolid size ={30} style={paymentButtonImg} data-testid="payment-button"/>
             </Link>
           </button>
