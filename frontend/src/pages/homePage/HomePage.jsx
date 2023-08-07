@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {Scrollbar} from 'swiper/modules';
-
+import axios from 'axios'
 import 'swiper/css/bundle';
 
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
@@ -20,7 +20,30 @@ import {
 
 } from "./HomePageStyle"
 
+import { useLocation } from 'react-router-dom';
+
 const HomePage = () => {
+  const location = useLocation();
+  const userEmail = location.state?.email || '';
+
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    // Fetch user information using userEmail
+    if (userEmail) {
+      console.log('Making request to:', '/users/getUserInfo');
+      axios.get(`http://localhost:8000/users/getUserInfo?email=${userEmail}`)
+      console.log('user email = ${userEmail}')
+        .then(response => {
+          setUserInfo(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching user information:', error);
+        });
+    }
+  }, [userEmail]);
+
+
 
   // Requires fetching from Database
   let slideInfo = [
@@ -45,12 +68,9 @@ const HomePage = () => {
       address: "blk 67 Paya Lebar SingPost"}
   ]
 
-  let userInfo = [
-    { name: "Matthew Swee Jing Kai",
-      company: "Textile Fabric Centre" },
-  ]
+  
 
-  const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
+  //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
   const companyName = userInfo.length > 0 ? userInfo[0].company : "";
 
   const renderSlide = (slide, index) => {
@@ -93,8 +113,9 @@ const HomePage = () => {
 
         <div style={profileinfo}>
           <h1 style={welcomeStyle} >WELCOME,</h1>
-          <h2 style={nameStyle} >{userName} !</h2>
-          <p style={companyStyle} >{companyName}</p>
+          <h2 style={nameStyle}>{userInfo.length > 0 ? userInfo[0].name : ''}</h2>
+          <p style={companyStyle}>{userInfo.length > 0 ? userInfo[0].company : ''}</p>
+        
         </div>
 
       </div>
