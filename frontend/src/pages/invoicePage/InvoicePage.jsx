@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useTable, useSortBy, useGlobalFilter } from "react-table";
+import React, { useState, useEffect } from "react";
+import {  useTable, useSortBy, useGlobalFilter } from "react-table";
 // import "./invoicePage.css";
 import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import { Link } from "react-router-dom";
@@ -11,6 +11,34 @@ import { searchBar, tableContainer, scrollable, customTable,
   exportButton, bottomPart, dropdownContainer, popupButton, popupButtonp } from './InvoicePageStyle'
 
 const InvoicePage = () => {
+  
+  useEffect(() => {
+    // Fetch Invoice data from the backend when the component mounts
+    fetchInvoiceData();
+  }, []);
+
+  const fetchInvoiceData = async () => {
+    try {
+      // Make an API call to your backend to fetch Invoice data
+      const response = await fetch("http://localhost:8000/Invoice/getData", {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await response.json();
+      // Update the state with the fetched data
+      // TODO: escape this error of empty array cannot be mapped when no data is fetched. 
+      setInvoiceData(data);
+
+      console.log("Invoice data fetched successfully!");
+
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching Invoice data:", error);
+    }
+  };
+  const [InvoiceData, setInvoiceData] = useState([]);
+  console.log(InvoiceData);
 
   // hold array of column objects
   // useMemo is React hook for memoization
@@ -91,54 +119,66 @@ const handleDropdownItemClick = (option) => {
   setIsDropdownVisible(false); // Close the dropdown after selecting an option
 }
 
-  return (
-    <div>
-      <div className="second-navbar">
-        <SecondNavBar />
-      </div>
+return (
+  <div>
+    <div className="second-navbar">
+      <SecondNavBar />
+    </div>
 
-      {/* search bar */}
-      <div style={searchBar}>
-        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
-      </div>
+    {/* <div style={buttonContainer}>
+      <button style={buttonStyles}>Generate Yearly Tax Record</button>
+    </div> */}
 
-      {/* table */}
-      <div style={tableContainer}>
-        <div style={scrollable}>
-          <table
-            style={customTable}
-            {...getTableProps()}
-          >
-            <thead className="sticky-top">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps(column.getSortByToggleProps())} style={th}>
-                      {column.render("Header")}
-                      <span>
-                        {/* check whether column is sorted in descending order */}
-                        {column.isSorted ? (column.isSortedDesc ? ' ↓':' ↑'):''}
-                      </span>
-                    </th>
-                  ))}
+    {/* search bar */}
+    <div style={searchBar}>
+      <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
+    </div>
+
+       {/* table */}
+    <div style={tableContainer}>
+      <div style={scrollable}>
+        <table style={customTable} {...getTableProps()}>
+          <thead className="sticky-top">
+            <tr>
+              <th style={th}>Invoice ID</th>
+              <th style={th}>Supplier</th>
+              <th style={th}>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+          {(
+            (InvoiceData.length > 0 ? ( // Check if data has been fetched
+              InvoiceData.map((item) => (
+                <tr key={item._id}>
+                  <td style={td}>
+                    <Link to={`/detailedInvoicepage/${item._id}`} className="InvoiceID-link">
+                      {item._id}
+                      
+                    </Link>
+                    
+                  </td>
+                  <td style={td}>
+                    <Link to={`/detailedInvoicepage/${item._id}`} className="supplier-link">
+                      {item.supplierID}
+                    </Link>
+                  </td>
+                  <td style={td}>
+                    <Link to={`/detailedInvoicepage/${item._id}`} className="amount-link">
+                      {item.totalAmount}
+                    </Link>
+                  </td>
+                  {/* ... Table cell JSX code ... */}
                 </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td {...cell.getCellProps()} style={td}>{cell.render("Cell")}</td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3}>Loading data...</td>
+              </tr>
+            ))
+          )}
+            
+          </tbody>
+        </table>
         </div>
       </div>
 
