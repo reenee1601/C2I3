@@ -34,7 +34,7 @@ export const SecondNavBar = () => {
 
       if (response.ok) {
         // Handle success, e.g., redirect to a sign-in page
-        window.location.href = 'http://localhost:8000/users/signin'; // Redirect to the sign-in page
+        window.location.href = '/signinpage'; // Redirect to the sign-in page
       } else {
         // Handle error
         console.error('Signout failed');
