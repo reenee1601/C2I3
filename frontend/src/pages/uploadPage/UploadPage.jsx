@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
-
+import GridLoader from "react-spinners/GridLoader";
 import { MdUploadFile , MdDelete } from "react-icons/md";
 import { AiFillFileImage } from "react-icons/ai";
 
@@ -22,11 +22,28 @@ import {
   documentTypeSOATextStyle,
   uploadsubmitbutton,
   uploadcancelbutton,
+  documentTypeH1TextStyle,
+  labelStyle,
+  loadingStyle,
 } from "./UploadPageStyle"
 
 const UploadPage = () => {
 
   //VALIDATION
+  // LOADING FUNCTIONALITY
+  const [loading, setLoading] = useState(false)
+
+  //API CALL HERE: Replace SetTimeOut to fetching of data
+  useEffect(() => {
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+  }, []);
+
+  //START VALIDATION
   const [upload, setUpload] = useState('');
 
   const [qrCode, setQrCode] = useState('');
@@ -36,8 +53,18 @@ const UploadPage = () => {
   });
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
+    if (!fileName || fileName === "No File Selected") {
+      setError({ upload: true });
+    } else {
+      setError({ upload: false });
+      if (image) {
+        window.location.href = "/editdocumentpage";
+      }
+    }
   };
+
 
   // END OF VALIDATION
 
@@ -218,8 +245,18 @@ const sendWhatsAppNotification = async () => {
         console.log(4);
       }
   }
+
   return (
-    <div>
+    <>
+    {loading ? (
+      <div style={loadingStyle}>
+        <GridLoader 
+        color={"#3A3A3A"} 
+        loading={loading} 
+        size={20} />
+      </div>
+    ) : (
+      <div>
       <div>
         <SecondNavBar />
           <ToastContainer />
@@ -230,23 +267,30 @@ const sendWhatsAppNotification = async () => {
         <div style={documentTypeStyle}>
           <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
           <button
+          data-testid="btn-invoice"
+          name="invoice"
             style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("INVOICE")}
           >
             INVOICE
           </button>
           <button
+          data-testid="btn-invoice"
+          name="soa"
             style={selectedType === "STATEMENT" ? selectedSOAButtonStyle : unselectedSOAButtonStyle}
             onClick={() => handleDocumentTypeClick("STATEMENT")}
           >
             STATEMENT OF{'\n'}ACCOUNT
           </button>
           <button
+          data-testid="btn-invoice"
+          name="payment"
             style={selectedType === "PAYMENT" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("PAYMENT")}
           >
             PAYMENT
           </button>
+          
         </div>
 
         <div style={uploading}>
@@ -304,8 +348,10 @@ const sendWhatsAppNotification = async () => {
               }}>Cancel</button>
       </div>
       
-  </div>
-  )
-}
+      </div>
+      )}
+    </>
+  );
+};
 
 export default UploadPage

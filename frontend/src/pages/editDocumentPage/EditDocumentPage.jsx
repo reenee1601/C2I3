@@ -201,6 +201,9 @@ const EditDocumentPage = () => {
   // headerGroups: consist of all headers (Uploaded)
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: updatedColumns, data });
+// SUBMIT SUCCESSFULLY BUTTON
+const [scanSuccessfully, setScanSuccessfully] = useState(false)
+
 
   return (
     <div>
@@ -303,8 +306,13 @@ const EditDocumentPage = () => {
 
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
-                <button style={submitStyle}>Submit</button>
+                <button 
+                style={submitStyle}
+                onClick={ () => { setScanSuccessfully(true);}}>Submit</button>
 
+                <div>
+                  <ScanSuccessfully trigger={scanSuccessfully} setTrigger={setScanSuccessfully}/>
+                </div>
                 <button
                   onClick={() => {
                     setEditRow(null); // Make sure to reset editRow when adding a new row

@@ -81,12 +81,15 @@ export const beforeButton = {
 };
 
 export const forgetPass = {
-    background: "none",
-    color: "var(--color-grey)",
-    fontSize: "13px",
-    fontStyle: "normal",
+    background: 'none',
+    border: 'none', // Remove the border
+    color: 'var(--color-grey)',
+    fontSize: '13px',
+    fontStyle: 'normal',
     fontWeight: 400,
-};
+    cursor: 'pointer', // Add a cursor style to indicate it's clickable
+    padding: '0', // Optionally, remove padding to make it more compact
+  };
 
 export const button = {
     width: '370px',

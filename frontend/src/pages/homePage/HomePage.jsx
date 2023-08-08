@@ -115,7 +115,7 @@ const HomePage = () => {
       <div style={firstrow}>        
 
         <div style={profileinfo}>
-          <h1 style={welcomeStyle} >WELCOME, {userInfo.userName}</h1>
+          <h1 name='header' style={welcomeStyle} >WELCOME, {userInfo.userName}</h1>
           <h2 style={nameStyle}> {userInfo.userCompany}</h2>
         
         </div>

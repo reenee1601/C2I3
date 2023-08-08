@@ -50,7 +50,7 @@ const EditDocumentPage = () => {
 
   // Form Data
   const [supplierID, setSupplierID] = useState(stateData.supplierID);
-  const [totalAmount, setTotalAmount] = useState(stateData.totalAmount);
+  const [totalAmount, setTotalAmount] = useState( getNumber(stateData.totalAmount) );
   // Array Data
   const [invoiceID, setInvoiceID] = useState(stateData.invoiceID);
   const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
