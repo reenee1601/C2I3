@@ -5,16 +5,11 @@ import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import { Link } from "react-router-dom";
 import mockData from "../../data/mock_data.json";
 import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
-<<<<<<< HEAD
-import { FaShareSquare } from 'react-icons/fa';
-import axios from 'axios';
-=======
 import { FaShareSquare } from 'react-icons/fa';import GridLoader from "react-spinners/GridLoader";
 import { HiOutlineFilter } from 'react-icons/hi';
 import  InvoiceQueryBar  from "../../components/invoiceQueryBar/InvoiceQueryBar";
 import backgroundImage from '../../asserts/InvoiceBackground.png';
 
->>>>>>> c90e2f1b4308e0b81b87fa62761119b33ad68890
 import { searchBar, tableContainer, scrollable, customTable, 
   td, th, invoiceIDLink, supplierLink, issuedDateLink, dueDateLink, amountLink,
   exportButton, bottomPart, dropdownContainer, popupButton, popupButtonp, filterStyle, 
@@ -54,111 +49,6 @@ import { searchBar, tableContainer, scrollable, customTable,
     console.log(InvoiceData);
    
 
-<<<<<<< HEAD
-      console.log("Invoice data fetched successfully!");
-
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching Invoice data:", error);
-    }
-  };
-  const [InvoiceData, setInvoiceData] = useState([]);
-  console.log(InvoiceData);
-
-  const handleExportToCSV = () => {
-    // Make a GET request to the backend endpoint for exporting data to CSV
-    axios.get('http://localhost:8000/invoice/exportInvoiceToCSV')
-        // Make a GET request to the backend endpoint for exporting data to Excel
-        .then((response) => {
-          console.log("data exported to excel fetched successfully");
-          console.log(response.data.message);
-          // Optionally, you can display a success message to the user
-        })
-        .catch((error) => {
-          console.error('Error exporting data to Excel:', error);
-          // Display an error message to the user if needed
-        });
-  };
-
-  const handleExportToExcel = () => {
-    // Make a GET request to the backend endpoint for exporting data to Excel
-    axios.get('http://localhost:8000/invoice/exportInvoiceToExcel')
-      .then((response) => {
-        console.log("data exported to excel fetched successfully");
-        console.log(response.data.message);
-        // Optionally, you can display a success message to the user
-      })
-      .catch((error) => {
-        console.error('Error exporting data to Excel:', error);
-        // Display an error message to the user if needed
-      });
-  };
-
-  // hold array of column objects
-  // useMemo is React hook for memoization
-  const columns = React.useMemo(
-    () => [
-      // first argument that returns the value we want to memoize
-      // each object represents a single column
-      {
-        Header: "Invoice ID",
-        accessor: "invoiceID", // key to access the data row
-        Cell: (
-          { row } // how the content of the cell should be rendered
-        ) => (
-          <Link to={`/detailedinvoicepage`} style={invoiceIDLink}>
-            {row.original.invoiceID}
-          </Link>
-        ),
-      },
-      {
-        Header: "Supplier",
-        accessor: "supplier",
-        Cell: ({ row }) => (
-          <Link to={`/detailedinvoicepage`} style={supplierLink}>
-            {row.original.supplier}
-          </Link>
-        ),
-      },
-      {
-        Header: "Issued Date",
-        accessor: "issuedDate",
-        Cell: ({ row }) => (
-          <Link to={`/detailedinvoicepage`} style={issuedDateLink}>
-            {row.original.issuedDate}
-          </Link>
-        ),
-      },
-      {
-        Header: "Due Date",
-        accessor: "dueDate",
-        Cell: ({ row }) => (
-          <Link to={`/detailedinvoicepage`} style={dueDateLink}>
-            {row.original.dueDate}
-          </Link>
-        ),
-      },
-      {
-        Header: "Amount",
-        accessor: "amount",
-        Cell: ({ row }) => (
-          <Link to={`/detailedinvoicepage`} style={amountLink}>
-            {row.original.amount}
-          </Link>
-        ),
-      },
-    ],
-    [] // empty dependency array: value ill be memoized and not recalculated
-  );
-
-  const tableInstance = useTable(
-    { columns, data: mockData.invoiceDetails},
-    useGlobalFilter, useSortBy
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, setGlobalFilter } =
-    tableInstance;
-=======
     const columns = React.useMemo(
       () => [
         {
@@ -209,7 +99,6 @@ import { searchBar, tableContainer, scrollable, customTable,
       ],
       []
     );
->>>>>>> c90e2f1b4308e0b81b87fa62761119b33ad68890
   
     const [queryBar, setQueryBar] = useState(false);
   
@@ -423,8 +312,8 @@ return (
           {/* Render the dropdown menu */}
           {isDropdownVisible && (
             <div style={popupButton}>
-              <p style={popupButtonp} onClick={handleExportToExcel}>Export Excel</p>
-              <p style={popupButtonp} onClick={handleExportToCSV}>Export CSV</p>
+              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
+              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
             </div>
             

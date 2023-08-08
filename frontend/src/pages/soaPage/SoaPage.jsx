@@ -8,15 +8,11 @@ import SoaQueryBar from "../../components/soaQueryBar/SoaQueryBar";
 
 import mockData from "../../data/mock_data.json";
 import { FaShareSquare } from 'react-icons/fa';
-<<<<<<< HEAD
-import axios from 'axios';
-=======
 import { HiOutlineFilter } from 'react-icons/hi';
 
 import GridLoader from "react-spinners/GridLoader";
 import backgroundImage from '../../asserts/SOABackground.png';
 
->>>>>>> c90e2f1b4308e0b81b87fa62761119b33ad68890
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
           exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon,
@@ -24,7 +20,6 @@ import { searchBar, tableContainer, scrollable, customTable,
         } from './SoaPageStyle';
 const SoaPage = () => {
   const [loading, setLoading] = useState(false)
-
 
   useEffect(() => {
     setLoading(true);
@@ -60,7 +55,6 @@ const SoaPage = () => {
   const [soaData, setSoaData] = useState([]);
   console.log(soaData);
 
-<<<<<<< HEAD
   const handleExportToCSV = () => {
     // Make a GET request to the backend endpoint for exporting data to CSV
     axios.get('http://localhost:8000/soa/exportToCSV')
@@ -90,10 +84,7 @@ const SoaPage = () => {
       });
   };
 
-    const columns = React.useMemo(
-=======
   const columns = React.useMemo(
->>>>>>> c90e2f1b4308e0b81b87fa62761119b33ad68890
     () => [
       // first argument that returns the value we want to memoize
       // each object represents a single column
@@ -271,24 +262,10 @@ const SoaPage = () => {
           <HiOutlineFilter style={filterIconStyle}/>
         </button>
 
-<<<<<<< HEAD
-        <div style={dropdownContainer}>
-          {/* Render the dropdown menu */}
-          {isDropdownVisible && (
-            <div style={popupButton}>
-              <p style={popupButtonp} onClick={handleExportToExcel}>Export Excel</p>
-              <p style={popupButtonp} onClick={handleExportToCSV}>Export CSV</p>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
-            </div>
-          )}
-        </div>
-      </div>
-=======
         <div>
           <SoaQueryBar
             trigger={soaQueryBar}
             setTrigger={setSoaQueryBar}
->>>>>>> c90e2f1b4308e0b81b87fa62761119b33ad68890
 
             dueStartDate={dueStartDate}
             setDueStartDate={setDueStartDate}
@@ -367,8 +344,8 @@ const SoaPage = () => {
   {/* Render the dropdown menu */}
   {isDropdownVisible && (
     <div style={popupButton}>
-      <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
-      <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
+      <p style={popupButtonp} onClick={handleExportToExcel}>Export Excel</p>
+      <p style={popupButtonp} onClick={handleExportToCSV}>Export CSV</p>
       <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
     </div>
   )}

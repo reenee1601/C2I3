@@ -19,7 +19,7 @@ const upload = multer({ storage: storage })
 router.post('/scanData', upload.single('file'), scanData);
 router.post('/uploadDataInvoice', uploadDataInvoice); 
 router.get('/getData', getData);
-router.get('/exportInvoiceToCSV', exportInvoiceDataCSV);
-router.get('/exportInvoiceToExcel', exportInvoiceDataExcel);
+// router.get('/exportInvoiceToCSV', exportInvoiceDataCSV);
+// router.get('/exportInvoiceToExcel', exportInvoiceDataExcel);
 
 module.exports = router;
