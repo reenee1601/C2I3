@@ -4,6 +4,7 @@ const utils = require('../utils/utils.js')
 const mongoose = require('mongoose');
 const { unlink } = require('fs') // use this to delete the file after we're done
 const soaModel = require('../models/soaModel.js');
+const db = require('../db.js')
 mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -137,44 +138,13 @@ exports.scanData = async function(req, res) { // function for textractData POST 
     res.status(200).json(ocrData)
     // res.json({message:'file uploaded successfully at '})
 }
-/*
-exports.performOCRAndExtractDataSOA = async function performOCRAndExtractDataSOA(filepath) {
-  let ocrDataSOA;
-  try {
-    // Perform OCR and get the analysis result
-    ocrDataSOA = await johnPackage.getTextractAnalysis(filepath);
-
-    // if (ocrDataSOA === null || ocrDataSOA === undefined) {
-    //   throw new Error('Invalid OCR data');
-    // }
-
-    // Extract forms and tables from the OCR result using "john-package" functions
-    const formsDataSOA = johnPackage.extractForms(ocrDataSOA, formsDict);
-    const tablesDataSOA = johnPackage.extractTables(ocrDataSOA, tablesDict);
-
-    const mappedDataSOA = {
-      invoiceID: tablesDataSOA['Invoice ID'] || '',
-      issuedDate: tablesDataSOA['Issued Date'] || '',
-      dueDate: tablesDataSOA['Due Date'] || '',
-      amount: tablesDataSOA['Amount'] || '',
-      supplierID: formsDataSOA['Supplier ID'] || '',
-      totalAmount: formsDataSOA['Total Amount'] || ''
-    };
-    
-    return mappedDataSOA;
-    
-  } catch (error) {
-    console.error('Error performing OCR and extracting data:', error);
-    throw error;
-  }
-}
-*/
 
 
 // Function to upload data to MongoDB
 
 exports.uploadDataSOA = async function(req, res) { // function for uploadData POST endpoint
     try{data = req.body;
+      db;
       if (!data) {
         return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
       }
@@ -190,91 +160,18 @@ exports.uploadDataSOA = async function(req, res) { // function for uploadData PO
     }
 }
 
-/*
-exports.uploadDataToMongoDBSOA = async function uploadDataToMongoDBSOA(data) {
+
+exports.getSOAData = async function(req, res){ // funcitonfor getData GET endpoint
 
   try {
-    // TODO: make this connection more modular
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
-    await mongoose.connect(url, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    // Save the extracted data to the soa collection
-    await soaModel.create(data);
-
-    console.log('Data uploaded to MongoDB successfully!');
-    console.log(data);
-  } catch (error) {
-    console.error('Error uploading data to MongoDB:', error);
-    throw error;
-  } finally {
-    mongoose.disconnect();
-  }
+      const soaData = await soaModel.find();
+        console.log('retreived invoive data')
+        res.status(200).json(invoiceData);
+    } catch (error) {
+        console.error('Error fetching SOA data:', error);
+        res.status(500).json({ error: 'Error fetching Invoice data.' });
+    }
 }
-*/
-
-async function getSOADataFromMongoDB() {
-  try {
-
-    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
-    await mongoose.connect(url, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });*/
-    const soaData = await soaModel.find(); // Fetch all documents from the 'soa' collection
-
-    //mongoose.disconnect();
-
-    return soaData;
-  } catch (error) {
-    console.error('Error fetching SOA data from MongoDB:', error);
-    throw error;
-  }
-}
-
-// Example usage in a controller function
-/*exports.processOCRAndUploadToMongoDBSOA = async function processOCRAndUploadToMongoDBSOA(filepath) {
-  try {
-    // Perform OCR and extract data
-    const extractedDataSOA = await performOCRAndExtractDataSOA(filepath);
-
-    // Upload the extracted data to MongoDB
-    await uploadDataToMongoDBSOA(extractedDataSOA);
-
-    console.log('OCR data extracted and uploaded to MongoDB successfully!');
-  } catch (error) {
-    console.error('Error processing OCR and uploading to MongoDB:', error);
-  }
-}
-
-//main function called in route
-exports.uploadDataSOA = async function uploadDataSOA(req, res, next){
-  try {
-    // Get the uploaded file path from the request object
-    const filepath = req.file.path;
-    
-    // Perform OCR and upload data to MongoDB
-    await processOCRAndUploadToMongoDBSOA(filepath);
-
-    console.log('File uploaded and data extracted successfully!');
-    res.status(200).json({ message: 'File uploaded and data extracted successfully!' });
-  } catch (error) {
-    console.error('Error uploading file and extracting data:', error);
-    res.status(500).json({ error: 'Error uploading file and extracting data.' });
-  }
-}*/
-
-exports.getSOAData = async function getSOAData(req, res, next){
-  try {
-    const soaData = await getSOADataFromMongoDB();
-    res.json(soaData);
-  } catch (error) {
-      console.error('Error fetching SOA data:', error);
-      res.status(500).json({ error: 'Error fetching SOA data.' });
-  }
-}
-
 
 // Function to export data to an Excel file
 async function exportDataToExcel() {
@@ -389,6 +286,7 @@ exports.exportDataCSV = async function exportDataCSV(req, res, next){
 
 async function getSOADataById(id) {
   try {
+    
     const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
     await mongoose.connect(url, {
       useNewUrlParser: true,

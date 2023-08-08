@@ -22,7 +22,7 @@ const App = () => {
           <Route path = '/soapage' element = {<SoaPage />}/>
           <Route path = '/productpage' element = {<ProductPage />}/>
           <Route path = '/uploadpage' element = {<UploadPage />} />
-          <Route path = '/comparedocumentpage' element = {<CompareDocumentPage />} />
+          {/* <Route path = '/comparedocumentpage' element = {<CompareDocumentPage />} /> */}
     {/*<Route path = '/editdocumentpage' element = {<EditDocumentPage />} />*/}
           <Route path = '/invoice/editdocumentpage' element = {<EditDocumentPageInvoice />} />
           <Route path = '/soa/editdocumentpage' element = {<EditDocumentPageSOA />} />
