@@ -164,7 +164,7 @@ const RegisterPage = () => {
                   : null}
               </div>
 
-              <button
+              <button name="registerSubmitButton"
                 style={{
                   ...button,
                   backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',

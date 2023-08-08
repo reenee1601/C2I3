@@ -268,6 +268,7 @@ const sendWhatsAppNotification = async () => {
           <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
           <button
           data-testid="btn-invoice"
+          name="invoice"
             style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("INVOICE")}
           >
@@ -275,6 +276,7 @@ const sendWhatsAppNotification = async () => {
           </button>
           <button
           data-testid="btn-invoice"
+          name="soa"
             style={selectedType === "STATEMENT" ? selectedSOAButtonStyle : unselectedSOAButtonStyle}
             onClick={() => handleDocumentTypeClick("STATEMENT")}
           >
@@ -282,6 +284,7 @@ const sendWhatsAppNotification = async () => {
           </button>
           <button
           data-testid="btn-invoice"
+          name="payment"
             style={selectedType === "PAYMENT" ? selectedButtonStyle : unselectedButtonStyle}
             onClick={() => handleDocumentTypeClick("PAYMENT")}
           >

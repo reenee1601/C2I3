@@ -122,7 +122,7 @@ return (
             </div>
 
             <div>
-              <button
+              <button name="loginSubmitButton"
                 style={{
                   ...button,
                   backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
