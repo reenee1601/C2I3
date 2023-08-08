@@ -135,7 +135,7 @@ return (
               >
                 Sign In
               </button>
-              {invalidLogin && <p style={invalidSignin}>Invalid email or password. Please try again.</p>}
+              {invalidLogin && <p name="error" style={invalidSignin}>Invalid email or password. Please try again.</p>}
             </div>
           </form>
         </div>
