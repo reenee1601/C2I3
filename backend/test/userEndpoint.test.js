@@ -3,6 +3,7 @@ const supertest = require("supertest");
 const request = supertest(app);
 const mongoose = require('mongoose');
 const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+const userModel = require('../models/userModel.js');
 
 
 beforeAll(async () => {
@@ -135,6 +136,14 @@ test('Fuzzing testing on random generated email, name, password and company name
       expect(res.body.message).toEqual('User Created Successfully');
       console.log(`Iteration ${i + 1}: SUCCESS - User Created Successfully`);
       expect(res.body.user).toBeDefined();
+
+      // Validate data in the database
+      const userInDb = await userModel.findOne({ email: randomEmail });
+      expect(userInDb).toBeTruthy();
+      expect(userInDb.email).toEqual(randomEmail);
+      expect(userInDb.name).toEqual(randomName);
+      expect(userInDb.company).toEqual(randomCompany);
+
     } else {
       // Error response
       expect(res.status).toEqual(400);
