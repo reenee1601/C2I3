@@ -18,9 +18,9 @@ const driver = new Builder()
     // Open the website
     await driver.get('http://www.localhost:3000/registerpage');
 
-    console.log("Setting up register acoount.")
-      // Wait for 3 seconds
-      await new Promise(resolve => setTimeout(resolve, 3000));
+    console.log("Setting up register account.")
+    // Wait for 3 seconds
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Find the multifield form and input a query
     const nameField = await driver.findElement(By.name('fullName'));
@@ -44,32 +44,49 @@ const driver = new Builder()
     const registerButton = await driver.findElement(By.name('registerSubmitButton'));
     registerButton.click();
 
-    // Wait for 3 seconds
+    // Wait for 2 seconds
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Attempt login with credentials
+    console.log("Attempt login with wrong password...");
     await driver.get('http://www.localhost:3000/signinpage');
     const emailLoginField = await driver.findElement(By.name('email'));
     await emailLoginField.sendKeys('automatedTest@test.com');
 
+    //purposely inputting wrong password, should not be able to login
     const passwordLoginField = await driver.findElement(By.name('password'));
-    await passwordLoginField.sendKeys('test1234');
+    await passwordLoginField.sendKeys('wrongpassword');
 
     const loginButton = await driver.findElement(By.name('loginSubmitButton'));
+    await loginButton.click();
+    const errorMessage = await driver.wait(until.elementLocated(By.name('error')), 10000);
+    const errorP = await errorMessage.getText();
+    console.log('Error Message:', errorP);
+    if (errorP == "Invalid email or password. Please try again."){
+      console.log("Wrong credentials test passed.");
+    }  
+
+    // Wait for 1 second
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    //correct credentials, should be able to login
+    console.log("Attempting login with correct credentials...");
+    await passwordLoginField.clear();
+    await passwordLoginField.sendKeys('test1234');
     await loginButton.click();
 
     try{
     // Wait for the first search result to appear and get its title
     const welcomeHeader = await driver.wait(until.elementLocated(By.name('header')), 10000);
     const title = await welcomeHeader.getText();
-    console.log('Title:', title);
+    console.log('Test regist/login passed. Title:', title);
     }
     catch (error){
-      console.log("Test failed:" , error.message);
+      console.log("Test failed: " , error.message);
     }
   } 
   catch(error){
-    console.log("registerpage", error.message)
+    console.log("Problem in the middle portion of code: ", error.message)
   }
   finally {
     // Wait for 3 seconds
