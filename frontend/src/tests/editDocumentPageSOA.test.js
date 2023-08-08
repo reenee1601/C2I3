@@ -1,10 +1,47 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 
 import SigninPage from '../../src/pages/signInPage/Signinpage';
+import EditDocumentPage from '../../src/pages/editDocumentPage/EditDocumentPageSOA';
 
+
+const dummySOA= { 
+    supplierID: '69',
+    totalAmount: 'artstranesteia234238497',
+    invoiceID: [777, 86],
+    issuedDate: ['tomorrow', 2024],
+    dueDate: ['yesterday', 'next week'],
+    amount: [22, 33],
+  }
+
+describe('EditDocumentPageSOA renders dummy data correctly', () =>{
+
+    it('should render properly given the dummy data', () => {
+
+    render(
+    <MemoryRouter initialEntries={[{ url:'hi', state:dummySOA }]} >
+      <EditDocumentPage />
+    </MemoryRouter>
+
+	    , {state: dummySOA, url:'dummyurl'});
+    expect(true).toBe(true);
+  const supplierIdInputLabel = screen.getByText('SUPPLIER ID:');
+  const supplierIdInput = supplierIdInputLabel.nextElementSibling;
+  expect(supplierIdInput.value).toEqual('69');
+  const secondCellInFirstRow = screen.getByRole('cell', { name: /tomorrow/i });
+  expect(secondCellInFirstRow).toBeInTheDocument();
+  console.log(screen.getByRole('cell', { row: 0, column: 1 }))
+
+    });
+});
+
+
+
+
+
+/*
 describe('SigninPage', () => {
 
     // TEST 1: Header + inputs
@@ -59,4 +96,4 @@ describe('SigninPage', () => {
     });
   });
 
-});
+});*/
