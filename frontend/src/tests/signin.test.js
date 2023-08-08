@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 
 import SigninPage from '../../src/pages/signInPage/Signinpage';
@@ -8,7 +9,9 @@ describe('SigninPage', () => {
 
     // TEST 1: Header + inputs
   it('should render the header and input fields', () => {
-    render(<SigninPage />);
+    render(<MemoryRouter>
+	    <SigninPage />
+    	   </MemoryRouter>);
     expect(screen.getByText(/Welcome to -SuRe!/i)).toBeInTheDocument();
 
     expect(screen.getByPlaceholderText(/Enter your Email Address/i)).toBeInTheDocument();
@@ -17,7 +20,9 @@ describe('SigninPage', () => {
 
   // TEST 2: UPdating of input fields
   it('should update the input fields when values are entered', () => {
-    render(<SigninPage />);
+    render(<MemoryRouter>
+	    <SigninPage />
+    	   </MemoryRouter>);
 
     fireEvent.change(screen.getByPlaceholderText(/Enter your Email Address/i), {
       target: { value: 'john.doe@mymail.sutd.edu.sg' },
@@ -35,7 +40,9 @@ describe('SigninPage', () => {
 
     const mockSignIn = jest.fn();
 
-    render(<SigninPage onSignIn={mockSignIn} />);
+    render(<MemoryRouter>
+	    <SigninPage onSignIn={mockSignIn} />
+	   </MemoryRouter>);
 
     fireEvent.change(screen.getByPlaceholderText(/Enter your Email Address/i), {
       target: { value: 'john.doe@mymail.sutd.edu.sg' },

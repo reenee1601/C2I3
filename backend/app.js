@@ -18,42 +18,45 @@ var paymentRouter = require('./routes/paymentRouter');
 var app = express();
 
 const db = require('./db');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
-const crypto = require('crypto');
-
-// Generate a secure random secret key
-const secretKey = crypto.randomBytes(32).toString('hex');
-console.log('Generated Secret Key:', secretKey);
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo')(session);
  
-// Define options for MongoStore
-const options = {
-  mongooseConnection: db.connection,
-  collection: 'sessions',
+// // Define options for MongoStore
+// const options = {
+//   mongooseConnection: db.connection,
+//   collection: 'sessions',
+// };
+
+// // Create a new instance of MongoStore
+// const mongoStore = new MongoStore(options);
+
+// // Configure session
+// app.use(
+//   session({
+//     secret: 'secretKey',
+//     store: mongoStore,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       maxAge: 24 * 60 * 60 * 1000,
+//       cookie: { secure: false },
+//       httpOnly: true,
+//       sameSite: 'lax',
+//     },
+//   })
+// );
+
+const corsOptions = {
+  origin: 'http://localhost:3000', 
+  credentials: true,
 };
-
-// Create a new instance of MongoStore
-const mongoStore = new MongoStore(options);
-
-// Configure session
-app.use(
-  session({
-    secret: secretKey,
-    store: mongoStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
-    },
-  })
-);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

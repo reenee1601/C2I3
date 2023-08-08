@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 
 // Testing Component --> Register Page
@@ -9,7 +10,9 @@ describe('RegisterPage', () => {
 
     // TEST 1: Header + Input 
   it('should render the header and input fields', () => {
-    render(<RegisterPage />);
+    render(<MemoryRouter>
+	    <RegisterPage />
+    	   </MemoryRouter>);
 
     expect(screen.getByText(/Welcome to -SuRe!/i)).toBeInTheDocument();
 
@@ -23,7 +26,9 @@ describe('RegisterPage', () => {
   // TEST 2: Form Fields Update
 
   it('should update the form fields when input values change', () => {
-    render(<RegisterPage />);
+    render(<MemoryRouter>
+	    <RegisterPage />
+    	   </MemoryRouter>);
 
     fireEvent.change(screen.getByPlaceholderText(/Enter Your Full Name/i), {
       target: { value: 'John Doe' },
@@ -59,7 +64,9 @@ describe('RegisterPage', () => {
       useNavigate: () => mockNavigate,
     }));
 
-    render(<RegisterPage />);
+    render(<MemoryRouter>
+	    <RegisterPage />
+    	   </MemoryRouter>);
 
     fireEvent.change(screen.getByPlaceholderText(/Enter Your Full Name/i), {
       target: { value: 'John Doe' },
