@@ -11,7 +11,9 @@ import axios from 'axios';
 const Signin = () => {
 // HOVER BUTTON FUNCTIONALITY
 const [buttonHover, setButtonHover] = useState(false);
-
+const handleForgotPasswordClick = () => {
+  navigate('/forgotpassword');
+};
 const handleMouseEnter = () => {
   setButtonHover(true);
 };
@@ -112,9 +114,10 @@ return (
                 <label htmlFor="remember_me" style={checkboxLabel}>Remember Me?</label>
               </div>
               <p>
-                <a href="#signin" style={forgetPass}>
-                  Forgot Password?
-                </a>
+              <button style={forgetPass} onClick={handleForgotPasswordClick}>
+              Forgot Password?
+              </button>
+
               </p>
             </div>
 

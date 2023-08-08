@@ -12,3 +12,4 @@ export { default as ProductPage } from './productPage/ProductPage';
 export { default as EditDocumentPage } from './editDocumentPage/EditDocumentPage';
 export { default as EditDocumentPageInvoice } from './editDocumentPage/EditDocumentPageInvoice';
 export { default as EditDocumentPageSOA } from './editDocumentPage/EditDocumentPageSOA';
+export{ default as ForgotPassword } from './forgotpasswordpage/forgotpasswordpage';

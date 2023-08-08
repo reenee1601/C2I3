@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, //EditDocumentPage, 
      EditDocumentPageInvoice, EditDocumentPageSOA,
-          InvoicePage, SoaPage, UploadPage, CompareDocumentPage, ProductPage } from './pages';
+          InvoicePage, SoaPage, UploadPage, CompareDocumentPage, ProductPage, ForgotPassword } from './pages';
 
 
 const App = () => {
@@ -22,6 +22,8 @@ const App = () => {
           <Route path = '/soapage' element = {<SoaPage />}/>
           <Route path = '/productpage' element = {<ProductPage />}/>
           <Route path = '/uploadpage' element = {<UploadPage />} />
+          <Route path = '/forgotpassword' element = {<ForgotPassword />} />
+
           {/* <Route path = '/comparedocumentpage' element = {<CompareDocumentPage />} /> */}
     {/*<Route path = '/editdocumentpage' element = {<EditDocumentPage />} />*/}
           <Route path = '/invoice/editdocumentpage' element = {<EditDocumentPageInvoice />} />
