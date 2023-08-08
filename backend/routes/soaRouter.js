@@ -16,10 +16,8 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage })
 
-//router.post('/uploadDataSOA', upload.single('pdfFile'), uploadDataSOA);
 router.post('/scanData', upload.single('file'), scanData)
   
-//router.post('/uploadData', soaController.uploadData); // upload edited data
 
 router.get('/getSOAData', getSOAData);
 

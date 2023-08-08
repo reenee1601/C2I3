@@ -242,7 +242,7 @@ async function exportDataToCSV() {
       totalAmount: item.totalAmount,
     }));
     const filePath = path.resolve(__dirname, 'data.csv');
-    // const filePath = 'data.csv';
+    
     const csvWriter = createCsvWriter({
       path: filePath,
       header: [
@@ -252,7 +252,7 @@ async function exportDataToCSV() {
         { id: 'amount', title: 'Amount' },
         { id: 'supplierID', title: 'Supplier ID' },
         { id: 'totalAmount', title: 'Total Amount' },
-        // Add more columns as needed
+        
       ],
     });
 
@@ -263,6 +263,7 @@ async function exportDataToCSV() {
 
   } catch (error) {
     console.error('Error exporting data to CSV:', error);
+    throw error;
   }
 }
 
@@ -276,6 +277,13 @@ exports.exportDataCSV = async function exportDataCSV(req, res, next){
 
     // Create a read stream from the saved file and pipe it to the response
     const fileStream = fs.createReadStream(filePath);
+
+    // Handle errors during stream piping
+    fileStream.on('error', (error) => {
+      console.error('Error reading CSV file:', error);
+      res.status(500).json({ error: 'Error exporting data to CSV.' });
+    });
+
     fileStream.pipe(res);
     console.log("CSV exported");
   } catch (error) {
@@ -287,7 +295,7 @@ exports.exportDataCSV = async function exportDataCSV(req, res, next){
 async function getSOADataById(id) {
   try {
     
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; 
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
