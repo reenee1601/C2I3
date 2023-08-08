@@ -32,6 +32,7 @@ describe('Sign In Page', () => {
         <Signin />
       </MemoryRouter>
     );
+    
     // Type in email input
     const emailInput = screen.getByPlaceholderText(/Enter Your Email Address/i);
     fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });

@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { RegisterPage, Signinpage, HomePage, DetailedInvoicePage, DetailedSoaPage, EditDocumentPage, 
-          InvoicePage, SoaPage, UploadPage, CompareDocumentPage, ProductPage } from './pages';
-import Signin from './pages/signInPage/Signinpage';
+          InvoicePage, SoaPage, UploadPage, ProductPage } from './pages';
 
 
 const App = () => {
@@ -22,7 +21,6 @@ const App = () => {
           <Route path = '/soapage' element = {<SoaPage />}/>
           <Route path = '/productpage' element = {<ProductPage />}/>
           <Route path = '/uploadpage' element = {<UploadPage />} />
-          <Route path = '/comparedocumentpage' element = {<CompareDocumentPage />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,86 +1,85 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+
 import '@testing-library/jest-dom/extend-expect';
 
-// Testing Component --> Register Page
+import { MemoryRouter } from 'react-router-dom';
 import RegisterPage from '../../src/pages/registerPage/RegisterPage';
 
 describe('RegisterPage', () => {
 
-    // TEST 1: Header + Input 
-  it('should render the header and input fields', () => {
-    render(<RegisterPage />);
+  const mockNavigate = jest.fn();
 
-    expect(screen.getByText(/Welcome to -SuRe!/i)).toBeInTheDocument();
+  jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate, 
+  }));
 
-    expect(screen.getByPlaceholderText(/Enter Your Full Name/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Enter Your Company/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Enter Your Email Address/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Enter Your Password/i)).toBeInTheDocument();
-    expect(screen.getByPlaceholderText(/Confirm Your Password/i)).toBeInTheDocument();
+  // TEST 1
+  it('renders without errors', () => {
+    render(
+    <MemoryRouter>
+      <RegisterPage />
+    </MemoryRouter>)
   });
 
-  // TEST 2: Form Fields Update
+  // TEST 2
+  it('displays error messages for invalid form submission', async () => {
+    render(
+      <MemoryRouter>
+        <RegisterPage />
+      </MemoryRouter>
+    );
 
-  it('should update the form fields when input values change', () => {
-    render(<RegisterPage />);
+    const submitButton = screen.getByText('Create Account');
+    fireEvent.click(submitButton);
 
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Full Name/i), {
-      target: { value: 'John Doe' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Company/i), {
-      target: { value: 'SUTD' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Email Address/i), {
-      target: { value: 'john.doe@mymail.sutd.edu.com' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Password/i), {
-      target: { value: 'johnjohn' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Confirm Your Password/i), {
-      target: { value: 'johnjohn' },
-    });
-
-    expect(screen.getByPlaceholderText(/Enter Your Full Name/i)).toHaveValue('John Doe');
-    expect(screen.getByPlaceholderText(/Enter Your Company/i)).toHaveValue('SUTD');
-    expect(screen.getByPlaceholderText(/Enter Your Email Address/i)).toHaveValue('john.doe@mymail.sutd.edu.com');
-    expect(screen.getByPlaceholderText(/Enter Your Password/i)).toHaveValue('johnjohn');
-    expect(screen.getByPlaceholderText(/Confirm Your Password/i)).toHaveValue('johnjohn');
+    const emptyInputError = screen.queryAllByText(/This is a required field/i);
+    expect(emptyInputError.length).toBeGreaterThan(0);
   });
 
-  // TEST 3: Navigation Route
+  // TEST 3
+  it('displays success message after successful form submission', async () => {
+    render(
+      <MemoryRouter>
+        <RegisterPage />
+      </MemoryRouter>
+    );
 
-  it('should navigate to the homepage after successful form submission', async () => {
+    const fullNameInput = screen.getByPlaceholderText('Enter Your Full Name');
+    const companyNameInput = screen.getByPlaceholderText('Enter Your Company');
+    const emailInput = screen.getByPlaceholderText('Enter Your Email Address');
+    const passwordInput = screen.getByPlaceholderText('Enter Your Password');
+    const confirmPasswordInput = screen.getByPlaceholderText('Confirm Your Password');
+    const submitButton = screen.getByText('Create Account');
 
-    // Mock the useNavigate function
-    const mockNavigate = jest.fn();
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useNavigate: () => mockNavigate,
-    }));
+    fireEvent.change(fullNameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(companyNameInput, { target: { value: 'ACME Corp' } });
+    fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
 
-    render(<RegisterPage />);
-
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Full Name/i), {
-      target: { value: 'John Doe' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Company/i), {
-      target: { value: 'SUTD' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Email Address/i), {
-      target: { value: 'john.doe@mymail.sutd.edu.com' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Enter Your Password/i), {
-      target: { value: 'johnjohn' },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Confirm Your Password/i), {
-      target: { value: 'johnjohn' },
-    });
-
-    fireEvent.click(screen.getByText(/Create Account/i));
-
-    await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/homepage');
-    });
+    expect(screen.getByText('Account registered!')).toBeInTheDocument();
   });
+
+  // TEST 4
+  it('displays password mismatch error when passwords do not match', async () => {
+    render(
+      <MemoryRouter>
+        <RegisterPage />
+      </MemoryRouter>
+    );
+
+    const passwordInput = screen.getByPlaceholderText('Enter Your Password');
+    const confirmPasswordInput = screen.getByPlaceholderText('Confirm Your Password');
+    const submitButton = screen.getByText('Create Account');
+
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'mismatched123' } });
+    fireEvent.click(submitButton);
+
+    expect(screen.getByText('Passwords mismatch.')).toBeInTheDocument();
+  });
+
 });
