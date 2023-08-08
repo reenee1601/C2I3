@@ -88,8 +88,12 @@ try {
     }
     
     const specificProdData = await getProdDataById(id);
-    res.json(specificProdData);
-    res.status(200).json({ message: 'Fetch specific product data by id successful!' });
+    // res.json(specificProdData);
+    // res.status(200).json({ message: 'Fetch specific product data by id successful!' });
+    res.status(200).json({
+      message: 'Fetch specific product data by id successful!',
+      data: specificProdData
+    });
     
 } catch (error) {
     console.error('Error fetching specific products data:', error);
