@@ -116,13 +116,14 @@ const HomePage = () => {
 
         <div style={profileinfo}>
           <h1 style={welcomeStyle} >WELCOME, {userInfo.userName}</h1>
+          <h2 style={nameStyle}> {userInfo.userCompany}</h2>
         
         </div>
 
       </div>
 
         <div>
-          <h3 style={gridheader}>Companies Involved: {userInfo.userCompany}</h3>
+          <h3 style={gridheader}>Companies Involved:</h3>
         </div>
 
         <div style={slider}>
