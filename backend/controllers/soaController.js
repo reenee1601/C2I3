@@ -166,7 +166,7 @@ exports.getSOAData = async function(req, res){ // funcitonfor getData GET endpoi
   try {
       const soaData = await soaModel.find();
         console.log('retreived invoive data')
-        res.status(200).json(invoiceData);
+        res.status(200).json(soaData);
     } catch (error) {
         console.error('Error fetching SOA data:', error);
         res.status(500).json({ error: 'Error fetching Invoice data.' });
