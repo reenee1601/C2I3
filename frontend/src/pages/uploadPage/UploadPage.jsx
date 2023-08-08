@@ -27,9 +27,10 @@ import {
 const UploadPage = () => {
 
   //VALIDATION
+  // const accountSid = 'ACb10e36162bf1e9c551cdf7a8ce779d97';
+  // const authToken = '4b9979e0b448bad52d5beb6537bcee05';
+  // const client = require('twilio')(accountSid, authToken);
   const [upload, setUpload] = useState('');
-
-  const [qrCode, setQrCode] = useState('');
 
   const [error, setError] = useState({
     upload: false
@@ -176,6 +177,22 @@ const sendWhatsAppNotification = async () => {
     console.error('Error sending WhatsApp notification:', error);
   }
 };
+
+// const sendNotification = async () => {
+//   const phoneNumber = '+6583023966'; // Replace with the recipient's phone number including country code (e.g., +1234567890)
+// try {
+//     client.messages
+//         .create({
+//             body: 'Payment received!',
+//             from: 'whatsapp:+14155238886',
+//             to: phoneNumber
+//         })
+//         .then(message => console.log(message.sid))
+//         .done();
+// } catch (error) {
+//     console.error('Error sending WhatsApp notification:', error);
+// }
+// };
 
     const handleConditionalButtonClick = async () =>{
       if (image === null) {

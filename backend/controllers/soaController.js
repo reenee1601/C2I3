@@ -4,6 +4,9 @@ const utils = require('../utils/utils.js')
 const mongoose = require('mongoose');
 const { unlink } = require('fs') // use this to delete the file after we're done
 const soaModel = require('../models/soaModel.js');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const ExcelJS = require('exceljs');
+var path = require('path');
 mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,

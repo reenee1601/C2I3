@@ -7,11 +7,13 @@ import mockData from "../../data/mock_data.json";
 import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
 import { Table } from "react-bootstrap";
 import { FaShareSquare } from 'react-icons/fa';
+import axios from 'axios';
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,
           exportButton, bottomPart, popupButton, popupButtonp, dropdownContainer, exportButtonIcon } from './SoaPageStyle';
 
 const SoaPage = () => {
+
 
   useEffect(() => {
     // Fetch SOA data from the backend when the component mounts
@@ -40,6 +42,35 @@ const SoaPage = () => {
   };
   const [soaData, setSoaData] = useState([]);
   console.log(soaData);
+
+  const handleExportToCSV = () => {
+    // Make a GET request to the backend endpoint for exporting data to CSV
+    axios.get('http://localhost:8000/soa/exportToCSV')
+        // Make a GET request to the backend endpoint for exporting data to Excel
+        .then((response) => {
+          console.log("data exported to excel fetched successfully");
+          console.log(response.data.message);
+          // Optionally, you can display a success message to the user
+        })
+        .catch((error) => {
+          console.error('Error exporting data to Excel:', error);
+          // Display an error message to the user if needed
+        });
+  };
+
+  const handleExportToExcel = () => {
+    // Make a GET request to the backend endpoint for exporting data to Excel
+    axios.get('http://localhost:8000/soa/exportToExcel')
+      .then((response) => {
+        console.log("data exported to excel fetched successfully");
+        console.log(response.data.message);
+        // Optionally, you can display a success message to the user
+      })
+      .catch((error) => {
+        console.error('Error exporting data to Excel:', error);
+        // Display an error message to the user if needed
+      });
+  };
 
     const columns = React.useMemo(
     () => [
@@ -183,8 +214,8 @@ const SoaPage = () => {
           {/* Render the dropdown menu */}
           {isDropdownVisible && (
             <div style={popupButton}>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
+              <p style={popupButtonp} onClick={handleExportToExcel}>Export Excel</p>
+              <p style={popupButtonp} onClick={handleExportToCSV}>Export CSV</p>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
             </div>
           )}

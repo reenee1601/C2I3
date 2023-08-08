@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import mockData from "../../data/mock_data.json";
 import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
 import { FaShareSquare } from 'react-icons/fa';
+import axios from 'axios';
 import { searchBar, tableContainer, scrollable, customTable, 
   td, th, invoiceIDLink, supplierLink, issuedDateLink, dueDateLink, amountLink,
   exportButton, bottomPart, dropdownContainer, popupButton, popupButtonp } from './InvoicePageStyle'
@@ -39,6 +40,35 @@ const InvoicePage = () => {
   };
   const [InvoiceData, setInvoiceData] = useState([]);
   console.log(InvoiceData);
+
+  const handleExportToCSV = () => {
+    // Make a GET request to the backend endpoint for exporting data to CSV
+    axios.get('http://localhost:8000/invoice/exportInvoiceToCSV')
+        // Make a GET request to the backend endpoint for exporting data to Excel
+        .then((response) => {
+          console.log("data exported to excel fetched successfully");
+          console.log(response.data.message);
+          // Optionally, you can display a success message to the user
+        })
+        .catch((error) => {
+          console.error('Error exporting data to Excel:', error);
+          // Display an error message to the user if needed
+        });
+  };
+
+  const handleExportToExcel = () => {
+    // Make a GET request to the backend endpoint for exporting data to Excel
+    axios.get('http://localhost:8000/invoice/exportInvoiceToExcel')
+      .then((response) => {
+        console.log("data exported to excel fetched successfully");
+        console.log(response.data.message);
+        // Optionally, you can display a success message to the user
+      })
+      .catch((error) => {
+        console.error('Error exporting data to Excel:', error);
+        // Display an error message to the user if needed
+      });
+  };
 
   // hold array of column objects
   // useMemo is React hook for memoization
@@ -193,8 +223,8 @@ return (
           {/* Render the dropdown menu */}
           {isDropdownVisible && (
             <div style={popupButton}>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
+              <p style={popupButtonp} onClick={handleExportToExcel}>Export Excel</p>
+              <p style={popupButtonp} onClick={handleExportToCSV}>Export CSV</p>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
             </div>
           )}

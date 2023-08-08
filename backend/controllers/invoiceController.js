@@ -3,6 +3,9 @@ const { unlink } = require('fs') // use this to delete the file after we're done
 const utils = require('../utils/utils.js')
 const Invoice = require('../models/invoiceModel');
 const mongoose = require('mongoose');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const ExcelJS = require('exceljs');
+var path = require('path');
 
 // Establish the MongoDB connection
 mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
@@ -111,6 +114,133 @@ exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
         console.error('Error fetching SOA data:', error);
         res.status(500).json({ error: 'Error fetching Invoice data.' });
     }
+}
+
+// Function to export data to an Excel file
+async function exportInvoiceDataToExcel() {
+  try {
+    const data = await getSOADataFromMongoDB(); // Retrieve data from MongoDB
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Data');
+
+    // Define the Excel columns
+    worksheet.columns = [
+      { header: 'Invoice ID', key: 'invoiceID', width: 15 },
+      { header: 'Issued Date', key: 'issuedDate', width: 15 },
+      { header: 'Due Date', key: 'dueDate', width: 15 },
+      { header: 'Supplier ID', key: 'supplierID', width: 15 },
+      { header: 'Total Before GST', key: 'totalBeforeGST', width: 15 },
+      { header: 'Total After GST', key: 'totalAfterGST', width: 15 },
+      { header: 'GST', key: 'GST', width: 15 },
+      { header: 'Product Code', key: 'productCode', width: 15 },
+      { header: 'Quantity', key: 'quantity', width: 15 },
+      { header: 'Amount', key: 'amount', width: 15 },
+      { header: 'Product Name', key: 'productName', width: 15 },
+      // Add more columns as needed
+    ];
+
+    // Add the data to the worksheet
+    data.forEach((item) => {
+      worksheet.addRow(item);
+    });
+
+    // Save the workbook to an Excel file
+    const filePath = './InvoiceData.xlsx';
+    await workbook.xlsx.writeFile(filePath);
+    //console.log(data);
+    return filePath;
+
+
+    console.log('Data exported to Excel successfully!');
+  } catch (error) {
+    console.error('Error exporting data to Excel:', error);
+  }
+}
+
+exports.exportInvoiceDataExcel = async function exportInvoiceDataExcel(req, res, next){
+  try {
+    const filePath = await exportInvoiceDataToExcel();
+
+    // Set the headers to trigger the file download
+    res.setHeader('Content-Disposition', `attachment; filename=${filePath}`);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+    // Create a read stream from the saved file and pipe it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+    console.log("Excel exported");
+  } catch (error) {
+    console.error('Error exporting data to Excel:', error);
+    res.status(500).json({ error: 'Error exporting data to Excel.' });
+  }
+}
+
+async function exportInvoiceDataToCSV() {
+  try {
+    const data = await getSOADataFromMongoDB(); // Retrieve data from MongoDB
+
+    // Convert data to the format expected by the csv-writer library
+    const csvData = data.map((item) => ({
+      invoiceID: item.invoiceID,
+      issuedDate: item.issuedDate,
+      dueDate: item.dueDate,
+      supplierID: item.supplierID,
+      totalBeforeGST: item.totalBeforeGST,
+      totalAfterGST: item.totalAfterGST,
+      GST: item.GST,
+      productCode: item.productCode,
+      quantity: item.quantity,
+      amount: item.amount,
+      productName: item.productName,
+    }));
+    const filePath = path.resolve(__dirname, 'InvoiceData.csv');
+    // const filePath = 'data.csv';
+    const csvWriter = createCsvWriter({
+      path: filePath,
+      header: [
+        { id: 'invoiceID', title: 'Invoice ID' },
+        { id: 'issuedDate', title: 'Issued Date' },
+        { id: 'dueDate', title: 'Due Date' },
+        { id: 'supplierID', title: 'Supplier ID' },
+        { id: 'totalBeforeGST', title: 'Total Before GST' },
+        { id: 'totalAfterGST', title: 'Total After GST' },
+        { id: 'GST', title: 'GST' },
+        { id: 'productCode', title: 'Product Code' },
+        { id: 'quantity', title: 'Quantity' },
+        { id: 'amount', title: 'Amount' },
+        { id: 'productName', title: 'Product Name' },
+        
+        // Add more columns as needed
+      ],
+    });
+
+    // Write the data to the CSV file
+    await csvWriter.writeRecords(csvData);
+    //console.log(csvData);
+    return filePath;
+
+  } catch (error) {
+    console.error('Error exporting data to CSV:', error);
+  }
+}
+
+exports.exportInvoiceDataCSV = async function exportInvoiceDataCSV(req, res, next){
+  try {
+    const filePath = await exportInvoiceDataToCSV();
+
+    // Set the headers to trigger the file download
+    res.setHeader('Content-Disposition', `attachment; filename=${filePath}`);
+    res.setHeader('Content-Type', 'text/csv');
+
+    // Create a read stream from the saved file and pipe it to the response
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+    console.log("CSV exported");
+  } catch (error) {
+    console.error('Error exporting data to CSV:', error);
+    res.status(500).json({ error: 'Error exporting data to CSV.' });
+  }
 }
 
 

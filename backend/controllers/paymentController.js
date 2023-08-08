@@ -7,7 +7,7 @@ const johnPackage = require('john-package');
 const mongoose = require('mongoose');
 
 const accountSid = 'ACb10e36162bf1e9c551cdf7a8ce779d97';
-const authToken = '0a0d792f5d5809e00ec4f1ceccc3fadf';
+const authToken = '4b9979e0b448bad52d5beb6537bcee05';
 const client = require('twilio')(accountSid, authToken);
 
 
