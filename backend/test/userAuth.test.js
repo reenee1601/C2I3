@@ -1,7 +1,7 @@
 const app = require("../app.js"); 
 const supertest = require("supertest");
 const request = supertest(app);
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
 
 
@@ -20,6 +20,127 @@ beforeAll(async () => {
         console.error("Connection error", err);
         process.exit();
       });
+});
+
+// Generate random email 
+function generateRandomEmail() {
+  const validDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'example.com', 'customdomain.org'];
+  const invalidLocalParts = ['user', 'invalid', '123456', 'test'];
+  const allCharacters = 'abcdefghijklmnopqrstuvwxyz0123456789_.'; // Include underscores and periods
+
+  const isInvalid = Math.random() < 0.3; // 30% chance of generating an invalid email
+
+  let randomEmail;
+
+  if (isInvalid) {
+    const invalidLocalPart = invalidLocalParts[Math.floor(Math.random() * invalidLocalParts.length)];
+    randomEmail = `${invalidLocalPart}@${validDomains[Math.floor(Math.random() * validDomains.length)]}`;
+  } else {
+    const randomDomain = validDomains[Math.floor(Math.random() * validDomains.length)];
+    const randomLocalPartLength = Math.floor(Math.random() * 10) + 1; // Random local part length between 1 and 10
+    let randomLocalPart = '';
+    for (let i = 0; i < randomLocalPartLength; i++) {
+      const randomChar = allCharacters[Math.floor(Math.random() * allCharacters.length)];
+      randomLocalPart += randomChar;
+    }
+    randomEmail = `${randomLocalPart}@${randomDomain}`;
+  }
+
+  return randomEmail;
+}
+
+// Generate random password
+function generateRandomPassword() {
+  const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.'; // Include underscores and periods
+  const invalidChars = '!@#$%^&*()_-+=<>?/'; // List of characters that can make a password invalid
+
+  const isInvalid = Math.random() < 0.3; // 30% chance of generating an invalid password
+
+  let randomPassword;
+
+  if (isInvalid) {
+    const invalidLength = Math.random() < 0.5 ? Math.floor(Math.random() * 7) : Math.floor(Math.random() * 20) + 9; // 50% chance of generating too short password, 50% chance of generating too long password
+    const invalidPassword = Array.from({ length: invalidLength }, () => invalidChars[Math.floor(Math.random() * invalidChars.length)]).join('');
+    randomPassword = `invalid_${invalidPassword}`; // Prefix with "invalid_" and add invalid characters
+  } else {
+    const validPasswordLength = Math.floor(Math.random() * 5) + 8; // Random password length between 8 and 12
+    let password = '';
+    for (let i = 0; i < validPasswordLength; i++) {
+      const randomChar = validChars[Math.floor(Math.random() * validChars.length)];
+      password += randomChar;
+    }
+    randomPassword = password;
+  }
+
+  return randomPassword;
+}
+
+// Generate random name
+function generateRandomName() {
+  const maxNameLength = 50; // Maximum allowed name length
+
+  const nameLength = Math.floor(Math.random() * (maxNameLength - 1)) + 1; // Random name length between 1 and maxNameLength - 1
+
+  const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ '; // Include space
+
+  let name = '';
+  for (let i = 0; i < nameLength; i++) {
+    const randomChar = validChars[Math.floor(Math.random() * validChars.length)];
+    name += randomChar;
+  }
+
+  return name;
+}
+
+// Generate random company name
+function generateRandomCompanyName() {
+  const maxCompanyNameLength = 100; // Maximum allowed company name length
+
+  const companyNameLength = Math.floor(Math.random() * (maxCompanyNameLength - 1)) + 1; // Random company name length between 1 and maxCompanyNameLength - 1
+
+  const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ '; // Include space
+
+  let companyName = '';
+  for (let i = 0; i < companyNameLength; i++) {
+    const randomChar = validChars[Math.floor(Math.random() * validChars.length)];
+    companyName += randomChar;
+  }
+
+  return companyName;
+}
+
+
+
+// Fuzzing test
+// Fuzzing Test random email (valid and invalid) 
+test('Fuzzing testing on random generated email, name, password and company name for register', async () => {
+  const numIterations = 40;
+
+  for (let i = 0; i < numIterations; i++) {
+    const randomEmail = generateRandomEmail();
+    const randomPassword = generateRandomPassword();
+    const randomName = generateRandomName();
+    const randomCompany = generateRandomCompanyName();
+
+    const res = await request.post("/users/register").send({
+      email: randomEmail,
+      password: randomPassword,
+      company: randomCompany,
+      name: randomName
+    });
+
+    if (res.status === 201) {
+      // Successful response
+      expect(res.status).toEqual(201);
+      expect(res.body.message).toEqual('User Created Successfully');
+      console.log(`Iteration ${i + 1}: SUCCESS - User Created Successfully`);
+      expect(res.body.user).toBeDefined();
+    } else {
+      // Error response
+      expect(res.status).toEqual(400);
+      console.log(`Iteration ${i + 1}: ERROR - ${res.body.message}`);
+    }
+  }
 });
 
 
@@ -95,6 +216,7 @@ test('Very long email', async () => {
     expect(res.status).toEqual(400);
   });
 
+
   // Test very short password
 test('Very short password', async () => {
     const res = await request.post("/users/register").send({
@@ -110,7 +232,7 @@ test('Very short password', async () => {
 test('Very long name', async () => {
     const longName = "a".repeat(60); // Create a name with more than 50 characters
     const res = await request.post("/users/register").send({
-      email: "test@example.com",
+      email: "vai@example.com",
       password: "password",
       company: "ichigo",
       name: longName,
@@ -152,6 +274,7 @@ const res = await request.post("/users/register").send({
 });
 expect(res.status).toEqual(400);
 });
+
   
 // close the mongoose connection
 afterAll(async () => {

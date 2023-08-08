@@ -3,6 +3,10 @@ const connection = require('../db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+function ValidateEmail(inputText) {
+  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return mailformat.test(inputText); // Use .test() to match the regular expression
+}
 
 exports.register = async function(req, res, next){
     const { email, password, company, name } = req.body;
@@ -32,12 +36,35 @@ exports.register = async function(req, res, next){
         });
       }
 
+      // Check valid email format
+      if (!ValidateEmail(email)) {
+        return res.status(400).send({
+          message: 'Email input is not valid!',
+        });
+      }
+
       // Check if the password is too short
       const minPasswordLength = 8; // Assuming a minimum password length of 8 characters
+      const maxPasswordLength = 20;
       if (password.length < minPasswordLength) {
         return res.status(400).send({
           message: 'Password is too short. Please use a longer password.',
         });
+      }
+      // Check if the password is too long
+      if (password.length > maxPasswordLength) {
+        return res.status(400).send({
+          message: 'Password is too long. Please use a shorter password',
+        });
+      }
+      // Check if the password contains invalid characters
+      const invalidChars = '!@#$%^&*()_-+=<>?/';
+      for (const char of password) {
+        if (invalidChars.includes(char)) {
+          return res.status(400).send({
+            message: 'Passwordcontains invalid characters. Please use a valid password.'
+          });
+        }
       }
 
       // Check if the name is too long
