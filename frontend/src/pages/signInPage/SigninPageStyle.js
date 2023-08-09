@@ -54,7 +54,6 @@ export const inputdiv = {
 export const checkboxWrapper = {
     display: "flex",
     alignItems: "center",
-    marginTop: "-3%",
 };
 
 export const checkboxInput = {

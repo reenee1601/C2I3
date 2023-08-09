@@ -48,7 +48,8 @@ const HomePage = () => {
   // GETTING NAME + COMPANY FROM DATABASE
   const userEmail = location.state?.email || '';
   const [userInfo, setUserInfo] = useState({userEmail: '', userName: '', userCompany: '' });
-
+  localStorage.removeItem('userInfo');
+  
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {

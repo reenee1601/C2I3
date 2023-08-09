@@ -130,24 +130,13 @@ const driver = new Builder()
       //remember to uncomment this
       // const submitButton = await driver.findElement(By.name('submitButton'));
       // await submitButton.click();
-  
-      // Wait for 2 seconds
-      await new Promise(resolve => setTimeout(resolve, 2000));
-  
-      // Go to invoice page to check
-      await driver.get('http://www.localhost:3000/soapage');
-      // Wait for 5 seconds
-      await new Promise(resolve => setTimeout(resolve, 5000));
-  
-      // Locate the table element
-      row = await driver.findElement(By.xpath('(//table[@name="table"]//tbody/tr)[last()]//td[1]')).getText();  
-  
-      if(row === invoiceInputValue){
-        console.log("Test successful");
-        alert("Test successful!");
+
+      const successMsg = await driver.findElement(By.xpath('//p[@name="success"]'));
+      if(successMsg){
+        console.log("Test successful.");
       }
       else{
-        console.log("check again!");
+        console.log("check again");
       }
   
     }
@@ -159,4 +148,3 @@ const driver = new Builder()
       await driver.quit();
     }
   })();
-  

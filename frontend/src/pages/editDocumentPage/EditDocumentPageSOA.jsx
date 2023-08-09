@@ -47,7 +47,8 @@ const EditDocumentPage = () => {
   // URL object doesnt exist in test environment so 
   // add this to the test file somewhere outside of the tests
   // global.URL.createObjectURL = jest.fn(() => 'mocked-url');
-  const [image, setImage] = useState(url.createObjectURL(location.url));
+  // const [image, setImage] = useState(url.createObjectURL(location.url));
+  const [image, setImage] = useState(location.url);
 
   // Function to clean numerical fields
   const getNumber = (s) => {

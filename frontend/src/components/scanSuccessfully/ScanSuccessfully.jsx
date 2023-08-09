@@ -41,7 +41,7 @@ const ScanSuccessfully = ({ trigger, setTrigger }) => {
         style={documentScanSuccessfullyContainer}
         onClick={handlePopUpContentClick}
       >
-        <p style={documentSuccessfullyScannedText}>Document Successfully Scanned.</p>
+        <p name="success" style={documentSuccessfullyScannedText}>Document Successfully Scanned.</p>
         <p style={documentSucccessfullyScannedText2}>
           View Scanned Document in the Invoice & Statement of Account Page.
         </p>
