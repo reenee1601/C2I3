@@ -303,7 +303,6 @@ const EditDocumentPage = () => {
                   style ={editDocumentDueInputStyle}
                 />
               </div>
-            </div>
 
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>GST:</p>
@@ -324,6 +323,7 @@ const EditDocumentPage = () => {
                   style ={editDocumentDueInputStyle}
                 />
               </div>
+            </div>
 
               <div style={tableContainerStyle}>
                 <table style={tableStyle} {...getTableProps()}>
