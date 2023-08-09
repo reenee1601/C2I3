@@ -14,7 +14,7 @@ export const resetFormStyle = {
     fontWeight: "800",
     lineHeight: "normal",
 
-    marginBottom: "5%",
+    marginBottom: "3%",
 }
 
 export const resetPasswordFormContainer = {

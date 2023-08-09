@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { IoChevronBack } from 'react-icons/io5';
+
+import backgroundImage from '../../asserts/ForgetPasswordPage.jpg';
+
+import {
+  resetPasswordContainerStyle,
+  resetFormStyle,
+  resetPasswordFormContainer,
+  forgetPasswordText,
+  keyNewPasswordText,
+  forgotPasswordInputStyle, 
+  forgetPasswordButtonStyle,
+} from './forgotpasswordpagestyle'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -22,22 +36,30 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div>
-      <h2>Forgot Password</h2>
-      {!isSent ? (
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <button type="submit">Submit</button>
-        </form>
-      ) : (
-        <p>Password reset link has been sent to your email. Please check your inbox.</p>
-      )}
+    <div style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
+      <div>
+
+        <div style={resetPasswordContainerStyle}>
+          <h1 style={resetFormStyle}>RESET PASSWORD FORM</h1>
+          <div style={resetPasswordFormContainer}>
+            <h2 style={forgetPasswordText}>Forgot Password?</h2>
+            <p style={keyNewPasswordText}>We will send to you a link in you email to reset your password.</p>
+
+            <input style={forgotPasswordInputStyle} placeholder="Enter Your Email Address."></input>
+
+            <Link to="/signinpage">
+            <button style={forgetPasswordButtonStyle} onClick={handleSubmit}>Send</button>
+            </Link>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 };
