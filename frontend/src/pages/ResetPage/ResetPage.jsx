@@ -1,39 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import Axios library
+import { useLocation } from 'react-router-dom';
 
-const ResetPasswordPage = () => {
+const ResetPage = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
+  const location = useLocation();
 
   useEffect(() => {
-    // Extract the token from the URL query when the component mounts
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    // You can now use the 'token' in your API request
-    // Example: fetch(`/api/reset-password?token=${token}`)
-  }, []);
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get('token');
+
+    if (token) {
+      console.log('Token:', token);
+    } else {
+      console.log('Token not found in URL query.');
+    }
+  }, [location.search]);
 
   const handleResetPassword = async () => {
+    console.log('Reset button clicked');
     if (newPassword !== confirmPassword) {
       setMessage('Passwords do not match.');
       return;
     }
 
-    // Replace 'your-token-here' with the actual token you extracted
-    const token = 'your-token-here';
-
     try {
-      const response = await fetch('/api/reset-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token, newPassword }),
-      });
+      const response = await axios.post(
+        'http://localhost:8000/users/resetpassword',
+        { token, newPassword }, // Send token and newPassword in the request body
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (response.ok) {
+      if (response.status === 200) {
         setMessage(data.message);
       } else {
         setMessage(data.error);
@@ -42,7 +48,6 @@ const ResetPasswordPage = () => {
       setMessage('Error resetting password.');
     }
   };
-
   return (
     <div>
       <h2>Reset Password</h2>
@@ -70,4 +75,4 @@ const ResetPasswordPage = () => {
   );
 };
 
-export default ResetPasswordPage;
+export default ResetPage;

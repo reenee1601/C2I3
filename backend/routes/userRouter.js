@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const userController = require('../controllers/userController.js');
-const {register, signin, signout, getUserInfo} = userController
+const {register, signin, signout, getUserInfo,forgotPassword,resetPassword} = userController
 
 // Register endpoint --> WORKED!! tested in postman
 router.post('/register', async (request, response) => {
@@ -18,10 +18,10 @@ router.post('/register', async (request, response) => {
 
 // Signin endpoint --> WORKED!! tested in postman
 router.post('/signin', signin);
-
+router.post('/resetpassword', resetPassword);
 //Signout endpoints
 router.post('/signout', signout);
-
+router.post('/forgotpassword', forgotPassword);
 router.get('/getUserInfo', getUserInfo);
 
 module.exports = router;
