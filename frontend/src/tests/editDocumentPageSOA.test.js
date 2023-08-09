@@ -6,7 +6,10 @@ import '@testing-library/jest-dom/extend-expect';
 import SigninPage from '../../src/pages/signInPage/Signinpage';
 import EditDocumentPage from '../../src/pages/editDocumentPage/EditDocumentPageSOA';
 
-const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
+const getNumber = (s) => {
+  const parsedNumber = parseFloat(String(s).replace(/[^0-9.]+/g, ''));
+  return isNaN(parsedNumber) ? 0 : parsedNumber;
+};
 
 // FUNCTIONS FOR FUZZING
 const generateRandomString = () => {

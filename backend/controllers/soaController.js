@@ -1,5 +1,5 @@
 // Assuming you have already installed and required the "john-package" and "mongoose" in your application
-const johnPackage = require('john-package');
+//const johnPackage = require('john-package');
 const utils = require('../utils/utils.js')
 const mongoose = require('mongoose');
 const { unlink } = require('fs') // use this to delete the file after we're done

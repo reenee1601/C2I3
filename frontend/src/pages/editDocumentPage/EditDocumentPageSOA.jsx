@@ -43,10 +43,16 @@ import {
 const EditDocumentPage = () => {
   const location = useLocation(); // get the OCR data from the upload page
   const stateData = location.state;
+  // URL object doesnt exist in test environment so 
+  // add this to the test file somewhere outside of the tests
+  // global.URL.createObjectURL = jest.fn(() => 'mocked-url');
   const [image, setImage] = useState(URL.createObjectURL(location.url));
 
   // Function to clean numerical fields
-  const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
+  const getNumber = (s) => {
+    const parsedNumber = parseFloat(String(s).replace(/[^0-9.]+/g, ''));
+    return isNaN(parsedNumber) ? 0 : parsedNumber;
+  };
 
   // Form Data
   const [supplierID, setSupplierID] = useState(stateData.supplierID);

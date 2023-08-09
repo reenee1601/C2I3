@@ -55,7 +55,12 @@ const EditDocumentPage = () => {
     }
     return NaN; // Or a default value if appropriate
   };*/
-  const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
+  //const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
+
+  const getNumber = (s) => {
+    const parsedNumber = parseFloat(String(s).replace(/[^0-9.]+/g, ''));
+    return isNaN(parsedNumber) ? 0 : parsedNumber;
+  };
 
 
   // Form Data
@@ -301,7 +306,7 @@ const EditDocumentPage = () => {
             </div>
 
               <div style={indiInputStyle}>
-                <p style ={editDocumentIndiPStyle}>GST</p>
+                <p style ={editDocumentIndiPStyle}>GST:</p>
                 <input
                   type="text"
                   value={GST}
