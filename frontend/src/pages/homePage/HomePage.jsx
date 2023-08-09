@@ -50,20 +50,25 @@ const HomePage = () => {
   const [userInfo, setUserInfo] = useState({userEmail: '', userName: '', userCompany: '' });
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/users/getUserInfo', {
-        params: {
-          email: userEmail,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setUserInfo(response.data);
-      })
-      .catch((error) => {
-        console.error('Error registering user:', error);
-        // Handle the error, e.g., show an error message to the user
-      });
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    } else {
+      axios
+        .get('http://localhost:8000/users/getUserInfo', {
+          params: {
+            email: userEmail,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setUserInfo(response.data);
+          localStorage.setItem('userInfo', JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.error('Error fetching user info:', error);
+        });
+    }
   }, [userEmail]);
 
   console.log("user info name",userInfo.name);
