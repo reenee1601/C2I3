@@ -35,11 +35,13 @@ const ScanSuccessfully = ({ trigger, setTrigger }) => {
       className="scan-successfully-overlay"
       style={scanSuccessfullyContainer}
       onClick={() => navigate('/uploadpage')}
+      data-testid="scan-successfully-overlay"
     >
       <div
         className="scan-successfully-content"
         style={documentScanSuccessfullyContainer}
         onClick={handlePopUpContentClick}
+        data-testid="scan-successfully-content"
       >
         <p style={documentSuccessfullyScannedText}>Document Successfully Scanned.</p>
         <p style={documentSucccessfullyScannedText2}>

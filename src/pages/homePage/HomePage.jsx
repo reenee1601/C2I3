@@ -106,7 +106,8 @@ const HomePage = () => {
         <GridLoader 
         color={"#3A3A3A"} 
         loading={loading} 
-        size={20} />
+        size={20}
+        data-testid="spinner" />
       </div>
     ) : (
       <div
