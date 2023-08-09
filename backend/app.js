@@ -11,7 +11,6 @@ var usersRouter = require('./routes/userRouter');
 var invoiceRouter = require('./routes/invoiceRouter');
 var soaRouter = require('./routes/soaRouter');
 var creditNoteRouter = require('./routes/creditNoteRouter');
-var taxReportRouter = require('./routes/taxReportRouter');
 var productRouter = require('./routes/productRouter');
 var paymentRouter = require('./routes/paymentRouter');
 
@@ -70,7 +69,6 @@ app.use('/users', usersRouter);
 app.use('/invoice', invoiceRouter);
 app.use('/soa', soaRouter);
 app.use('/cd', creditNoteRouter);
-app.use('/tax', taxReportRouter);
 app.use('/product', productRouter);
 app.use('/payment', paymentRouter);
 
