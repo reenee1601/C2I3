@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.387.0",
     "axios": "^1.4.0",
     "axois": "^0.0.1-security",
     "bcrypt": "^5.1.0",
@@ -22,7 +23,6 @@
     "fuzzer": "^0.2.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "jest": "^29.6.2",
     "john-package": "file:john-package",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
@@ -33,5 +33,8 @@
     "supertest": "^6.3.3",
     "twilio": "^4.14.1",
     "whatsapp-web.js": "^1.21.0"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2"
   }
 }
