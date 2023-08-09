@@ -7,6 +7,7 @@ import { header, suredes, right, inputdiv, checkboxWrapper, checkboxInput, check
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 //import mockData from '../../data/mock_data.json'
+import backgroundImage from '../../asserts/SignInPageBackground.png';
 
 const Signin = () => {
 // HOVER BUTTON FUNCTIONALITY
@@ -70,7 +71,13 @@ const handleSubmit = async (e) => {
 };
 
 return (
-  <div>
+  <div
+  style={{
+    backgroundImage: `url(${backgroundImage})`, // Set the background image
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh', 
+  }}>
     <div style={{...split, ...left}}>
       <div style={centered}>
         <div style={descriptionStyle}>
@@ -84,6 +91,7 @@ return (
       <div style={centered}>
         <FirstNavBar />
 
+
         <div style={inputdiv}>
           <form onSubmit={handleSubmit}>
             <div style={inputValidationContainer}>
@@ -93,6 +101,12 @@ return (
                 name="email"
                 placeholder="Enter Your Email Address"
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent default behavior
+                    handleSubmit(e); // Manually trigger form submission
+                  }
+                }}
               />
               {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
             </div>
@@ -104,6 +118,12 @@ return (
                 name="password"
                 placeholder="Enter Your Password"
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent default behavior
+                    handleSubmit(e); // Manually trigger form submission
+                  }
+                }}
               />
               {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
             </div>
