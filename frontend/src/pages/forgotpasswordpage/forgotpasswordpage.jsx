@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [isSent, setIsSent] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here, you can implement the logic to send a password reset email
-    // For simplicity, we'll just set the isSent state to true in this example
-    setIsSent(true);
+
+    try {
+      console.log('Sending password reset request...');
+      // Send a POST request to your backend API to initiate password reset
+      await axios.post('http://localhost:8000/users/forgotpassword', { email });
+
+      console.log('Password reset request successful.');
+      // Set the isSent state to true upon successful request
+      setIsSent(true);
+    } catch (error) {
+      console.error('Error sending password reset request:', error);
+    }
   };
 
   return (
