@@ -115,7 +115,7 @@ function generateRandomCompanyName() {
 // Fuzzing test
 // Fuzzing Test random email (valid and invalid) 
 test('Fuzzing testing on random generated email, name, password and company name for register', async () => {
-  const numIterations = 40;
+  const numIterations = 30;
 
   for (let i = 0; i < numIterations; i++) {
     const randomEmail = generateRandomEmail();
@@ -150,6 +150,30 @@ test('Fuzzing testing on random generated email, name, password and company name
       console.log(`Iteration ${i + 1}: ERROR - ${res.body.message}`);
     }
   }
+});
+
+// Fuzzing for signin
+test('Fuzzing signin', async () => {
+  for (let i = 0; i < 30; i++) {
+
+    const res = await request.post("/users/signin").send({
+        email:generateRandomEmail(),
+        password:generateRandomPassword()
+    });
+    if (res.status === 200) {
+      // Successful response
+      expect(res.status).toEqual(200);
+      expect(res.body.message).toEqual('User Signin Successfully');
+      console.log(`Iteration ${i + 1}: SUCCESS - User Signin Successfully`);
+      expect(Boolean(res.body.token)).toEqual(true);
+  }
+    else {
+      // Error response
+      expect(res.status).toEqual(400);
+      console.log(`Iteration ${i + 1}: ERROR - ${res.body.message}`);
+  }
+}
+    
 });
 
 

@@ -456,7 +456,7 @@ describe("Invoice Controller Tests", () => {
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      error: "Error fetching SOA data.",
+      error: "Error fetching Invoice data.",
     });
     expect(res.status).toHaveBeenCalledTimes(1);
     expect(res.json).toHaveBeenCalledTimes(1);

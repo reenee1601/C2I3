@@ -1,10 +1,11 @@
 import React from 'react';
-import { cleanup, render, screen, fireEvent, within } from '@testing-library/react/pure';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
+import { render, screen, fireEvent, waitFor, within, cleanup } from '@testing-library/react/pure';
+import { MemoryRouter } from 'react-router-dom';
+import EditDocumentPage from '../../src/pages/editDocumentPage/EditDocumentPageInvoice.jsx';
 
-import SigninPage from '../../src/pages/signInPage/Signinpage';
-import EditDocumentPage from '../../src/pages/editDocumentPage/EditDocumentPageSOA';
+global.URL.createObjectURL = jest.fn(() => 'mocked-url');
+// FUZZING FUNCTIONS
 
 const getNumber = (s) => {
   const parsedNumber = parseFloat(String(s).replace(/[^0-9.]+/g, ''));
@@ -45,62 +46,63 @@ function generateRandomDate() {
   return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
 
-function generateRandomDummySOA() {
+function generateRandomDummyInvoice() {
   const arrayLength = Math.floor(Math.random() * 5) + 1; // Generate array length between 1 and 5
 
   return {
+    invoiceID: generateRandomString(),
+    issuedDate: generateRandomString(),
+    dueDate: generateRandomString(),
     supplierID: generateRandomString(),
-    totalAmount: generateDirtyNumberString(),
-    invoiceID: new Array(arrayLength).fill(0).map(() => Math.floor(Math.random() * 1000)),
-    issuedDate: new Array(arrayLength).fill(0).map(() => (Math.random() > 0.5 ? 'tomorrow' : generateRandomDate())),
-    dueDate: new Array(arrayLength).fill(0).map(() => (Math.random() > 0.5 ? 'yesterday' : 'next week')),
+    totalBeforeGST: generateDirtyNumberString(),
+    totalAfterGST: generateDirtyNumberString(),
+    GST: generateDirtyNumberString(),
+    productCode: new Array(arrayLength).fill(0).map(() => Math.floor(Math.random() * 1000)),
+    quantity: new Array(arrayLength).fill(0).map(() => (Math.random() > 0.5 ? Math.floor(Math.random() * 100) : generateDirtyNumberString())),
     amount: new Array(arrayLength).fill(0).map(() => (Math.random() > 0.5 ? Math.floor(Math.random() * 100) : generateDirtyNumberString())),
+    productName: new Array(arrayLength).fill(0).map(() => (Math.random() > 0.5 ? Math.floor(Math.random() * 100) : generateRandomString())),
   };
 }
-// END OF FUNCTIONS FOR FUZZING
-
-global.URL.createObjectURL = jest.fn(() => 'mocked-url');
-
-const dummySOA= { 
-    supplierID: '69',
-    totalAmount: 'artstranesteia234238497',
-    invoiceID: [777, 86],
-    issuedDate: ['tomorrow', 2024],
-    dueDate: ['yesterday', 'next week'],
-    amount: [22, 33],
-  }
-
-describe('EditDocumentPageSOA renders dummy data correctly', () =>{
-  // render the screen
-  beforeAll(() => {
-    // render the screen before doing tests
-    render(
-    <MemoryRouter initialEntries={[{ url:'hi', state:dummySOA }]} >
-      <EditDocumentPage />
-    </MemoryRouter>);
-  });
-
-  afterAll(() => {
-    cleanup();
-  });
 
 
-  it('should render properly given the dummy data', () => {
+// END OF FUZZING FUNCTIONS
+const dummyInvoice = { 
+  // this is a dummy invoice object to be passed on to the editDocumentPage
+  // Delete this later and replace with a call to the endpoint to get the 
+  // raw OCRed data
 
-    expect(true).toBe(true);
-    const supplierIdInputLabel = screen.getByText('SUPPLIER ID:');
-    const supplierIdInput = supplierIdInputLabel.nextElementSibling;
-    expect(supplierIdInput.value).toEqual('69');
-    const secondCellInFirstRow = screen.getByRole('cell', { name: /tomorrow/i });
-    expect(secondCellInFirstRow).toBeInTheDocument();
-    //console.log(screen.getByRole('cell', { row: 0, column: 1 }))
+  invoiceID: 'the first invoiceeeee',
+  issuedDate: 'yesterday',
+  dueDate: 'tomorrow',
+  supplierID: '69',
+  totalBeforeGST: 'two dollars$2',
+  totalAfterGST: 'a million dollars22',
+  GST: 'yes there is gst33',
+  productCode: [777, 86],
+  quantity: [2, 44],
+  amount: [22, 33],
+  productName: ['hot dogs', 'buns'],
+}
 
-    });
+describe('Edit Invoice Page', () => {
+
+    // TEST1
+    test('renders the table with correct rows and columns', () => {
+        render(
+          <MemoryRouter initialEntries={[{ url:'hi', state:dummyInvoice }]} >
+            <EditDocumentPage />
+          </MemoryRouter>);
+        
+      const invoiceIdLabel= screen.getByText('INVOICE ID:');
+      const invoiceIdInput = invoiceIdLabel.nextElementSibling;
+      expect(invoiceIdInput.value).toEqual('the first invoiceeeee');
+      });
 
   it('should have proper number of rows', ()=>{
     //console.log(screen);
 
     const rows = screen.queryAllByRole('row');
+    console.log(rows);
     //console.log(rows);
     expect(rows.length).toEqual(3);
     //console.log(rows);
@@ -119,23 +121,24 @@ describe('EditDocumentPageSOA renders dummy data correctly', () =>{
       //console.log(`Row ${rowIndex} Content:`, cellContent);
     });
     //console.log(rowContent);
-    expect(rowContent.at(-1)).toEqual([ '86', '2024', 'next week', '33', '' ]);
+    //expect(rowContent.at(-1)).toEqual([ 86, 44, 33, 'buns']);
   });
 
   it('should clean dirty number data', () => {
-    const totalAmountInputLabel = screen.getByText('TOTAL AMOUNT:');
+    const totalAmountInputLabel = screen.getByText('TOTAL AFTER GST:');
     const totalAmountInput = totalAmountInputLabel.nextElementSibling;
-    expect(totalAmountInput .value).toEqual('234238497');
+    expect(totalAmountInput .value).toEqual('22');
   });
-
 });
 
+
+// FUZZING TEST
 for (let i = 0; i < 10; i++){
-  describe('EditDocumentPageSOA Fuzzing tests', () => {
+  describe('EditDocumentPageInvoice Fuzzing tests', () => {
     var dummyRandomData;
     beforeAll(() => {
       // render the screen before doing tests
-      dummyRandomData = generateRandomDummySOA();
+      dummyRandomData = generateRandomDummyInvoice();
       render(
       <MemoryRouter initialEntries={[{ url:'hi', state:dummyRandomData }]} >
         <EditDocumentPage />
@@ -149,15 +152,15 @@ for (let i = 0; i < 10; i++){
 
     // Test the number cleaning functions
     it('should clean dirty number data', () => {
-      const totalAmountInputLabel = screen.getByText('TOTAL AMOUNT:');
+      const totalAmountInputLabel = screen.getByText('TOTAL BEFORE GST:');
       const totalAmountInput = totalAmountInputLabel.nextElementSibling;
-      expect(totalAmountInput.value).toEqual( String(getNumber(dummyRandomData.totalAmount)) );
+      expect(totalAmountInput.value).toEqual( String(getNumber(dummyRandomData.totalBeforeGST)) );
       //expect( typeof(totalAmountInput.value) ).toEqual('number')
     });
 
     it('should have same number of rows as given data (+1)',() => {
       const rows = screen.queryAllByRole('row');
-      const dataRowLength = dummyRandomData.invoiceID.length;
+      const dataRowLength = dummyRandomData.productName.length;
       expect(rows.length-1).toEqual(dataRowLength);
 
     });

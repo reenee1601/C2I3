@@ -8,11 +8,11 @@ async function uploadDataToMongoDBProd(data) {
 
     try {
       // TODO: make this connection more modular
-      const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+      /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
       await mongoose.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-      });
+      });*/
       // Save the extracted data to the products collection
       await productModel.create(data);
   
@@ -21,7 +21,7 @@ async function uploadDataToMongoDBProd(data) {
     } catch (error) {
       console.error('Error uploading data to MongoDB:', error);
     } finally {
-      mongoose.disconnect();
+      //mongoose.disconnect();
     }
   }
 
@@ -45,15 +45,15 @@ exports.handleUploadProd = async function handleUploadProd(req, res, next){
 exports.getProdDataFromMongoDB = async function getProdDataFromMongoDB(req, res, next) {
 try {
 
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
     await mongoose.connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    });
+    });*/
     const prodData = await productModel.find(); // Fetch all documents from the 'products' collection
     console.log("IT CONNECTED")
     console.log(prodData);
-    mongoose.disconnect();
+    //mongoose.disconnect();
     res.json(prodData);
 
 } catch (error) {
@@ -64,14 +64,14 @@ try {
 
 async function getProdDataById(id) {
     try {
-      const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+      /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
       await mongoose.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-      });
+      });*/
       const specificProdData = await productModel.findById(id); // Fetch data from the 'products' collection based on the _id
   
-      mongoose.disconnect();
+      //mongoose.disconnect();
       return specificProdData;
   
     } catch (error) {

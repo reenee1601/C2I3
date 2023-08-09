@@ -88,10 +88,6 @@ const RegisterPage = () => {
     if (Object.values(newErrors).some((error) => error)) {
       return;
     }
-
-    setShowSuccessMessage(true);
-    resetForm();
-  };
   
   const resetForm = () => {
     // Reset all the form fields to empty strings
@@ -122,12 +118,17 @@ const RegisterPage = () => {
       .post('http://localhost:8000/users/register', userData)
       .then((response) => {
         console.log('User registered:', response.data);
+        setShowSuccessMessage(true);
         navigate('/homepage',{ state: { email: email } });
       })
       .catch((error) => {
         console.error('Error registering user:', error);
         // Handle the error, e.g., show an error message to the user
       });
+
+      resetForm();
+  };
+      
   
 
 

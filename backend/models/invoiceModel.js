@@ -2,7 +2,7 @@ const mongoose = require('../db');
 
 // Define the schema
 const invoiceSchema = new mongoose.Schema({
-  invoiceID: {type: String},
+  invoiceID: {type: String, required: true},
   issuedDate: {type: String},
   dueDate: {type: String},
   supplierID: {type: String },
