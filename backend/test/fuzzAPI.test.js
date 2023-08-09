@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../app'); 
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+const {url, iteration} = require('../config/configuration');
 
 function generateRandomInvalidRoute() {
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -18,7 +18,7 @@ function generateRandomInvalidRoute() {
   }
   
 const invalidRoutes = [];
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < iteration; i++) {
 const invalidRoute = generateRandomInvalidRoute();
 
 invalidRoutes.push(invalidRoute);
