@@ -52,16 +52,16 @@ import { searchBar, tableContainer, scrollable, customTable,
     const columns = React.useMemo(
       () => [
         {
-          Header: "Invoice ID",
+          Header: "INVOICE ID",
           accessor: "invoiceID",
           Cell: ({ row }) => (
-            <Link to={`/detailedinvoicepage`} style={invoiceIDLink}>
+            <Link to={`/detailedinvoicepage`} style={invoiceIDLink} data-testid="invoice-id-link">
               {row.original.invoiceID}
             </Link>
           ),
         },
         {
-          Header: "Supplier",
+          Header: "SUPPLIER",
           accessor: "supplier",
           Cell: ({ row }) => (
             <Link to={`/detailedinvoicepage`} style={supplierLink}>
@@ -70,7 +70,7 @@ import { searchBar, tableContainer, scrollable, customTable,
           ),
         },
         {
-          Header: "Issued Date",
+          Header: "ISSUED DATE",
           accessor: "issuedDate",
           Cell: ({ row }) => (
             <Link to={`/detailedinvoicepage`} style={issuedDateLink}>
@@ -79,7 +79,7 @@ import { searchBar, tableContainer, scrollable, customTable,
           ),
         },
         {
-          Header: "Due Date",
+          Header: "DUE DATE",
           accessor: "dueDate",
           Cell: ({ row }) => (
             <Link to={`/detailedinvoicepage`} style={dueDateLink}>
@@ -88,7 +88,7 @@ import { searchBar, tableContainer, scrollable, customTable,
           ),
         },
         {
-          Header: "Amount",
+          Header: "AMOUNT",
           accessor: "amount",
           Cell: ({ row }) => (
             <Link to={`/detailedinvoicepage`} style={amountLink}>
@@ -191,9 +191,9 @@ import { searchBar, tableContainer, scrollable, customTable,
       // bottom-part buttons  
       const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   
-    const handleDropdownItemClick = (option) => {
-      console.log("Selected option:", option);
-      setIsDropdownVisible(false);
+      const handleDropdownItemClick = (option) => {
+        console.log("Selected option:", option);
+        setIsDropdownVisible(false);
     };
   
   
@@ -218,45 +218,46 @@ return (
       <SecondNavBar />
     </div>
     <div style={searchFilterStyle}>
-        <div style={searchBar}>
-          <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
-        </div>
+      <div style={searchBar}>
+        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
+      </div>
 
-<button style={filterStyle} onClick={ () => setQueryBar(true)}>
-  <span style={filterTextStyle}>Filter</span>
-  <HiOutlineFilter style={filterIconStyle}/>
-</button>
+      <button style={filterStyle} onClick={ () => setQueryBar(true)}
+        data-testid="filter-button">
+        <span style={filterTextStyle}>Filter</span>
+        <HiOutlineFilter style={filterIconStyle}/>
+      </button>
 
-<div>
-  <InvoiceQueryBar
-    trigger={queryBar}
-    setTrigger={setQueryBar}
+      <div>
+        <InvoiceQueryBar
+          trigger={queryBar}
+          setTrigger={setQueryBar}
 
-    issuedStartDate={issuedStartDate}
-    setIssuedStartDate={setIssuedStartDate}
-    issuedEndDate={issuedEndDate}
-    setIssuedEndDate={setIssuedEndDate}
+          issuedStartDate={issuedStartDate}
+          setIssuedStartDate={setIssuedStartDate}
+          issuedEndDate={issuedEndDate}
+          setIssuedEndDate={setIssuedEndDate}
 
-    dueStartDate={dueStartDate}
-    setDueStartDate={setDueStartDate}
-    dueEndDate={dueEndDate}
-    setDueEndDate={setDueEndDate}
+          dueStartDate={dueStartDate}
+          setDueStartDate={setDueStartDate}
+          dueEndDate={dueEndDate}
+          setDueEndDate={setDueEndDate}
 
-    minAmount={minAmount}
-    setMinAmount={setMinAmount}
-    maxAmount={maxAmount}
-    setMaxAmount={setMaxAmount}
+          minAmount={minAmount}
+          setMinAmount={setMinAmount}
+          maxAmount={maxAmount}
+          setMaxAmount={setMaxAmount}
 
-    invoice={invoice}
-    setInvoice={setInvoice}
+          invoice={invoice}
+          setInvoice={setInvoice}
 
-    supplierName={supplierName}
-    setSupplierName={setSupplierName}
+          supplierName={supplierName}
+          setSupplierName={setSupplierName}
 
-    handleApplyFilters={handleApplyFilters}
-  />
-</div>
-</div>
+          handleApplyFilters={handleApplyFilters}
+        />
+      </div>
+    </div>
 
 
       {/* table */}
@@ -265,9 +266,9 @@ return (
           <table style={customTable} {...getTableProps()}>
             <thead className="sticky-top">
               <tr>
-                <th style={th}>Invoice ID</th>
-                <th style={th}>Supplier</th>
-                <th style={th}>Total</th>
+                <th style={th}>INVOICE ID</th>
+                <th style={th}>SUPPLIER</th>
+                <th style={th}>TOTAL</th>
               </tr>
             </thead>
             <tbody>
@@ -305,7 +306,7 @@ return (
       <div style={bottomPart}>
         {/* "Export" button */}
         <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
-          <FaShareSquare size={30} />
+          <FaShareSquare size={30} data-testid="export-button"/>
         </button>
 
         <div style={dropdownContainer}>
@@ -314,13 +315,11 @@ return (
             <div style={popupButton}>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export Excel")}>Export Excel</p>
               <p style={popupButtonp} onClick={() => handleDropdownItemClick("Export CSV")}>Export CSV</p>
-              <p style={popupButtonp} onClick={() => handleDropdownItemClick("Generate Tax Report")}>Generate Tax Report</p>
             </div>
-            
           )}
         </div>
-        </div>
-        </div>
+      </div>
+    </div>
       )}
     </>
   );

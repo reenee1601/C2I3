@@ -149,15 +149,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
-// import './detailedInvoicePage.css';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
-import { LiaWalletSolid } from 'react-icons/lia';
 import { topPart, InvoiceTitle, supplierName, dueDate, tableContainer, scrollable, 
           customTable, td, th, bottomPart,
-          rightBottom, totalAmount, goBackStyle, goBackButtonStyle} from './DetailedInvoicePageStyle';
+          rightBottom, totalAmount, goBackStyle, goBackButtonStyle, goBackLinkStyle} from './DetailedInvoicePageStyle';
 import { useParams } from 'react-router-dom';
+
+import backgroundImage from '../../asserts/InvoiceBackground.png';
 
 const DetailedInvoicePage = () => {
   const {id}  = useParams();
@@ -204,23 +204,29 @@ const DetailedInvoicePage = () => {
 
 
   return (
-    <div>
+    <div
+    style={{
+      backgroundImage: `url(${backgroundImage})`, // Set the background image
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh', 
+    }}>
       <div className="second-navbar">
           <SecondNavBar />
       </div>
 
       <div style={topPart}>
-        <div style={goBackStyle}>
-          <Link to="/Invoicepage">
+        <Link style={goBackLinkStyle} to="/Invoicepage">
+          <div style={goBackStyle}>
             <IoChevronBack size={50} color={"#3A3A3A"}/>
             <button style={goBackButtonStyle}>GO BACK</button>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         <div className="Invoice-detail">
             <h1 style={{InvoiceTitle}}>{InvoiceTitle}</h1>
-            <p style={{supplierName}}>Bakers Room</p>
-            <p style={{dueDate}}>Due Date: 13/07/23</p>
+            {/* <p style={{supplierName}}>Bakers Room</p>
+            <p style={{dueDate}}>Due Date: 13/07/23</p> */}
         </div>
       </div>
 

@@ -149,15 +149,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
-// import './detailedSoaPage.css';
 import { Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
 import { LiaWalletSolid } from 'react-icons/lia';
 import { topPart, soaTitle, supplierName, dueDate, tableContainer, scrollable, 
           customTable, td, th, bottomPart, paymentButton, paymentButtonImg,
-          rightBottom, totalAmount, goBackStyle, goBackButtonStyle} from './DetailedSoaPageStyle';
+          rightBottom, totalAmount, goBackStyle, goBackButtonStyle, goBackLinkStyle} from './DetailedSoaPageStyle';
 import { useParams } from 'react-router-dom';
+
+import backgroundImage from '../../asserts/SOABackground.png';
 
 const DetailedSoaPage = () => {
   const {id}  = useParams();
@@ -204,23 +205,28 @@ const DetailedSoaPage = () => {
 
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Set the background image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh', 
+      }}
+    >
       <div className="second-navbar">
           <SecondNavBar />
       </div>
 
       <div style={topPart}>
-        <div style={goBackStyle}>
-          <Link to="/soapage">
+        <Link style={goBackLinkStyle} to="/soapage">
+          <div style={goBackStyle}>
             <IoChevronBack size={50} color={"#3A3A3A"}/>
             <button style={goBackButtonStyle}>GO BACK</button>
-          </Link>
-        </div>
+          </div>
+        </Link>
 
         <div className="soa-detail">
             <h1 style={{soaTitle}}>{soaTitle}</h1>
-            <p style={{supplierName}}>Bakers Room</p>
-            <p style={{dueDate}}>Due Date: 13/07/23</p>
         </div>
       </div>
 
@@ -252,8 +258,8 @@ const DetailedSoaPage = () => {
               <thead className="sticky-top">
                 <tr>
                   <th style={th}>SOA ID</th>
-                  <th style={th}>Supplier</th>
-                  <th style={th}>Amount</th>
+                  <th style={th}>SUPPLIER</th>
+                  <th style={th}>AMOUNT</th>
                 </tr>
               </thead>
               <tbody>
@@ -287,8 +293,11 @@ const DetailedSoaPage = () => {
           <p style={{totalAmount}}>{totalAmount}</p>
           {/* if clicked go to compare doc page */}
           <button style={paymentButton}>
-            <Link to="/comparedocumentpage">
-              <LiaWalletSolid size ={30} style={paymentButtonImg}/>
+            <Link to="/uploadpage">
+              <LiaWalletSolid
+                size ={30} 
+                style={paymentButtonImg}
+                data-testid="payment-button"/>
             </Link>
           </button>
         </div>
