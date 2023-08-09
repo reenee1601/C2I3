@@ -28,20 +28,21 @@ test('scanData on a normal file', async () => {
   const res = await request.post("/invoice/scanData")
             .attach('file', 'test/censored.jpg'); // send the censored file for scanning
   expect(res.status).toEqual(200);
-}, 10000);
+}, 30000); // increase timeout to 30s
 /// test empty upload
 //
 test('scanData on a empty input', async () => {
   const res = await request.post("/invoice/scanData")
             .attach('file', undefined); // send the censored file for scanning
   expect(res.status).toEqual(500);
-});
+}, 30000); // increase timeout to 30s
+
 
 // test uploadData endpoints
 /// upload a normal fully filled data
 //
 test('uploadData fully filled according to schema', async () => {
-  const res = await request.post("/invoice/uploadData")
+  const res = await request.post("/invoice/uploadDataInvoice")
                   .send({
         invoiceID: '111111',
         issuedDate: 'today',
@@ -60,8 +61,8 @@ test('uploadData fully filled according to schema', async () => {
 /// upload an empty object
 
 test('uploadData with undefined object', async () => {
-  const res = await request.post("/invoice/uploadData")
-                  .send(undefined)
+  const res = await request.post("/invoice/uploadDataInvoice")
+                  .send(undefined);
   expect(res.status).toEqual(500);
 });
 

@@ -44,8 +44,8 @@ mapping: {
 'DESCRIPTION':'productName' }
 };
 
-async function uploadDataToMongoDB(data) {
-  
+/*async function uploadDataToMongoDB(data) {
+
   try {
     // Save the extracted data to the Invoice collection
     await Invoice.create(data);
@@ -55,7 +55,7 @@ async function uploadDataToMongoDB(data) {
   } catch (error) {
     console.error('Error uploading data to MongoDB:', error);
   }
-}
+}*/
 
 ////// NON EXPORTED FUNCTIONS
 ////// EXPORTED FUNCTIONS
@@ -89,12 +89,13 @@ exports.uploadDataInvoice = async function(req, res) {
 
   try {
     const data = req.body; // Declare 'data' using 'const'
-    if (!data) {
+    if (data==={}) {
       return res.status(400).json({ message: 'No data provided for upload.' });
     }
 
-    await uploadDataToMongoDB(data);
-
+    //await uploadDataToMongoDB(data);
+    //await Invoice.validate(data);
+    await Invoice.create(data);
     console.log('Invoice data uploaded successfully');
     return res.status(200).json({ message: 'Successfully uploaded invoice data.' });
   } catch (err) {
