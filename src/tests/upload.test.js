@@ -5,7 +5,9 @@ import { MemoryRouter } from 'react-router-dom';
 import UploadPage from '../../src/pages/uploadPage/UploadPage'; 
 
 describe('UploadPage', () => {
-  it('renders without errors', () => {
+
+  // TEST1
+  test('renders without errors', () => {
     render(
       <MemoryRouter>
         <UploadPage />
@@ -13,7 +15,8 @@ describe('UploadPage', () => {
     );
   });
 
-  it('displays error message when no image is uploaded', async () => {
+  // TEST2
+  test('displays error message when no image is uploaded', async () => {
     render(
       <MemoryRouter>
         <UploadPage />
@@ -26,21 +29,43 @@ describe('UploadPage', () => {
       () => {
 
         const submitButton = screen.getByTestId('submit-button');
-        fireEvent.click(submitButton);
-
-        expect(screen.getByText('No image uploaded')).toBeInTheDocument();
+        expect(submitButton).toBeInTheDocument();
       },
       {
           timeout,
       }
     );
-  // });
 
-  it('uploads an image and displays its name', async () => {
+    const submitButton = screen.getByTestId('submit-button');
+    fireEvent.click(submitButton);
+
+    // display error message
+    const errorMessage = screen.getByText('No image uploaded')
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  // Mock URL.createObjectURL
+  global.URL.createObjectURL = jest.fn(() => 'mocked-url'); 
+
+  // TEST3
+  test('uploads an image and displays its name', async () => {
     render(
       <MemoryRouter>
         <UploadPage />
       </MemoryRouter>
+    );
+
+    const timeout = 3000;
+
+    await waitFor(
+      () => {
+
+        const inputFile = screen.getByTestId('file-input');
+        expect(inputFile).toBeInTheDocument();
+      },
+      {
+          timeout,
+      }
     );
 
     const inputFile = screen.getByTestId('file-input');
@@ -51,11 +76,24 @@ describe('UploadPage', () => {
     expect(screen.getByText('sample.png')).toBeInTheDocument();
   });
 
-  it('resets image and filename when cancel button is clicked', async () => {
+  // TEST4
+  test('resets image and filename when cancel button is clicked', async () => {
     render(
       <MemoryRouter>
         <UploadPage />
       </MemoryRouter>
+    );
+
+    const timeout = 3000;
+
+    await waitFor(
+      () => {
+        const inputFile = screen.getByTestId('file-input');
+        expect(inputFile).toBeInTheDocument();
+      },
+      {
+          timeout,
+      }
     );
 
     const inputFile = screen.getByTestId('file-input');
@@ -64,9 +102,7 @@ describe('UploadPage', () => {
     const sampleImage = new File(['sample'], 'sample.png', { type: 'image/png' });
     fireEvent.change(inputFile, { target: { files: [sampleImage] } });
 
-    await waitFor(() => {
-      expect(screen.getByText('sample.png')).toBeInTheDocument();
-    });
+    expect(screen.getByText('sample.png')).toBeInTheDocument();
 
     fireEvent.click(cancelButton);
 

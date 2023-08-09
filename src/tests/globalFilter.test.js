@@ -5,7 +5,7 @@ import { GlobalFilter } from '../../src/components/globalFilter/GlobalFilter';
 
 describe('GlobalFilter Component', () => {
   // TEST 1
-  test('should update the filter value when typing in the input', () => {
+  test('updates the filter value when typing in the input', () => {
     const setFilter = jest.fn(); // Mock the setFilter function
     render(<GlobalFilter filter="initial value" setFilter={setFilter} />);
 
@@ -20,7 +20,7 @@ describe('GlobalFilter Component', () => {
   });
 
   // TEST 2
-  test('should display the provided filter value in the input', () => {
+  test('displays the provided filter value in the input', () => {
     const setFilter = jest.fn(); // Mock the setFilter function
     render(<GlobalFilter filter="sample filter" setFilter={setFilter} />);
     
@@ -32,7 +32,7 @@ describe('GlobalFilter Component', () => {
   });
 
   // TEST 3
-  test('should allow typing in the input box', () => {
+  test('allows typing in the input box', () => {
     let filterValue = ''; // State to hold the filter value
     const setFilter = (value) => {
       filterValue = value; // Update the filterValue with the provided value
