@@ -48,7 +48,7 @@ const InvoicePage = () => {
         Cell: (
           { row } // how the content of the cell should be rendered
         ) => (
-          <Link to={`/detailedinvoicepage`} style={invoiceIDLink}>
+          <Link to={`/detailedinvoicepage`} style={invoiceIDLink} data-testid="invoice-id-link">
             {row.original.invoiceID}
           </Link>
         ),
@@ -235,17 +235,18 @@ const InvoicePage = () => {
 
       {/* search bar */}
       <div style={searchFilterStyle}>
-        <div style={searchBar}>
+        <div style={searchBar} data-testid="global-filter">
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
         </div>
 
-        <button style={filterStyle} onClick={ () => setQueryBar(true)}>
+        <button style={filterStyle} onClick={ () => setQueryBar(true)}
+          data-testid="filter-button">
           <span style={filterTextStyle}>Filter</span>
           <HiOutlineFilter style={filterIconStyle}/>
         </button>
 
-        <div>
-          <InvoiceQueryBar
+        <div data-testid="invoice-querybar">
+          <InvoiceQueryBar 
             trigger={queryBar}
             setTrigger={setQueryBar}
 
@@ -277,7 +278,7 @@ const InvoicePage = () => {
       </div>
 
       {/* table */}
-      <div style={tableContainer}>
+      <div style={tableContainer} data-testid="table-container">
         <div style={scrollable}>
 
           <table
@@ -323,7 +324,7 @@ const InvoicePage = () => {
       <div style={bottomPart}>
         {/* "Export" button */}
         <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
-          <FaShareSquare size ={30}/>
+          <FaShareSquare size ={30} data-testid="export-button"/>
         </button>
 
         <div style={dropdownContainer}>

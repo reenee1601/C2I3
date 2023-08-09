@@ -45,7 +45,7 @@ const SoaPage = () => {
         Cell: (
           { row } // how the content of the cell should be rendered
         ) => (
-          <Link to={`/detailedsoapage`} style={soaIDLink}>
+          <Link to={`/detailedsoapage`} style={soaIDLink} data-testid="soa-id-link">
             {row.original.soaID}
           </Link>
         ),
@@ -61,7 +61,7 @@ const SoaPage = () => {
       },
       {
         Header: "DUE DATE",
-        accessor: "dueDate",
+        accessor: "dueDate", 
         Cell: ({ row }) => (
           <Link to={`/detailedsoapage`} style={dueDateLink}>
             {row.original.dueDate}
@@ -209,17 +209,17 @@ const SoaPage = () => {
 
       {/* search bar */}
       <div style={searchFilterStyle}>
-        <div style={searchBar}>
+        <div style={searchBar} data-testid="global-filter">
           <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
         </div>
 
-        <button style={filterStyle} onClick={ () => setSoaQueryBar(true)}>
+        <button style={filterStyle} onClick={ () => setSoaQueryBar(true)} data-testid="filter-button">
           <span style={filterTextStyle}>Filter</span>
           <HiOutlineFilter style={filterIconStyle}/>
         </button>
 
-          <div>
-          <SoaQueryBar
+          <div data-testid="soa-querybar">
+          <SoaQueryBar 
             trigger={soaQueryBar}
             setTrigger={setSoaQueryBar}
 
@@ -246,7 +246,7 @@ const SoaPage = () => {
       </div>
 
       {/* table */}
-      <div style={tableContainer}>
+      <div style={tableContainer} data-testid="table-container">
         <div style={scrollable}>
           <table
             style={customTable}
@@ -287,8 +287,11 @@ const SoaPage = () => {
 
       <div style={bottomPart}>
         {/* "Export" button */}
-        <button data-testid="export-button" style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
-          <FaShareSquare size ={30} style={exportButtonIcon}/>
+        <button style={exportButton} onClick={() => setIsDropdownVisible((prevState) => !prevState)}>
+          <FaShareSquare 
+            size ={30} 
+            style={exportButtonIcon}
+            data-testid="export-button"/>
         </button>
 
         <div style={dropdownContainer}>

@@ -127,8 +127,9 @@ const ProductPage = () => {
     
         return(
     
-            <SwiperSlide key = {index} style = {productstyle}>
-              <div>
+            <SwiperSlide key = {index} style = {productstyle}
+              data-testid="swiper-slide-testid">
+              <div data-testid="product-card">
                 <div style={imgContainerStyle}>
                   <img style={imgproduct} src={product.image} alt="Error" />
                 </div>
@@ -214,7 +215,7 @@ const ProductPage = () => {
               </Swiper> */}
 
               {products.length > 0 ? (
-                <Swiper
+                <Swiper data-testid="swiper-testid"
                   modules={[Scrollbar]}
                   spaceBetween={50}
                   slidesPerView={4}

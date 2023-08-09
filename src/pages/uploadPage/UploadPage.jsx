@@ -150,12 +150,13 @@ const UploadPage = () => {
 
         <div style={uploading}>
 
-          <form onSubmit={handleSubmit} style = {fileupload} 
+          <form onSubmit={handleSubmit} style = {fileupload}
           onClick={() => document.querySelector(".input-field").click()}>
             <input
               type="file"
               accept="png/*"
               className="input-field"
+              data-testid="file-input"
               hidden
               onChange={(e) => {
                 setUpload(e.target.value);

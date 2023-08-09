@@ -56,7 +56,7 @@ const DetailedInvoicePage = () => {
 
       <div style={topPart}>
         
-        <Link style={goBackLinkStyle} to="/uploadpage">
+        <Link style={goBackLinkStyle} to="/invoicepage">
           <div style={goBackStyle}>
             <IoChevronBack size={50} color={"#3A3A3A"}/>
             <button style={goBackButtonStyle}>GO BACK</button>
@@ -64,10 +64,10 @@ const DetailedInvoicePage = () => {
         </Link>
 
         <div className="invoice-detail">
-            <h1 style={invoiceTitle}>Invoice #1111</h1>
-            <p style={supplierName}>Bakers Room</p>
-            <p style={issuedDate}>Issued Date: 13/06/23</p>
-            <p style={dueDate}>Due Date: 13/07/23</p>
+            <h1 style={invoiceTitle} data-testid="invoiceTitle">Invoice #1111</h1>
+            <p style={supplierName} data-testid="supplierName">Bakers Room</p>
+            <p style={issuedDate} data-testid="issuedDate">Issued Date: 13/06/23</p>
+            <p style={dueDate} data-testid="dueDate">Due Date: 13/07/23</p>
         </div>
       </div>
       
@@ -92,6 +92,7 @@ const DetailedInvoicePage = () => {
                 {editableRows[rowIndex] ? (
                       <input style={editInput}
                         type="text"
+                        data-testid="productInput"
                         value={item.product}
                         onChange={(e) => handleInputChange(rowIndex, 'product', e.target.value)}
                         onKeyDown={handleSaveRow(rowIndex)}
@@ -105,6 +106,7 @@ const DetailedInvoicePage = () => {
                 {editableRows[rowIndex] ? (
                       <input style={editInput}
                         type="text"
+                        data-testid="quantityInput"
                         value={item.quantity}
                         onChange={(e) => handleInputChange(rowIndex, 'quantity', e.target.value)}
                         onKeyDown={handleSaveRow(rowIndex)}
@@ -117,6 +119,7 @@ const DetailedInvoicePage = () => {
                 {editableRows[rowIndex] ? (
                       <input style={editInput}
                         type="text"
+                        data-testid="amountInput"
                         value={item.amount}
                         onChange={(e) => handleInputChange(rowIndex, 'amount', e.target.value)}
                         onKeyDown={handleSaveRow(rowIndex)}
@@ -130,6 +133,7 @@ const DetailedInvoicePage = () => {
                 {editableRows[rowIndex] ? (
                       <input style={editInput}
                         type="text"
+                        data-testid="commentInput"
                         value={item.comment}
                         onChange={(e) => handleInputChange(rowIndex, 'comment', e.target.value)}
                         onKeyDown={handleSaveRow(rowIndex)}
