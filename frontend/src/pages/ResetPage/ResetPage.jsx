@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Import Axios library
 import { useLocation } from 'react-router-dom';
+//import { use } from '../../../../backend/routes/userRouter';
 
 const ResetPage = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const location = useLocation();
 
@@ -51,6 +53,15 @@ const ResetPage = () => {
   return (
     <div>
       <h2>Reset Password</h2>
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
       <div>
         <label htmlFor="newPassword">New Password:</label>
         <input

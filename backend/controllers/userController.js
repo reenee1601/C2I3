@@ -268,12 +268,12 @@ function sendResetEmail(email, token) {
 
 exports.resetPassword = async (req, res) => {
   try {
-    const { token, newPassword } = req.body;
+    const { token,email, newPassword } = req.body;
 
     console.log('Received reset request with token:', token);
 
     // Find the user by token
-    const user = await userModel.findOne({ resetToken: token });
+    const user = await userModel.findOne({ email });
 
     if (!user) {
       console.log('Invalid or expired reset token:', token);
@@ -290,7 +290,7 @@ exports.resetPassword = async (req, res) => {
 
     // Update the user's password in the database
     user.password = hashedNewPassword;
-    user.resetToken = undefined; // Remove the reset token
+    
     await user.save();
 
     console.log('Password updated successfully.');
