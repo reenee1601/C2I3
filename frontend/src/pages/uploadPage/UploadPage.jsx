@@ -254,7 +254,7 @@ const sendWhatsAppNotification = async () => {
 
       <div className="alluploads" style = {alluploads}>
 
-        <div style={documentTypeStyle}>
+        <div name="outerDiv" style={documentTypeStyle}>
           <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
 
           <button
@@ -342,7 +342,7 @@ const sendWhatsAppNotification = async () => {
           state: {attr:'hello from upload page'}
           }}
         >*/}
-          <button style={uploadsubmitbutton} onClick={() => handleConditionalButtonClick()}>Submit</button>
+          <button name="submitButton" style={uploadcancelbutton} onClick={() => handleConditionalButtonClick()}>Submit</button>
     {/*<Link to="/invoice/editdocumentpage" state = {ocrData}>
         </Link>*/}
           <button style={uploadcancelbutton} 

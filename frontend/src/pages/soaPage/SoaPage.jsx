@@ -307,7 +307,7 @@ const SoaPage = () => {
     
           <div style={tableContainer} data-testid="table-container">
             <div style={scrollable}>
-              <table style={customTable} {...getTableProps()}>
+              <table name="table" style={customTable} {...getTableProps()}>
                 <thead className="sticky-top">
                   <tr>
                     <th style={th}>SOA ID</th>

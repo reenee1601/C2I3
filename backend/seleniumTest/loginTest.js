@@ -18,6 +18,9 @@ const driver = new Builder()
     // Open the website
     await driver.get('http://www.localhost:3000/registerpage');
 
+    // Maximize the browser window
+    await driver.manage().window().maximize();
+
     console.log("Setting up register account.")
     // Wait for 3 seconds
     await new Promise(resolve => setTimeout(resolve, 3000));

@@ -1,6 +1,7 @@
 import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 import EditPopUp from '../../components/editPopUp/EditPopUpInvoice';
+import ScanSuccessfully from '../../components/scanSuccessfully/ScanSuccessfully';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
@@ -133,6 +134,7 @@ const EditDocumentPage = () => {
 
       // Handle the response as needed
       console.log(response.data.message);
+      setScanSuccessfully(true);
     } catch (error) {
       console.error(error);
     }
@@ -231,7 +233,8 @@ const EditDocumentPage = () => {
   // headerGroups: consist of all headers (Uploaded)
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: updatedColumns, data });
-
+// SUBMIT SUCCESSFULLY BUTTON
+  const [scanSuccessfully, setScanSuccessfully] = useState(false);
   return (
     <div>
         <SecondNavBar />
@@ -245,18 +248,19 @@ const EditDocumentPage = () => {
             </div>
           </Link>
 
-          <div style={editDocumentContainer}>
-
+          <div name="locator" style={editDocumentContainer}>
+ 
             <div style={imageStyle}>
               <img src={image} />
             </div>
 
             <div style={scanContentStyle}>
 
-            <div style={topScanStyle}>
+            <div name='textFields' style={topScanStyle}>
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>INVOICE ID:</p>
                 <input
+                name='invoiceField'
                   type="text"
                   value={invoiceID}
                   onChange={(e) => setInvoiceID(e.target.value)}
@@ -267,6 +271,7 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>ISSUED DATE:</p>
                 <input
+                name='issuedDateField'
                   type="text"
                   value={issuedDate}
                   onChange={(e) => setIssuedDate(e.target.value)}
@@ -277,6 +282,7 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>DUE DATE:</p>
                 <input
+                name='dueDateField'
                   type="text"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
@@ -287,6 +293,7 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>SUPPLIER ID:</p>
                 <input
+                name='supplierField'
                   type="text"
                   value={supplierID}
                   onChange={(e) => setSupplierID(e.target.value)}
@@ -297,7 +304,9 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>TOTAL BEFORE GST:</p>
                 <input
+                
                   type="text"
+                  name='beforeGSTField'
                   value={totalBeforeGST}
                   onChange={(e) => setTotalBeforeGST(e.target.value)}
                   style ={editDocumentDueInputStyle}
@@ -307,6 +316,7 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>GST:</p>
                 <input
+                name='GSTField'
                   type="text"
                   value={GST}
                   onChange={(e) => setGST(e.target.value)}
@@ -317,13 +327,13 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>TOTAL AFTER GST:</p>
                 <input
+                name='afterGSTField'
                   type="text"
                   value={totalAfterGST}
                   onChange={(e) => setTotalAfterGST(e.target.value)}
                   style ={editDocumentDueInputStyle}
                 />
               </div>
-            </div>
 
               <div style={tableContainerStyle}>
                 <table style={tableStyle} {...getTableProps()}>
@@ -362,8 +372,10 @@ const EditDocumentPage = () => {
 
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
-                <button style={submitStyle} onClick={handleSubmit}>Submit</button>
-
+                <button name='submitButton' style={submitStyle} onClick={handleSubmit}>Submit</button>
+                <div>
+                  <ScanSuccessfully trigger={scanSuccessfully} setTrigger={setScanSuccessfully}/>
+                </div>
                 <button
                   onClick={() => {
                     setEditRow(null); // Make sure to reset editRow when adding a new row
@@ -403,7 +415,7 @@ const EditDocumentPage = () => {
         </div>
 
     </div>
-    
+    </div>
   )
 }
 

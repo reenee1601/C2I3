@@ -1,6 +1,7 @@
 import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 import EditPopUp from '../../components/editPopUp/EditPopUp';
+import ScanSuccessfully from '../../components/scanSuccessfully/ScanSuccessfully';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
