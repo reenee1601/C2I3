@@ -4,6 +4,9 @@ import {Scrollbar} from 'swiper/modules';
 import axios from 'axios'
 import 'swiper/css/bundle';
 
+import backgroundImage from '../../asserts/HomePageBackground.png';
+import GridLoader from "react-spinners/GridLoader";
+
 import { SecondNavBar } from '../../components/secondNavBar/SecondNavBar';
 import { useLocation } from 'react-router-dom';
 
@@ -19,32 +22,54 @@ import {
   slideCompany,
   slidecontent,
   slideCompanyInfo,
+  loadingStyle,
 
 } from "./HomePageStyle"
 
 
+
 const HomePage = () => {
+
+  // LOADING FUNCTIONALITY
+  const [loading, setLoading] = useState(false)
+
+  //API CALL HERE: Replace SetTimeOut to fetching of data
+  useEffect(() => {
+    setLoading(true);
+    
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+  }, []);
+
   const location = useLocation();
+
+  // GETTING NAME + COMPANY FROM DATABASE
   const userEmail = location.state?.email || '';
   const [userInfo, setUserInfo] = useState({userEmail: '', userName: '', userCompany: '' });
 
   useEffect(() => {
-    axios
-      .get('http://localhost:8000/users/getUserInfo', {
-        params: {
-          email: userEmail,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setUserInfo(response.data);
-      })
-      .catch((error) => {
-        console.error('Error registering user:', error);
-        // Handle the error, e.g., show an error message to the user
-      });
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo));
+    } else {
+      axios
+        .get('http://localhost:8000/users/getUserInfo', {
+          params: {
+            email: userEmail,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setUserInfo(response.data);
+          localStorage.setItem('userInfo', JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.error('Error fetching user info:', error);
+        });
+    }
   }, [userEmail]);
-  
 
   console.log("user info name",userInfo.name);
 
@@ -71,10 +96,8 @@ const HomePage = () => {
       address: "blk 67 Paya Lebar SingPost"}
   ]
 
-  
-
   //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
-  const companyName = userInfo.length > 0 ? userInfo[0].company : "";
+  // const companyName = userInfo.length > 0 ? userInfo[0].company : "";
 
   const renderSlide = (slide, index) => {
 
@@ -106,7 +129,24 @@ const HomePage = () => {
   }
 
   return (
-    <div>
+    <>
+    {loading ? (
+      <div style={loadingStyle}>
+        <GridLoader 
+        color={"#3A3A3A"} 
+        loading={loading} 
+        size={20}
+        data-testid="spinner" />
+      </div>
+    ) : (
+      <div
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Set the background image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh', 
+      }}
+    >
 
       <div>
         <SecondNavBar />
@@ -115,8 +155,9 @@ const HomePage = () => {
       <div style={firstrow}>        
 
         <div style={profileinfo}>
-          <h1 name='header' style={welcomeStyle} >WELCOME, {userInfo.userName}</h1>
-          <h2 style={nameStyle}> {userInfo.userCompany}</h2>
+          <h1 name='header' style={welcomeStyle} >WELCOME,</h1>
+          <h2 style={nameStyle} >{userInfo.userName.toUpperCase()} !</h2>
+          <h2 style={companyStyle}> {userInfo.userCompany}</h2>
         
         </div>
 
@@ -141,8 +182,9 @@ const HomePage = () => {
           </Swiper>
         </div>
 
-    </div>
-    
+        </div>
+      )}
+    </>
   );
 };
 

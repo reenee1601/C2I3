@@ -2,8 +2,10 @@
 //const johnPackage = require('john-package');
 const utils = require('../utils/utils.js')
 const mongoose = require('mongoose');
-const { unlink } = require('fs') // use this to delete the file after we're done
+const { unlink } = require('fs'); // use this to delete the file after we're done
 const soaModel = require('../models/soaModel.js');
+const { fs } = require('fs');
+
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const ExcelJS = require('exceljs');
@@ -99,6 +101,25 @@ async function uploadDataToMongoDB(data) {
   }
 }
 
+async function getSOADataFromMongoDB() {
+  try {
+    // const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    // await mongoose.connect(url, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // });
+
+    const soaData = await soaModel.find(); // Fetch all documents from the 'soa' collection
+
+    // mongoose.disconnect();
+
+    return soaData;
+  } catch (error) {
+    console.error('Error fetching SOA data from MongoDB:', error);
+    throw error;
+  }
+}
+
 
 // END OF CONST DICTIONARIES
 
@@ -175,6 +196,7 @@ exports.getSOAData = async function(req, res){ // funcitonfor getData GET endpoi
       const soaData = await soaModel.find();
         console.log('retreived invoive data')
         res.status(200).json(soaData);
+        
     } catch (error) {
         console.error('Error fetching SOA data:', error);
         res.status(500).json({ error: 'Error fetching Invoice data.' });
@@ -221,7 +243,7 @@ async function exportDataToExcel() {
 exports.exportDataExcel = async function exportDataExcel(req, res, next){
   try {
     const filePath = await exportDataToExcel();
-
+    console.log(filePath);
     // Set the headers to trigger the file download
     res.setHeader('Content-Disposition', `attachment; filename=${filePath}`);
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -229,6 +251,7 @@ exports.exportDataExcel = async function exportDataExcel(req, res, next){
     // Create a read stream from the saved file and pipe it to the response
     const fileStream = fs.createReadStream(filePath);
     fileStream.pipe(res);
+    console.log(res);
     console.log("Excel exported");
   } catch (error) {
     console.error('Error exporting data to Excel:', error);

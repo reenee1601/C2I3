@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTable, useSortBy, useGlobalFilter } from "react-table";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+
 
 import { SecondNavBar } from "../../components/secondNavBar/SecondNavBar";
 import { GlobalFilter } from "../../components/globalFilter/GlobalFilter";
@@ -13,6 +13,7 @@ import { HiOutlineFilter } from 'react-icons/hi';
 
 import GridLoader from "react-spinners/GridLoader";
 import backgroundImage from '../../asserts/SOABackground.png';
+import axios from 'axios';
 
 import { searchBar, tableContainer, scrollable, customTable, 
           td, th, soaIDLink, supplierLink, dueDateLink, amountLink,

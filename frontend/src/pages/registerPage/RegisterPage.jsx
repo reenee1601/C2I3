@@ -36,6 +36,17 @@ const RegisterPage = () => {
     }
   }, [showSuccessMessage]);
 
+  // HOVER BUTTON FUNCTIONALITY
+  const [buttonHover, setButtonHover] = useState(false);
+
+  const handleMouseEnter = () => {
+    setButtonHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setButtonHover(false);
+  };
+
   // INPUT VALIDATION
   const [fullName, setFullName] = useState('');
   const [companyName, setCompanyName] = useState('');
@@ -51,6 +62,7 @@ const RegisterPage = () => {
     password: false,
     confirmPassword: false,
   });
+
   const nameRegex = /^[A-Za-z\s]+$/;
   const emailRegex = /^[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]+$/;
 
@@ -60,13 +72,31 @@ const RegisterPage = () => {
     } if (fieldName === 'email') {
       return 'You can use letters & numbers';
     } if (fieldName === 'password') {
-      return 'YMinimum 8 characters';
+      return 'Minimum 8 characters';
     }
     return '';
   };
 
 
   const navigate = useNavigate();
+
+  const resetForm = () => {
+    // Reset all the form fields to empty strings
+    setFullName('');
+    setCompanyName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+
+    // Reset the error object to all false
+    setError({
+      fullName: false,
+      companyName: false,
+      email: false,
+      password: false,
+      confirmPassword: false,
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,25 +118,7 @@ const RegisterPage = () => {
     if (Object.values(newErrors).some((error) => error)) {
       return;
     }
-  
-  const resetForm = () => {
-    // Reset all the form fields to empty strings
-    setFullName('');
-    setCompanyName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
 
-    // Reset the error object to all false
-    setError({
-      fullName: false,
-      companyName: false,
-      email: false,
-      password: false,
-      confirmPassword: false,
-    });
-  };
-    // Send the registration data to the server
     const userData = {
       name: fullName,
       company: companyName,
@@ -115,23 +127,20 @@ const RegisterPage = () => {
     };
 
     axios
-      .post('http://localhost:8000/users/register', userData)
-      .then((response) => {
-        console.log('User registered:', response.data);
-        setShowSuccessMessage(true);
-        navigate('/homepage',{ state: { email: email } });
-      })
-      .catch((error) => {
-        console.error('Error registering user:', error);
-        // Handle the error, e.g., show an error message to the user
-      });
+    .post('http://localhost:8000/users/register', userData)
+    .then((response) => {
+      console.log('User registered:', response.data);
+      setShowSuccessMessage(true);
+      resetForm(); // Reset the form after successful registration
+      // navigate('/signinPage', { state: { email: email } });
+    })
+    .catch((error) => {
+      console.error('Error registering user:', error);
+      setError({ ...error, serverError: true });
+    });
 
-      resetForm();
   };
       
-  
-
-
   return (
     <div style={{
       backgroundImage: `url(${backgroundImage})`, // Set the background image
@@ -160,69 +169,89 @@ const RegisterPage = () => {
                   style={input}
                   type="text"
                   name="fullName"
+                  value={fullName}
                   placeholder="Enter Your Full Name"
                   onChange={(e) => setFullName(e.target.value)}
                 />
-                {error.fullName ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
+                {error.fullName ? (
+                    <label style={labelStyle}>
+                      {fullName.trim() === '' ? 'This is a required field.' : 'Only letters allowed.'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('fullName')}</label>}
+                </div>
 
               <div style={inputValidationContainer}>
                 <input
                   style={input}
                   type="text"
                   name="company"
+                  value={companyName}
                   placeholder="Enter Your Company"
                   onChange={(e) => setCompanyName(e.target.value)}
                 />
                 {error.companyName ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
+                </div>
 
               <div style={inputValidationContainer}>
                 <input
                   style={input}
                   type="email"
                   name="email"
+                  value={email}
                   placeholder="Enter Your Email Address"
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                {error.email ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
+                {error.email ? (
+                    <label style={labelStyle}>
+                      {email.trim() === '' ? 'This is a required field.' : 'Only letters and.'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('email')}</label>}
+                </div>
 
               <div style={inputValidationContainer}>
                 <input
                   style={input}
                   type="password"
                   name="password"
+                  value={password}
                   placeholder="Enter Your Password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {error.password ? <label style={labelStyle}>This is a required field.</label> : null}
-              </div>
+                {error.password ? (
+                    <label style={labelStyle}>
+                      {password.trim() === '' ? 'This is a required field.' : 'Minimum 8 characters'}
+                    </label>
+                  ) : <label style={hintStyle}>{getFieldHint('password')}</label>}
+                </div>
 
               <div style={inputValidationContainer}>
                 <input
                   style={input}
                   type="password"
                   name="confirmPassword"
+                  value={confirmPassword}
                   placeholder="Confirm Your Password"
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                  {error.confirmPassword
-                  ? confirmPassword.trim() !== ''
-                    ? <label style={labelStyle}>Passwords mismatch.</label>
-                    : <label style={labelStyle}>This is a required field.</label>
-                  : null}
-              </div>                <button
+                    ? confirmPassword.trim() !== ''
+                      ? <label style={labelStyle}>Passwords mismatch.</label>
+                      : <label style={labelStyle}>This is a required field.</label>
+                    : null}
+                </div>                
+                
+                <button
                   style={{
                     ...button,
-                    //backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
-                    //color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
+                    backgroundColor: buttonHover ? '#A1A1A1' : '#FFF',
+                    color: buttonHover ? '#FFF' : 'rgba(71, 71, 71, 0.80)',
                   }}
                   type="submit"
-                onClick={handleSubmit}
-              >
-                Create Account
-              </button>
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  Create Account
+                </button>
               {showSuccessMessage && (
                   <div style={successfulRegisterStyle}>
                     <p>Account registered!</p>
