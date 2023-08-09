@@ -144,7 +144,7 @@ const UploadPage = () => {
     console.log('set ocrData');
     setOcrData(response.data);
     console.log(ocrData);
-    navigate('/invoice/editdocumentpage', {state: response.data, url:image})
+    navigate('/invoice/editdocumentpage', {state: response.data, url:formData.get('file')})
 
 
   };

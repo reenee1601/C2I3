@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import EditDocumentPageInvoice from '../../src/pages/editDocumentPage/EditDocumentPageInvoice.jsx';
 
+global.URL.createObjectURL = jest.fn(() => 'mocked-url');
 
 const dummyInvoice = { 
   // this is a dummy invoice object to be passed on to the editDocumentPage
@@ -29,27 +30,12 @@ describe('Statement of Account Page', () => {
     test('renders the table with correct rows and columns', () => {
         render(
           <MemoryRouter initialEntries={[{ url:'hi', state:dummyInvoice }]} >
-            <EditDocumentPage />
+            <EditDocumentPageInvoice />
           </MemoryRouter>);
-        );
-      const invoiceID = screen.getByText('INVOICE ID');
-      expect(invoiceID).toEqual('the first invoiceeeee');
-     /* 
-        // Check if the table is rendered
-        const table = screen.getByRole('table');
-        expect(table).toBeInTheDocument();
-      
-        // Check if the table headers are rendered
-        const soaIdHeader = screen.getByText('SOA ID');
-        const supplierHeader = screen.getByText('Supplier');
-        const dueDateHeader = screen.getByText('Due Date');
-        const amountHeader = screen.getByText('Amount');
-      
-        expect(soaIdHeader).toBeInTheDocument();
-        expect(supplierHeader).toBeInTheDocument();
-        expect(dueDateHeader).toBeInTheDocument();
-        expect(amountHeader).toBeInTheDocument();
-      */
+        
+      const invoiceIdLabel= screen.getByText('INVOICE ID:');
+      const invoiceIdInput = invoiceIdLabel.nextElementSibling;
+      expect(invoiceIdInput.value).toEqual('the first invoiceeeee');
       });
 
     // TEST 2

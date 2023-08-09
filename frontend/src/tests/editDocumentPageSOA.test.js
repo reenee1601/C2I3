@@ -56,6 +56,8 @@ function generateRandomDummySOA() {
 }
 // END OF FUNCTIONS FOR FUZZING
 
+global.URL.createObjectURL = jest.fn(() => 'mocked-url');
+
 const dummySOA= { 
     supplierID: '69',
     totalAmount: 'artstranesteia234238497',
@@ -93,7 +95,7 @@ describe('EditDocumentPageSOA renders dummy data correctly', () =>{
     });
 
   it('should have proper number of rows', ()=>{
-    console.log(screen);
+    //console.log(screen);
 
     const rows = screen.queryAllByRole('row');
     //console.log(rows);
@@ -111,9 +113,9 @@ describe('EditDocumentPageSOA renders dummy data correctly', () =>{
       rowContent.push(cellContent);
 
       // Perform your assertions or checks on cellContent
-      console.log(`Row ${rowIndex} Content:`, cellContent);
+      //console.log(`Row ${rowIndex} Content:`, cellContent);
     });
-    console.log(rowContent);
+    //console.log(rowContent);
     expect(rowContent.at(-1)).toEqual([ '86', '2024', 'next week', '33', '' ]);
   });
 

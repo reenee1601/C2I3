@@ -43,7 +43,7 @@ import {
 const EditDocumentPage = () => {
   const location = useLocation(); // get the OCR data from the upload page
   const stateData = location.state;
-  const [image, setImage] = useState(location.url);
+  const [image, setImage] = useState(URL.createObjectURL(location.url));
 
   // Function to clean numerical fields
   const getNumber = (s) => { return parseFloat( String(s).replace( /[^0-9.]+/g , '') ); }
@@ -73,7 +73,7 @@ const EditDocumentPage = () => {
       const response = await axios.post('http://localhost:8000/soa/uploadDataSOA', dataToSend);
 
       // Handle the response as needed
-      console.log(response.data.message);
+      //console.log(response.data.message);
     } catch (error) {
       console.error(error);
     }
@@ -174,7 +174,7 @@ const EditDocumentPage = () => {
   }
 
   useEffect(() => {
-    console.log("editPopUpOpen updated:", editPopUpOpen);
+    //console.log("editPopUpOpen updated:", editPopUpOpen);
   }, [editPopUpOpen]);
 
   const actionsColumn = {
