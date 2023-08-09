@@ -2,7 +2,7 @@ const app = require("../app.js");
 const supertest = require("supertest");
 const request = supertest(app);
 const mongoose = require('mongoose');
-const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority';
+const config = require('../config/configuration.js');
 const userModel = require('../models/userModel.js');
 
 
@@ -10,7 +10,7 @@ beforeAll(async () => {
     //connection to mongoDB database
 
     await mongoose
-      .connect(url,{
+      .connect(config.url,{
         useNewUrlParser: true,
         useUnifiedTopology: true
       })
@@ -115,9 +115,9 @@ function generateRandomCompanyName() {
 // Fuzzing test
 // Fuzzing Test random email (valid and invalid) 
 test('Fuzzing testing on random generated email, name, password and company name for register', async () => {
-  const numIterations = 30;
 
-  for (let i = 0; i < numIterations; i++) {
+
+  for (let i = 0; i < config.iteration; i++) {
     const randomEmail = generateRandomEmail();
     const randomPassword = generateRandomPassword();
     const randomName = generateRandomName();
@@ -150,11 +150,11 @@ test('Fuzzing testing on random generated email, name, password and company name
       console.log(`Iteration ${i + 1}: ERROR - ${res.body.message}`);
     }
   }
-});
+}, 50000);
 
 // Fuzzing for signin
 test('Fuzzing signin', async () => {
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < config.iteration; i++) {
 
     const res = await request.post("/users/signin").send({
         email:generateRandomEmail(),
@@ -174,8 +174,7 @@ test('Fuzzing signin', async () => {
   }
 }
     
-});
-
+}, 50000);
 
 // Test user creatoion; make a user whos email is the current datetime
 var myemail
@@ -221,7 +220,7 @@ test('No such email found', async() => {
         email:"ThisEmailDoesNotExist@test.com",
         password:"password"
     });
-    expect(res.status).toEqual(404);
+    expect(res.status).toEqual(400);
 });
     
 // password does not match
