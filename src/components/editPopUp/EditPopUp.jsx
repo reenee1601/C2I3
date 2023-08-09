@@ -101,7 +101,7 @@ import {
               <div style={addRowInputStyle}>
 
                 <div style={addStyle}>
-                  <label style={addLabelStyle} htmlFor='product'>PRODUCT:  </label>
+                  <label style={addLabelStyle} htmlFor='product'>PRODUCT:</label>
                   <input style= {addInputStyle} name="product" value={formState.product} onChange={handleChange}/>
                 </div>
 

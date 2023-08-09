@@ -107,8 +107,8 @@ const SoaQueryBar = ({
 
   return trigger ? (
     <div style={queryPopUp}>
-      <div style={queryPopUpInner}>
-        <button style={goBackStyle} onClick={handleClose}>
+      <div data-testid="go-back-button" style={queryPopUpInner}>
+        <button style={goBackStyle} onClick={handleClose}> 
           <TiArrowBackOutline style={goBackIconStyle} />
         </button>
 
