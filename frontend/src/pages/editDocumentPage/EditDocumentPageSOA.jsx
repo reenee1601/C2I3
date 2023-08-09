@@ -1,6 +1,7 @@
 import React from 'react'
 import SecondNavBar from '../../components/secondNavBar/SecondNavBar';
 import EditPopUp from '../../components/editPopUp/EditPopUpSOA';
+import ScanSuccessfully from '../../components/scanSuccessfully/ScanSuccessfully';
 
 import { useState, useEffect } from 'react'
 import { useTable } from 'react-table'
@@ -62,6 +63,7 @@ const EditDocumentPage = () => {
   const [issuedDate, setIssuedDate] = useState(stateData.issuedDate);
   const [dueDate, setDueDate] = useState(stateData.dueDate);
   const [amount, setAmount] = useState(stateData.amount);
+
   const handleSubmit = async () => {
     try {
   const dataToSend = {
@@ -77,6 +79,7 @@ const EditDocumentPage = () => {
   
       // Make a POST request to the backend API's uploadData endpoint
       const response = await axios.post('http://localhost:8000/soa/uploadDataSOA', dataToSend);
+      setScanSuccessfully(true);
 
       // Handle the response as needed
       //console.log(response.data.message);
@@ -193,10 +196,10 @@ const EditDocumentPage = () => {
     accessor: "actions",  // This can be any unique key not present in your data
     Cell: ({ row }) => (
       <div>
-        <button style={editActionColumnButtonStyle} onClick = {() => handleEditRow(row.index)}> 
+        <button name="edit" style={editActionColumnButtonStyle} onClick = {() => handleEditRow(row.index)}> 
           <LuEdit3 size={20}/>
         </button>
-        <button style={deleteActionColumnButtonStyle} onClick = {() => handleDeleteRow(row.index)}>
+        <button name="delete" style={deleteActionColumnButtonStyle} onClick = {() => handleDeleteRow(row.index)}>
           <MdDelete size={20}/>
         </button>
       </div>
@@ -211,6 +214,9 @@ const EditDocumentPage = () => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns: updatedColumns, data });
 
+  // SUBMIT SUCCESSFULLY BUTTON
+  const [scanSuccessfully, setScanSuccessfully] = useState(false);
+
   return (
     <div>
         <SecondNavBar />
@@ -224,7 +230,7 @@ const EditDocumentPage = () => {
             </div>
           </Link>
 
-          <div style={editDocumentContainer}>
+          <div name="locator" style={editDocumentContainer}>
 
             <div style={imageStyle}>
               <img src={image} />
@@ -232,10 +238,11 @@ const EditDocumentPage = () => {
 
             <div style={scanContentStyle}>
 
-            <div style={topScanStyle}>
+            <div name='textFields' style={topScanStyle}>
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>SUPPLIER ID:</p>
                 <input
+                  name='supplierField'
                   type="text"
                   value={supplierID}
                   onChange={(e) => setSupplierID(e.target.value)}
@@ -246,6 +253,7 @@ const EditDocumentPage = () => {
               <div style={indiInputStyle}>
                 <p style ={editDocumentIndiPStyle}>TOTAL AMOUNT:</p>
                 <input
+                  name='amountField'
                   type="text"
                   value={totalAmount}
                   onChange={(e) => setTotalAmount(e.target.value)}
@@ -257,9 +265,8 @@ const EditDocumentPage = () => {
 
 
 
-              <div style={tableContainerStyle}>
+              <div name='tableDiv' style={tableContainerStyle}>
                 <table style={tableStyle} {...getTableProps()}>
-
                   <thead style = {tableHeadStyle}>
                     {headerGroups.map((headerGroup) => (
                       <tr {...headerGroup.getHeaderGroupProps()}>
@@ -295,6 +302,10 @@ const EditDocumentPage = () => {
               <div style={editDocumentButtonStyle}>
                 <button style ={cancelStyle}>Cancel</button>
                 <button style={submitStyle} onClick={handleSubmit}>Submit</button>
+
+                <div>
+                  <ScanSuccessfully trigger={scanSuccessfully} setTrigger={setScanSuccessfully}/>
+                </div>
 
                 <button
                   onClick={() => {

@@ -134,7 +134,7 @@ import {
 
               <div style={addSubmitContainerStyle}>
                 {errors && <div style={errorStyle}>{`Please include: ${errors}`}</div>}
-                <button onClick={handleSubmit} style={addSubmitStyle}>Submit</button>
+                <button name="editAddButton" onClick={handleSubmit} style={addSubmitStyle}>Submit</button>
               </div>
 
             </form>

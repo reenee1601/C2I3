@@ -261,9 +261,9 @@ return (
 
 
       {/* table */}
-      <div style={tableContainer}>
-        <div style={scrollable}>
-          <table style={customTable} {...getTableProps()}>
+      <div name='table' style={tableContainer}>
+        <div name='intermediate' style={scrollable}>
+          <table name='innerTable' style={customTable} {...getTableProps()}>
             <thead className="sticky-top">
               <tr>
                 <th style={th}>INVOICE ID</th>
@@ -271,11 +271,11 @@ return (
                 <th style={th}>TOTAL</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody name='body'>
               {InvoiceData.length > 0 ? (
                 InvoiceData.map((item) => (
                   <tr key={item._id}>
-                    <td style={td}>
+                    <td name="final" style={td}>
                       <Link to={`/detailedInvoicepage/${item._id}`} className="InvoiceID-link">
                         {item.invoiceID}
                       </Link>
