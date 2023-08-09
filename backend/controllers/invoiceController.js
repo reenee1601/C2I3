@@ -8,7 +8,7 @@ const ExcelJS = require('exceljs');
 var path = require('path');
 
 // Establish the MongoDB connection
-mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
+/*mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -21,6 +21,9 @@ connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 connection.once('open', () => {
   console.log('Connected to the database');
 });
+
+*/
+
 const formsDict = { // list of key-value pairs you want to extract
   headers: ['invoiceID', 'issuedDate', 'dueDate', 'supplierID','GST','totalBeforeGST','totalAfterGST' ],
 mapping: {'INVOICE NO.':'invoiceID','Tax Invoice':'invoiceID',

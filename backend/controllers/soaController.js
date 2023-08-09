@@ -9,9 +9,9 @@ const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const ExcelJS = require('exceljs');
 var path = require('path');
 
-const db = require('../db.js')
+//const db = require('../db.js')
 
-mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
+/*mongoose.connect('mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -24,6 +24,8 @@ connection.on('error', console.error.bind(console, 'MongoDB connection error:'))
 connection.once('open', () => {
   console.log('Connected to the database');
 });
+*/
+
 // CONST DICTIONARIES
 /*
 const tablesDict = {
@@ -301,14 +303,14 @@ exports.exportDataCSV = async function exportDataCSV(req, res, next){
 async function getSOADataById(id) {
   try {
     
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; 
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; 
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
+    });*/
     const specificSoaData = await soaModel.findById(id); // Fetch data from the 'soa' collection based on the _id
 
-    mongoose.disconnect();
+    //mongoose.disconnect();
 
     return specificSoaData;
   } catch (error) {

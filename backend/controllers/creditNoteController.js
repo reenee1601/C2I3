@@ -1,6 +1,6 @@
 // Assuming you have already installed and required the "john-package" and "mongoose" in your application
 const johnPackage = require('john-package');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const creditNoteModel = require('../models/creditNoteModel.js');
 const db = require('../db'); // Import the db object
 
@@ -35,11 +35,11 @@ async function uploadDataToMongoDBCD(data) {
 
   try {
     // TODO: make this connection more modular
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
+    });*/
     // Save the extracted data to the CD collection
     await creditNoteModel.create(data);
 
@@ -48,20 +48,20 @@ async function uploadDataToMongoDBCD(data) {
   } catch (error) {
     console.error('Error uploading data to MongoDB:', error);
   } finally {
-    mongoose.disconnect();
+    //mongoose.disconnect();
   }
 }
 async function getCDDataFromMongoDB() {
   try {
 
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
+    });*/
     const CDData = await creditNoteModel.find(); // Fetch all documents from the 'CD' collection
 
-    mongoose.disconnect();
+    //mongoose.disconnect();
 
     return CDData;
   } catch (error) {
@@ -146,14 +146,14 @@ const formDict = {
 
 async function getCDDataById(id) {
   try {
-    const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; // Replace with your MongoDB server information
     await mongoose.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
+    });*/
     const specificCDData = await creditNoteModel.findById(id); // Fetch data from the 'CD' collection based on the _id
 
-    mongoose.disconnect();
+    //mongoose.disconnect();
     return specificCDData;
 
   } catch (error) {
