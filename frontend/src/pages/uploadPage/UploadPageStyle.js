@@ -110,10 +110,73 @@ export const documentTypeTextStyle = {
   whiteSpace: "pre-line",
 
   border: "none",
+  borderBottom: "3px solid black",
+  background: "transparent",
+  padding: "10px 0px 10px",
+}
+
+export const unselectedButtonStyle = {
+  color: "#3A3A3A",
+  fontFamily: "Inter",
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: "700",
+  lineHeight: "normal",
+  whiteSpace: "pre-line",
+
+  border: "none",
   background: "transparent",
 
   padding: "10px 0px 10px",
 }
+
+export const unselectedSOAButtonStyle = {
+  color: "#3A3A3A",
+  fontFamily: "Inter",
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: "700",
+  lineHeight: "normal",
+  whiteSpace: "pre-line",
+  textAlign:"left",
+
+  border: "none",
+  background: "transparent",
+
+  padding: "10px 0px 10px",
+}
+
+export const selectedSOAButtonStyle = {
+  color: "#5995CD",
+  fontFamily: "Inter",
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: "700",
+  lineHeight: "normal",
+  whiteSpace: "pre-line",
+  textAlign:"left",
+
+  border: "none",
+  background: "transparent",
+
+  padding: "10px 0px 10px",
+}
+
+export const selectedButtonStyle = {
+  color: "#5995CD",
+  fontFamily: "Inter",
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: "700",
+  lineHeight: "normal",
+  whiteSpace: "pre-line",
+
+  border: "none",
+  background: "transparent",
+
+  padding: "10px 0px 10px",
+}
+
 
 export const documentTypeSOATextStyle = {
   color: "#3A3A3A",
@@ -127,7 +190,6 @@ export const documentTypeSOATextStyle = {
 
   border: "none",
   background: "transparent",
-
   padding: "10px 0px 10px",
 }
 

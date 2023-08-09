@@ -11,6 +11,8 @@ import GridLoader from "react-spinners/GridLoader";
 import { MdUploadFile , MdDelete } from "react-icons/md";
 import { AiFillFileImage } from "react-icons/ai";
 
+import backgroundImage from '../../asserts/UploadBackground.png';
+
 import {
   fileupload,
   fileinfo,
@@ -25,11 +27,15 @@ import {
   documentTypeH1TextStyle,
   labelStyle,
   loadingStyle,
+  selectedButtonStyle,
+  unselectedButtonStyle,
+  unselectedSOAButtonStyle,
+  selectedSOAButtonStyle,
+
 } from "./UploadPageStyle"
 
 const UploadPage = () => {
 
-  //VALIDATION
   // LOADING FUNCTIONALITY
   const [loading, setLoading] = useState(false)
 
@@ -44,32 +50,28 @@ const UploadPage = () => {
   }, []);
 
   //START VALIDATION
-  const [upload, setUpload] = useState('');
-
   const [error, setError] = useState({
     upload: false
   });
 
-  const handleSubmit = (e) => {
-
-    e.preventDefault();
-    if (!fileName || fileName === "No File Selected") {
-      setError({ upload: true });
-    } else {
-      setError({ upload: false });
-      if (image) {
-        window.location.href = "/editdocumentpage";
-      }
-    }
-  };
-
-
   // END OF VALIDATION
 
   const [image, setImage] = useState(null)
-  const [isScanning, setIsScanning] = useState(false)
   const [fileName, setFileName] = useState ("No File Selected")
   const [selectedType, setSelectedType] = useState("INVOICE");
+
+
+  const navigate = useNavigate(); // used to redirect after waiting on promise
+
+  const handleDocumentTypeClick = (type) => {
+    setSelectedType(type);
+  };
+
+   // // // // // // // /
+  // START OF BACKEND //
+ /// // // // // // ///
+
+  const [isScanning, setIsScanning] = useState(false)
   const [formData, setFormData] = useState(new FormData());
 
   const dummyInvoice = { 
@@ -89,40 +91,8 @@ const UploadPage = () => {
     amount: [22, 33],
     productName: ['hot dogs', 'buns'],
   }
+  
   const [ocrData, setOcrData] = useState({});
-
-  const navigate = useNavigate(); // used to redirect after waiting on promise
-
-  const handleDocumentTypeClick = (type) => {
-    setSelectedType(type);
-  };
-
-  const selectedButtonStyle = {
-    ...documentTypeTextStyle,
-    color: '#5995CD',
-  };
-
-  const unselectedButtonStyle = {
-    ...documentTypeTextStyle,
-    color: '#3A3A3A',
-  };
-
-  //specifically for SOA styling
-
-  const selectedSOAButtonStyle = {
-    ...documentTypeSOATextStyle,
-    color: '#5995CD',
-  };
-
-  const unselectedSOAButtonStyle = {
-    ...documentTypeSOATextStyle,
-    color: '#3A3A3A',
-  };
-
-
-   // // // // // // // /
-  // START OF BACKEND //
- /// // // // // // ///
 
 
   const handleFileUploadInvoice = async () => {
@@ -148,7 +118,6 @@ const UploadPage = () => {
 
 
   };
-
 
   const handleFileUploadSOA = async () => {
     
@@ -270,24 +239,33 @@ const sendWhatsAppNotification = async () => {
         size={20} />
       </div>
     ) : (
-      <div>
+      <div
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Set the background image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh', 
+      }}>
+
       <div>
         <SecondNavBar />
-          <ToastContainer />
+        <ToastContainer />
       </div>
 
       <div className="alluploads" style = {alluploads}>
 
         <div style={documentTypeStyle}>
           <h1 style={documentTypeTextStyle}>DOCUMENT TYPE:</h1>
+
           <button
           data-testid="btn-invoice"
           name="invoice"
-            style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
-            onClick={() => handleDocumentTypeClick("INVOICE")}
+          style={selectedType === "INVOICE" ? selectedButtonStyle : unselectedButtonStyle}
+          onClick={() => handleDocumentTypeClick("INVOICE")}
           >
             INVOICE
           </button>
+
           <button
           data-testid="btn-invoice"
           name="soa"
@@ -296,6 +274,7 @@ const sendWhatsAppNotification = async () => {
           >
             STATEMENT OF{'\n'}ACCOUNT
           </button>
+
           <button
           data-testid="btn-invoice"
           name="payment"
@@ -303,6 +282,14 @@ const sendWhatsAppNotification = async () => {
             onClick={() => handleDocumentTypeClick("PAYMENT")}
           >
             PAYMENT
+          </button>
+
+          <button
+            data-testid="btn-invoice"
+            style={selectedType === "CREDIT NOTE" ? selectedButtonStyle : unselectedButtonStyle}
+            onClick={() => handleDocumentTypeClick("CREDIT NOTE")}
+          >
+            CREDIT NOTE
           </button>
           
         </div>
@@ -321,11 +308,14 @@ const sendWhatsAppNotification = async () => {
               setFormData(newFormData);
             }}}></input>
 
-            {image ?
-            <img src={image} alt={"Error"} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}/>
-            :
-            <MdUploadFile color="#535353" size={130}/>
-            }
+             {image ? (
+                <img src={image} alt={"Error"} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <MdUploadFile color="#535353" size={130} />
+                  {error.upload && !image && <label style={labelStyle}>No image uploaded</label>}
+                </div>
+              )}
           </form>
 
           <section style={fileinfo}>
@@ -352,7 +342,7 @@ const sendWhatsAppNotification = async () => {
           state: {attr:'hello from upload page'}
           }}
         >*/}
-          <button style={uploadcancelbutton} onClick={() => handleConditionalButtonClick()}>Submit</button>;
+          <button style={uploadsubmitbutton} onClick={() => handleConditionalButtonClick()}>Submit</button>
     {/*<Link to="/invoice/editdocumentpage" state = {ocrData}>
         </Link>*/}
           <button style={uploadcancelbutton} 
