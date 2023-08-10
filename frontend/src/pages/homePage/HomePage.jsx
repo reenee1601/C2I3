@@ -48,7 +48,10 @@ const HomePage = () => {
   // GETTING NAME + COMPANY FROM DATABASE
   const userEmail = location.state?.email || '';
   const [userInfo, setUserInfo] = useState({userEmail: '', userName: '', userCompany: '' });
-  localStorage.removeItem('userInfo');
+
+  // const [slideInfo, setSlideInfo] = useState([]);
+  // const [invoiceID, setInvoiceID] = useState('');
+  // const [supplierID, setSupplierID] = useState('');
   
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
@@ -77,6 +80,26 @@ const HomePage = () => {
     }
   }, [userEmail]);
 
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:8000/homepage/getSlideInfo', {
+  //       params:{
+  //       invoiceID: invoiceID,
+  //       supplierID: supplierID,}
+  //     })
+  //     .then((response) => {
+  //       console.log('Slide info fetched:', response.data);
+  //       setSlideInfo(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching slide info:', error);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // },  [invoiceID, supplierID]);
+
+
   console.log("user info name",userInfo.name);
 
   // Requires fetching from Database
@@ -101,9 +124,6 @@ const HomePage = () => {
       contact: "+65 8456 3401",
       address: "blk 67 Paya Lebar SingPost"}
   ]
-
-  //const userName = userInfo.length > 0 ? userInfo[0].name.toUpperCase() : "";
-  // const companyName = userInfo.length > 0 ? userInfo[0].company : "";
 
   const renderSlide = (slide, index) => {
 

@@ -36,6 +36,7 @@ const [error, setError] = useState({
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  localStorage.removeItem('userInfo');
 
   const newErrors = {
     email: email.trim() === '',
