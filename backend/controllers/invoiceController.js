@@ -247,4 +247,36 @@ exports.exportInvoiceDataCSV = async function exportInvoiceDataCSV(req, res, nex
   }
 }
 
+async function getInvoiceDataById(id) {
+  try {
+    
+    /*const url = 'mongodb+srv://reenee1601:QNbeHPQLj8pwP7UC@cluster0.i4ee9cb.mongodb.net/project_data?retryWrites=true&w=majority'; 
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });*/
+    const specificInvoiceData = await Invoice.findById(id); // Fetch data from the 'soa' collection based on the _id
 
+    //mongoose.disconnect();
+
+    return specificInvoiceData;
+  } catch (error) {
+    console.error('Error fetching specific Invoice data from MongoDB:', error);
+    throw error;
+  }
+}
+
+exports.getInvoiceDataUsingId = async function getSOADataUsingId(req, res, next){
+  try {
+    const { id } = req.params; // Extract the _id from the URL parameter
+    const specificInvoiceData = await getInvoiceDataById(id);
+    res.status(200).json({
+      message: 'Fetch specific invoice data by id successful!',
+      data: specificInvoiceData
+    });
+    
+  } catch (error) {
+    console.error('Error fetching specific Invoice data:', error);
+    res.status(500).json({ error: 'Error fetching specific Invoice data.' });
+  }
+}
