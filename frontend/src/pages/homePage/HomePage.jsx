@@ -55,6 +55,7 @@ const HomePage = () => {
     if (storedUserInfo) {
       setUserInfo(JSON.parse(storedUserInfo));
     } else {
+      setLoading(true);
       axios
         .get('http://localhost:8000/users/getUserInfo', {
           params: {
@@ -68,6 +69,10 @@ const HomePage = () => {
         })
         .catch((error) => {
           console.error('Error fetching user info:', error);
+        })
+        .finally(() => {
+          console.log('Fetching user info completed.');
+          setLoading(false);
         });
     }
   }, [userEmail]);
