@@ -128,17 +128,17 @@ exports.uploadDataSOA = async function(req, res) {
 
   try {
     const data = req.body; // Declare 'data' using 'const'
-    if (!data) {
+    if (data==null) {
       return res.status(400).json({ message: 'No data provided for upload.' });
     }
 
     await uploadDataToMongoDB(data);
 
-    console.log('Invoice data uploaded successfully');
-    return res.status(200).json({ message: 'Successfully uploaded invoice data.' });
+    console.log('Soa data uploaded successfully');
+    return res.status(200).json({ message: 'Successfully uploaded soa data.' });
   } catch (err) {
-    console.error('Error uploading Invoice to MongoDB', err);
-    return res.status(500).json({ message: 'Error uploading invoice data.' });
+    console.error('Error uploading soa to MongoDB', err);
+    return res.status(500).json({ message: 'Error uploading soa data.' });
   }
 };
 exports.scanData = async function(req, res) { // function for textractData POST endpoint
@@ -171,23 +171,23 @@ exports.scanData = async function(req, res) { // function for textractData POST 
 
 // Function to upload data to MongoDB
 
-exports.uploadDataSOA = async function(req, res) { // function for uploadData POST endpoint
-    try{data = req.body;
-      //db;
-      if (!data) {
-        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
-      }
-    //console.log(data)
-    await soaModel.create(data);
+// exports.uploadDataSOA = async function(req, res) { // function for uploadData POST endpoint
+//     try{data = req.body;
+//       //db;
+//       if (!data) {
+//         return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+//       }
+//     //console.log(data)
+//     await soaModel.create(data);
 
 
-    console.log()
-    return res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
-    catch (err) {
-        console.error('Error uploading Invoice to MongoDB', err);
-        return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
-    }
-}
+//     console.log()
+//     return res.status(200).json({message:'Successfully uploaded invoice onto MongoDB'})}
+//     catch (err) {
+//         console.error('Error uploading Invoice to MongoDB', err);
+//         return res.status(500).json({message:'Error uploading Invoice to MongoDB'})
+//     }
+// }
 
 
 exports.getSOAData = async function(req, res){ // funcitonfor getData GET endpoint
@@ -195,11 +195,12 @@ exports.getSOAData = async function(req, res){ // funcitonfor getData GET endpoi
   try {
       const soaData = await soaModel.find();
         console.log('retreived invoive data')
-        res.status(200).json(soaData);
+        res.json(soaData);
+
         
     } catch (error) {
         console.error('Error fetching SOA data:', error);
-        res.status(500).json({ error: 'Error fetching Invoice data.' });
+        throw error;
     }
 }
 
@@ -346,7 +347,10 @@ exports.getSOADataUsingId = async function getSOADataUsingId(req, res, next){
   try {
     const { id } = req.params; // Extract the _id from the URL parameter
     const specificSoaData = await getSOADataById(id);
-    res.json(specificSoaData);
+    res.status(200).json({
+      message: 'Fetch specific soa data by id successful!',
+      data: specificSoaData
+    });
     
   } catch (error) {
     console.error('Error fetching specific SOA data:', error);

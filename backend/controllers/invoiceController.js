@@ -92,7 +92,7 @@ exports.uploadDataInvoice = async function(req, res) {
 
   try {
     const data = req.body; // Declare 'data' using 'const'
-    if (data==={}) {
+    if (data==null) {
       return res.status(400).json({ message: 'No data provided for upload.' });
     }
 
@@ -113,10 +113,10 @@ exports.getData = async function(req, res){ // funcitonfor getData GET endpoint
   try {
       const invoiceData = await Invoice.find();
         console.log('retreived invoive data')
-        res.status(200).json(invoiceData);
+        res.json(invoiceData);
     } catch (error) {
         console.error('Error fetching SOA data:', error);
-        res.status(500).json({ error: 'Error fetching Invoice data.' });
+        throw error;
     }
 }
 
